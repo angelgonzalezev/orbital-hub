@@ -26,9 +26,8 @@ The MVP is no longer in early setup. Most core product surfaces exist:
 
 However, the product is not release-ready:
 
-- `npm run build` compiles the bundle but fails during lint/type validity.
-- Landing copy still contains v1 violations such as `trade` and `Future USDC Marketplace`.
-- Some core tasks remain partial: service-level visibility, tech stack filter UI, unconditional raising badge, and direct save-and-request verification flow.
+- `npm run build` now passes.
+- Some core tasks remain partial: final route cleanup, startup validation hardening, generic service visibility helpers, and direct save-and-request verification flow.
 - Analytics mock and unit tests are not implemented.
 
 ## Roadmap Priorities
@@ -41,18 +40,11 @@ Priority: highest.
 
 Tasks to finish:
 
-- Fix lint/type validity errors so `npm run build` passes fully.
-- Remove unused imports and resolve hook dependency warnings where appropriate.
-- Replace `any` usage with proper types in forms, filters, services, and page handlers.
-- Escape unescaped apostrophes in JSX.
-- Align landing copy with v1 messaging:
-  - remove `trade Solana-based startups`.
-  - remove or reframe `Future USDC Marketplace`.
-  - avoid USDC/acquisition-on-chain promises in v1 UI.
+- Finish final route cleanup across the remaining legacy/template pages.
+- Harden startup validation to match the implementation rules more closely.
+- Keep service-level visibility constrained to accessible lookups.
 - Update CTAs that still point to template routes such as `/login-01`.
-- Ensure marketplace/detail startup visibility cannot leak unavailable startups.
-- Fix market signal badges so `IS RAISING` appears only when `isRaising = true`.
-- Add the missing tech stack filter to `StartupFilters`.
+- Keep `/startups/[id]` hidden from non-owners when a startup is unavailable.
 
 Exit criteria:
 

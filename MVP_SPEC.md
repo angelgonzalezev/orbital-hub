@@ -101,18 +101,12 @@ Delivery:
 
 Last audited: 2026-06-10.
 
-- Done: 27/43 tasks.
-- Partial: 12/43 tasks.
-- Pending: 4/43 tasks.
+- Done: 34/43 tasks.
+- Partial: 7/43 tasks.
+- Pending: 2/43 tasks.
 
 See [Task Backlog](docs/delivery/TASK_BACKLOG.md) for task-level tracking.
 
 ## Current Technical Status
 
-`npm run build` compiles the bundle, but fails during lint/type validity due to ESLint/TypeScript issues. Before release, fix:
-
-- `no-explicit-any` errors.
-- unused imports.
-- unescaped apostrophes.
-- missing React hook dependencies where appropriate.
-- remaining v1 copy violations in the landing.
+`npm run build` now passes. Remaining release work is focused on final route cleanup, startup validation hardening, verification flow polish, analytics mocks, and test/QA coverage.
