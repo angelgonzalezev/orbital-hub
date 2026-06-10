@@ -1,10 +1,10 @@
 import { ITeamMember } from '@/interface';
 import Link from 'next/link';
 
-const SocialLinks = ({ social }: { social: Partial<ITeamMember> }) => {
+const SocialLinks = ({ social = {} }: { social?: Partial<NonNullable<ITeamMember['social']>> }) => {
   return (
     <div className="flex items-center justify-center gap-3 lg:opacity-0 lg:group-hover:opacity-100 lg:scale-75 lg:group-hover:scale-100 transition-all duration-[400ms] ease-team-ease-1">
-      <Link href={social.facebook} className="group/social-link">
+      <Link href={social.facebook || '#'} className="group/social-link">
         <span className="sr-only">Facebook profile</span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width={7} height={16} viewBox="0 0 7 16" fill="none">
@@ -16,7 +16,7 @@ const SocialLinks = ({ social }: { social: Partial<ITeamMember> }) => {
         </span>
       </Link>
       <div className="h-[22px] w-px bg-stroke-1 dark:bg-accent/10" />
-      <Link href={social.instagram} className="group/social-link">
+      <Link href={social.instagram || '#'} className="group/social-link">
         <span className="sr-only">Instagram profile</span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16" fill="none">
@@ -61,7 +61,7 @@ const SocialLinks = ({ social }: { social: Partial<ITeamMember> }) => {
         </span>
       </Link>
       <div className="h-[22px] w-px bg-stroke-1 dark:bg-accent/10" />
-      <Link href={social.youtube} className="group/social-link">
+      <Link href={social.youtube || '#'} className="group/social-link">
         <span className="sr-only">Youtube profile</span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width={22} height={16} viewBox="0 0 22 16" fill="none">
@@ -87,7 +87,7 @@ const SocialLinks = ({ social }: { social: Partial<ITeamMember> }) => {
         </span>
       </Link>
       <div className="h-[22px] w-px bg-stroke-1 dark:bg-accent/10" />
-      <Link href={social.linkedin} className="group/social-link">
+      <Link href={social.linkedin || '#'} className="group/social-link">
         <span className="sr-only">Linkedin profile</span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width={13} height={11} viewBox="0 0 13 11" fill="none">
@@ -99,7 +99,7 @@ const SocialLinks = ({ social }: { social: Partial<ITeamMember> }) => {
         </span>
       </Link>
       <div className="h-[22px] w-px bg-stroke-1 dark:bg-accent/10" />
-      <Link href={social.dribbble} className="group/social-link">
+      <Link href={social.dribbble || '#'} className="group/social-link">
         <span className="sr-only">Dribble profile</span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 16 16" fill="none">
@@ -120,7 +120,7 @@ const SocialLinks = ({ social }: { social: Partial<ITeamMember> }) => {
         </span>
       </Link>
       <div className="h-[22px] w-px bg-stroke-1 dark:bg-accent/10" />
-      <Link href={social.behance} className="group/social-link">
+      <Link href={social.behance || '#'} className="group/social-link">
         <span className="sr-only">Behance profile</span>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width={16} height={14} viewBox="0 0 16 14" fill="none">

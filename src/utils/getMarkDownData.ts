@@ -9,12 +9,13 @@ const getMarkDownData = (folder: string, reversedSort?: boolean, sortBy?: string
   const files = fs.readdirSync(folder);
   const markdownPosts = files.filter((file) => file.endsWith('.md'));
 
-  const postsData = markdownPosts.map((file) => {
+  const postsData = markdownPosts.map((file, index) => {
     const filePath = path.join(folder, file);
     const content = fs.readFileSync(filePath, 'utf8');
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data: any = matter(content);
     return {
+      id: index + 1,
       ...data.data,
       slug: file.replace('.md', ''),
       content: data.content,

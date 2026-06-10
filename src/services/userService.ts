@@ -2,7 +2,7 @@ import { User } from '@/interface/user';
 import usersMock from '@/data/mock/users.json';
 import { validateProfile } from '@/utils/validation';
 
-let users: User[] = [...usersMock];
+const users: User[] = usersMock as User[];
 
 export const userService = {
   getCurrentUser: async (walletAddress: string): Promise<User | null> => {
@@ -21,7 +21,11 @@ export const userService = {
 
     const index = users.findIndex((u) => u.walletAddress === walletAddress);
     if (index >= 0) {
-      users[index] = { ...users[index], ...input, updatedAt: new Date().toISOString() } as any;
+      users[index] = {
+        ...users[index],
+        ...input,
+        updatedAt: new Date().toISOString(),
+      } as User;
       return users[index];
     } else {
       const newUser: User = {

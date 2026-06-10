@@ -5,6 +5,7 @@ import { User } from '@/interface/user';
 import { validateProfile, ValidationError } from '@/utils/validation';
 import { userService } from '@/services/userService';
 import { useAuth } from '@/context/AuthContext';
+import { cn } from '@/utils/cn';
 
 interface ProfileFormProps {
   initialData: User | null;
@@ -21,7 +22,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
       telegramHandle: '',
       bio: '',
       avatar: '',
-    }
+    },
   );
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,8 +52,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
       const updatedUser = await userService.upsertProfile(walletAddress, formData);
       setMessage({ type: 'success', text: 'Profile updated successfully!' });
       if (onSave) onSave(updatedUser);
-    } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || 'Failed to update profile.' });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to update profile.';
+      setMessage({ type: 'error', text: message });
     } finally {
       setIsSubmitting(false);
     }
@@ -73,8 +75,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
             onChange={handleChange}
             placeholder="Alex Rivera"
             className={cn(
-              "w-full bg-black border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all",
-              getError('displayName') ? "border-red-500/50" : "border-white/10"
+              'w-full bg-black border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all',
+              getError('displayName') ? 'border-red-500/50' : 'border-white/10',
             )}
           />
           {getError('displayName') && <p className="text-red-500 text-xs mt-1 ml-1">{getError('displayName')}</p>}
@@ -90,8 +92,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
             onChange={handleChange}
             placeholder="Founder, Lead Dev, Designer..."
             className={cn(
-              "w-full bg-black border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all",
-              getError('jobTitle') ? "border-red-500/50" : "border-white/10"
+              'w-full bg-black border rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all',
+              getError('jobTitle') ? 'border-red-500/50' : 'border-white/10',
             )}
           />
           {getError('jobTitle') && <p className="text-red-500 text-xs mt-1 ml-1">{getError('jobTitle')}</p>}
@@ -109,8 +111,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
               onChange={handleChange}
               placeholder="username"
               className={cn(
-                "w-full bg-black border rounded-2xl pl-11 pr-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all",
-                getError('twitterHandle') ? "border-red-500/50" : "border-white/10"
+                'w-full bg-black border rounded-2xl pl-11 pr-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all',
+                getError('twitterHandle') ? 'border-red-500/50' : 'border-white/10',
               )}
             />
           </div>
@@ -121,7 +123,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
         <div className="space-y-2">
           <label className="text-sm font-medium text-white/60 ml-1">Telegram Handle</label>
           <div className="relative">
-             <span className="absolute left-6 top-1/2 -translate-y-1/2 text-white/30 text-lg">@</span>
+            <span className="absolute left-6 top-1/2 -translate-y-1/2 text-white/30 text-lg">@</span>
             <input
               type="text"
               name="telegramHandle"
@@ -129,8 +131,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
               onChange={handleChange}
               placeholder="username"
               className={cn(
-                "w-full bg-black border rounded-2xl pl-11 pr-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all",
-                getError('telegramHandle') ? "border-red-500/50" : "border-white/10"
+                'w-full bg-black border rounded-2xl pl-11 pr-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all',
+                getError('telegramHandle') ? 'border-red-500/50' : 'border-white/10',
               )}
             />
           </div>
@@ -165,10 +167,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
       </div>
 
       {message && (
-        <div className={cn(
-          "p-4 rounded-2xl text-center font-medium border",
-          message.type === 'success' ? "bg-green-500/10 border-green-500/20 text-green-500" : "bg-red-500/10 border-red-500/20 text-red-500"
-        )}>
+        <div
+          className={cn(
+            'p-4 rounded-2xl text-center font-medium border',
+            message.type === 'success'
+              ? 'bg-green-500/10 border-green-500/20 text-green-500'
+              : 'bg-red-500/10 border-red-500/20 text-red-500',
+          )}>
           {message.text}
         </div>
       )}
@@ -176,17 +181,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="btn btn-primary btn-xl w-full sm:w-auto shadow-lg shadow-primary-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
+        className="btn btn-primary btn-xl w-full sm:w-auto shadow-lg shadow-primary-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
         {isSubmitting ? 'Saving...' : 'Save Profile'}
       </button>
     </form>
   );
 };
-
-// Internal cn helper if not available
-function cn(...classes: any[]) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default ProfileForm;

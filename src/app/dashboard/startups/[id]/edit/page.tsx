@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { startupService } from '@/services/startupService';
 import { Startup } from '@/interface/startup';
@@ -10,31 +10,40 @@ import StartupForm from '@/components/startup/StartupForm';
 import { LoadingState, ErrorState } from '@/components/shared/States';
 import { useRouter } from 'next/navigation';
 
-export default function EditStartupPage({ params }: { params: { id: string } }) {
+export default function EditStartupPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const { walletAddress } = useAuth();
   const [startup, setStartup] = useState<Startup | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (walletAddress && params.id) {
-      loadStartup();
-    }
-  }, [walletAddress, params.id]);
-
-  const loadStartup = async () => {
-    setIsLoading(true);
-    try {
-      const data = await startupService.getStartupById(params.id);
-      if (data && data.ownerWallet === walletAddress) {
-        setStartup(data);
-      }
-    } catch (error) {
-      console.error('Error loading startup:', error);
-    } finally {
+    if (!walletAddress || !id) {
       setIsLoading(false);
+      return;
     }
-  };
+
+    let cancelled = false;
+    (async () => {
+      setIsLoading(true);
+      try {
+        const data = await startupService.getStartupById(id);
+        if (!cancelled && data && data.ownerWallet === walletAddress) {
+          setStartup(data);
+        }
+      } catch (error) {
+        console.error('Error loading startup:', error);
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [walletAddress, id]);
 
   const handleSave = () => {
     router.push('/dashboard/startups');
@@ -42,10 +51,7 @@ export default function EditStartupPage({ params }: { params: { id: string } }) 
 
   return (
     <AuthGate>
-      <DashboardShell
-        title="Edit Startup"
-        subtitle={startup ? `Updating ${startup.name}` : 'Manage project details.'}
-      >
+      <DashboardShell title="Edit Startup" subtitle={startup ? `Updating ${startup.name}` : 'Manage project details.'}>
         {isLoading ? (
           <LoadingState />
         ) : !startup ? (

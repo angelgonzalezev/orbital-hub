@@ -1,12 +1,12 @@
 import { ITeamMember } from '@/interface';
 import Link from 'next/link';
 
-const SocialLinkV2 = ({ SocialLinks }: { SocialLinks: Partial<ITeamMember> }) => {
+const SocialLinkV2 = ({ SocialLinks = {} }: { SocialLinks?: Partial<NonNullable<ITeamMember['social']>> }) => {
   return (
     <div className="flex items-center gap-2">
       {/* facebook  */}
       <Link
-        href={SocialLinks?.facebook}
+        href={SocialLinks?.facebook || '#'}
         target="_blank"
         rel="noopener noreferrer"
         className="size-10 p-2.5 rounded-full border border-accent/10 dark:border-stroke-7 flex items-center justify-center hover:bg-background-1 dark:hover:bg-accent group transition-all duration-500 ease-in-out hover:-translate-y-2"
@@ -30,7 +30,7 @@ const SocialLinkV2 = ({ SocialLinks }: { SocialLinks: Partial<ITeamMember> }) =>
       </Link>
       {/* dribble  */}
       <Link
-        href={SocialLinks?.instagram}
+        href={SocialLinks?.instagram || '#'}
         target="_blank"
         rel="noopener noreferrer"
         className="size-10 p-2.5 rounded-full border border-accent/10 dark:border-stroke-7 flex items-center justify-center hover:bg-background-1 dark:hover:bg-accent group transition-all duration-500 ease-in-out hover:-translate-y-2"
@@ -56,7 +56,7 @@ const SocialLinkV2 = ({ SocialLinks }: { SocialLinks: Partial<ITeamMember> }) =>
       </Link>
       {/* github */}
       <Link
-        href={SocialLinks?.youtube}
+        href={SocialLinks?.youtube || '#'}
         target="_blank"
         rel="noopener noreferrer"
         className="size-10 p-2.5 rounded-full border border-accent/10 dark:border-stroke-7 flex items-center justify-center hover:bg-background-1 dark:hover:bg-accent group transition-all duration-500 ease-in-out hover:-translate-y-2"
@@ -80,7 +80,7 @@ const SocialLinkV2 = ({ SocialLinks }: { SocialLinks: Partial<ITeamMember> }) =>
       </Link>
       {/* linkedin  */}
       <Link
-        href={SocialLinks?.linkedin}
+        href={SocialLinks?.linkedin || '#'}
         target="_blank"
         rel="noopener noreferrer"
         className="size-10 p-2.5 rounded-full border border-accent/10 dark:border-stroke-7 flex items-center justify-center hover:bg-background-1 dark:hover:bg-accent group transition-all duration-500 ease-in-out hover:-translate-y-2"

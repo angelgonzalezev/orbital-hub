@@ -19,9 +19,10 @@ import LinkButton from '../ui/button/LinkButton';
 interface servicesType {
   slug: string;
   content: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
+  icon?: string;
+  title?: string;
+  description?: string;
+  [key: string]: unknown;
 }
 
 const services: servicesType[] = getMarkDownData('src/data/services');

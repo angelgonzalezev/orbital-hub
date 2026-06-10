@@ -6,8 +6,8 @@ const ContactInformation = ({
   contactInformation,
   social,
 }: {
-  contactInformation: Partial<ITeamMember>;
-  social: Partial<ITeamMember>;
+  contactInformation?: Partial<NonNullable<ITeamMember['contactInformation']>>;
+  social?: Partial<NonNullable<ITeamMember['social']>>;
 }) => {
   return (
     <div className="p-11 space-y-[22px]">
@@ -25,7 +25,7 @@ const ContactInformation = ({
         </p>
       </div>
       {/*Social links*/}
-      <SocialLinkV2 SocialLinks={social as Partial<ITeamMember>} />
+      <SocialLinkV2 SocialLinks={social} />
     </div>
   );
 };

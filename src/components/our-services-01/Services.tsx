@@ -27,7 +27,7 @@ const Services = () => {
         </div>
         <div className="grid grid-cols-12 xl:gap-8 md:gap-8 gap-y-5">
           {servicesData.map((service, index) => (
-            <RevealAnimation key={service.id} delay={0.5 + index * 0.1}>
+            <RevealAnimation key={service.slug} delay={0.5 + index * 0.1}>
               <div className="col-span-12 md:col-span-6 xl:col-span-4">
                 <div className="px-6 py-8 rounded-[20px] bg-background-3 dark:bg-background-7 space-y-6 text-center grid items-center justify-center hover:translate-y-[-10px] transition-transform duration-500 ease-in-out">
                   <div className="flex items-center justify-center">

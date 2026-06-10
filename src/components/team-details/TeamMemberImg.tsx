@@ -22,10 +22,7 @@ const TeamMemberImg = ({ data }: { data: Partial<ITeamMember> }) => {
           </RevealAnimation>
           <Image src={data.userImg as string} alt="team-member-single img" width={600} height={600} />
         </figure>
-        <ContactInformation
-          contactInformation={contactInformation as Partial<ITeamMember>}
-          social={social as Partial<ITeamMember>}
-        />
+        <ContactInformation contactInformation={contactInformation} social={social} />
       </div>
     </RevealAnimation>
   );

@@ -7,6 +7,10 @@ type UserReviewProps = {
 };
 
 const UserReview = ({ service }: UserReviewProps) => {
+  if (!service.userReview) return null;
+
+  const review = service.userReview;
+
   return (
     <div className="mt-[70px] space-y-14" id="live-data-insights">
       <div className="space-y-3">
@@ -23,25 +27,19 @@ const UserReview = ({ service }: UserReviewProps) => {
       <RevealAnimation delay={0.1}>
         <div className="bg-secondary p-8 rounded-[20px] space-y-6">
           <figure className="size-16 rounded-full overflow-hidden bg-linear-[180deg,#ffffff_0%,#83e7ee_100%]">
-            <Image
-              className="size-full object-cover"
-              src={service.userReview.image}
-              alt="avatar"
-              width={64}
-              height={64}
-            />
+            <Image className="size-full object-cover" src={review.image} alt="avatar" width={64} height={64} />
           </figure>
           <blockquote>
             <RevealAnimation delay={0.3}>
-              <p className="text-white">{service.userReview.reviewContent}</p>
+              <p className="text-white">{review.reviewContent}</p>
             </RevealAnimation>
           </blockquote>
           <div>
             <RevealAnimation delay={0.4}>
-              <p className="text-lg font-medium text-white">{service.userReview.name}</p>
+              <p className="text-lg font-medium text-white">{review.name}</p>
             </RevealAnimation>
             <RevealAnimation delay={0.5}>
-              <p className="text-tagline-2 font-normal text-accent/60">{service.userReview.userRole}</p>
+              <p className="text-tagline-2 font-normal text-accent/60">{review.userRole}</p>
             </RevealAnimation>
           </div>
         </div>

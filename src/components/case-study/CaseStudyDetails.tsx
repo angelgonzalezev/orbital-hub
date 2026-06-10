@@ -10,8 +10,10 @@ interface CaseStudyDetailsProps {
 }
 
 const CaseStudyDetails = ({ slug }: CaseStudyDetailsProps) => {
-  // @ts-expect-error - ICaseStudy is not defined
-  const caseStudy: ICaseStudy = getMarkDownContent('src/data/case-study/', slug);
+  const caseStudy = getMarkDownContent('src/data/case-study/', slug) as unknown as {
+    data: ICaseStudy;
+    content: string;
+  };
 
   return (
     <section className="pt-7 pb-24 md:pb-28 lg:pb-32 xl:pb-[200px]">

@@ -22,12 +22,7 @@ const navItems = [
   { label: 'Marketplace', href: '/startups' },
 ];
 
-const DashboardShell: React.FC<DashboardShellProps> = ({
-  children,
-  title,
-  subtitle,
-  actions,
-}) => {
+const DashboardShell: React.FC<DashboardShellProps> = ({ children, title, subtitle, actions }) => {
   const pathname = usePathname();
 
   return (
@@ -53,9 +48,8 @@ const DashboardShell: React.FC<DashboardShellProps> = ({
                         'block px-6 py-4 rounded-2xl text-lg font-medium transition-all duration-300 border',
                         isActive
                           ? 'bg-primary-500/10 border-primary-500/30 text-primary-500 shadow-lg shadow-primary-500/5'
-                          : 'bg-transparent border-transparent text-white/50 hover:bg-white/5 hover:text-white'
-                      )}
-                    >
+                          : 'bg-transparent border-transparent text-white/50 hover:bg-white/5 hover:text-white',
+                      )}>
                       {item.label}
                     </Link>
                   );
@@ -69,28 +63,16 @@ const DashboardShell: React.FC<DashboardShellProps> = ({
                 <RevealAnimation delay={0.1}>
                   <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-white/5">
                     <div className="space-y-2">
-                      {title && (
-                        <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-                          {title}
-                        </h1>
-                      )}
-                      {subtitle && (
-                        <p className="text-white/60 text-lg">
-                          {subtitle}
-                        </p>
-                      )}
+                      {title && <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">{title}</h1>}
+                      {subtitle && <p className="text-white/60 text-lg">{subtitle}</p>}
                     </div>
-                    {actions && (
-                      <div className="flex flex-wrap gap-4">
-                        {actions}
-                      </div>
-                    )}
+                    {actions && <div className="flex flex-wrap gap-4">{actions}</div>}
                   </div>
                 </RevealAnimation>
               )}
-              
+
               <RevealAnimation delay={0.2}>
-                {children}
+                <div>{children}</div>
               </RevealAnimation>
             </div>
           </div>
