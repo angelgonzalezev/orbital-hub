@@ -14,7 +14,7 @@ import PageMegaMenu from '../mega-menu/PageMegaMenu';
 import ServicesMenu from '../mega-menu/ServicesMenu';
 import Logo from './Logo';
 import MobileMenuButton from './MobileMenuButton';
-import NavCTAButton from './NavCTAButton';
+import WalletConnectButton from '../WalletConnectButton';
 import NavItemLink from './NavItemLink';
 
 interface NavbarOneProps {
@@ -68,7 +68,9 @@ const NavbarOne: FC<NavbarOneProps> = ({ className, megaMenuColor, btnClassName 
               })}
             </ul>
           </nav>
-          <NavCTAButton href="/signup-01" btnClassName={btnClassName} label="Get started" />
+          <div className="hidden xl:flex items-center">
+            <WalletConnectButton className={cn('btn-sm', btnClassName)} />
+          </div>
           {/* mobile menu btn */}
           <MobileMenuButton />
         </div>
