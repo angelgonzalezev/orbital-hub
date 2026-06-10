@@ -17,7 +17,7 @@ const Features = () => {
           </RevealAnimation>
           <RevealAnimation delay={0.3}>
             <p className="max-w-[776px] mx-auto text-lg text-white/70">
-              Everything you need to discover, showcase, and trade Solana-based startups in one single place.
+              Everything you need to discover, showcase, and follow verified Solana startups in one single place.
             </p>
           </RevealAnimation>
         </div>
@@ -62,9 +62,10 @@ const Features = () => {
               <div className="col-span-12 lg:col-span-4 sm:col-span-6">
                 <div className="bg-[#0A0A0A] border border-white/5 rounded-[20px] md:p-8 p-6 h-full flex flex-col justify-between space-y-6 hover:border-primary-500/30 transition-colors">
                   <div className="space-y-3">
-                    <h3 className="text-heading-6 md:text-heading-5 font-bold text-white">Acquisition Marketplace</h3>
+                    <h3 className="text-heading-6 md:text-heading-5 font-bold text-white">Acquisition Signals</h3>
                     <p className="text-white/60 text-base">
-                      Discover projects open to acquisition and connect directly with founders to discuss deals.
+                      Highlight founders open to acquisition conversations without introducing deal rooms or payment
+                      flows in v1.
                     </p>
                   </div>
                   <div>
@@ -97,9 +98,10 @@ const Features = () => {
               <div className="col-span-12 lg:col-span-8">
                 <div className="bg-[#0A0A0A] border border-white/5 rounded-[20px] md:p-8 p-6 h-full flex flex-col justify-between space-y-6 hover:border-primary-500/30 transition-colors">
                   <div className="space-y-3">
-                    <h3 className="text-heading-6 md:text-heading-5 font-bold text-white">Future USDC Marketplace</h3>
+                    <h3 className="text-heading-6 md:text-heading-5 font-bold text-white">Marketplace Signals</h3>
                     <p className="text-white/60 text-base">
-                      Native Solana payments for premium listings and startup acquisitions processed directly on-chain.
+                      Verified listings, founder signals, and discovery filters that stay inside the v1 marketplace
+                      scope.
                     </p>
                   </div>
                   <div>
@@ -117,7 +119,9 @@ const Features = () => {
             <LinkButton href="/startups" className="btn btn-primary btn-md hover:btn-white w-[90%] md:w-auto">
               Explore the Hub
             </LinkButton>
-            <LinkButton href="/dashboard/startups/new" className="btn btn-white-dark btn-md hover:btn-primary w-[90%] md:w-auto">
+            <LinkButton
+              href="/dashboard/startups/new"
+              className="btn btn-white-dark btn-md hover:btn-primary w-[90%] md:w-auto">
               Register Startup
             </LinkButton>
           </div>
