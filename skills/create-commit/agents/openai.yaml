@@ -1,0 +1,3 @@
+display_name: Create Commit
+short_description: Create one git commit per task using agonzalez/TASK-ID/title format.
+default_prompt: Create commits for the current changes, one per task, using the required task commit format.
