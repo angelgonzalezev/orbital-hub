@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "prebuild": "npm run docs:build",
     "build": "next build",
     "build:with-docs": "npm run docs:build && npm run build",
     "docs:build": "npm --prefix docs-site run build",

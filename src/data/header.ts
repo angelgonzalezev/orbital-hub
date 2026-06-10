@@ -2,6 +2,8 @@ export interface NavigationItem {
   id: string;
   label: string;
   href?: string;
+  target?: string;
+  rel?: string;
   hasDropdown: boolean;
   megaMenuComponent?: string;
 }
@@ -38,8 +40,10 @@ export const navigationItems: NavigationItem[] = [
   },
   {
     id: 'docs',
-    label: 'Docs',
+    label: 'Documentation',
     href: '/docs',
+    target: '_blank',
+    rel: 'noreferrer',
     hasDropdown: false,
   },
   {
