@@ -5,15 +5,15 @@ description: Current delivery status and task conventions.
 
 # Task Progress
 
-Last audited: 2026-06-10.
+Last audited: 2026-06-11.
 
 ## Current snapshot
 
 | Status  | Count |
 | ------- | ----: |
-| Done    |    27 |
-| Partial |    12 |
-| Pending |     4 |
+| Done    |    36 |
+| Partial |     7 |
+| Pending |     2 |
 
 The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the repository.
 
@@ -39,6 +39,8 @@ The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the reposit
 - MVP checklist.
 - Project README.
 - Public Docusaurus documentation.
+- Shared footer redesign.
+- Footer menu option cleanup.
 
 ## Partial areas
 
@@ -46,16 +48,12 @@ The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the reposit
 - Startup validation completeness.
 - Startup service visibility filtering.
 - Startup form save-and-request flow.
-- Marketplace card and filter details.
-- Startup detail availability behavior.
 - QA coverage and visual evidence.
 
 ## Pending areas
 
-- Landing copy QA.
 - Analytics mock.
 - Unit tests.
-- Full release-readiness validation.
 
 ## Commit convention
 

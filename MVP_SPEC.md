@@ -99,11 +99,11 @@ Delivery:
 
 ## Current Progress Snapshot
 
-Last audited: 2026-06-10.
+Last audited: 2026-06-11.
 
-- Done: 34/43 tasks.
-- Partial: 7/43 tasks.
-- Pending: 2/43 tasks.
+- Done: 36/45 tasks.
+- Partial: 7/45 tasks.
+- Pending: 2/45 tasks.
 
 See [Task Backlog](docs/delivery/TASK_BACKLOG.md) for task-level tracking.
 

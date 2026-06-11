@@ -23,13 +23,13 @@ Status:
 - `[~]`: partially done.
 - `[ ]`: pending.
 
-Audit date: 2026-06-10.
+Audit date: 2026-06-11.
 
 Current progress:
 
-- Done: 34/43.
-- Partial: 7/43.
-- Pending: 2/43.
+- Done: 36/45.
+- Partial: 7/45.
+- Pending: 2/45.
 
 Build status:
 
@@ -132,3 +132,10 @@ Build status:
 | [x]    | P2       | TASK-041 - Post-MVP technical decisions  | Documented in `QA_CHECKLIST.md`.                                                                                                   |
 | [x]    | P1       | TASK-042 - Update project README         | Replaced template README with project-specific product, setup, docs, route, status, and commit guidance.                           |
 | [x]    | P1       | TASK-043 - Create public Docusaurus docs | Adds a Docusaurus docs package served under `/docs`, with product, flow, roadmap, task, technology, and contributor documentation. |
+
+## Phase L: Landing Navigation and Footer Polish
+
+| Status | Priority | Task                                   | Notes                                                                                                         |
+| :----- | :------- | :------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| [x]    | P1       | TASK-044 - Redesign shared footer      | `FooterOne` now matches the Solana landing style with dark cards, gradient brand treatment, and product CTAs. |
+| [x]    | P1       | TASK-045 - Correct footer menu options | Replaced template/social/legal menu options with product, docs, and company links aligned to current routes.  |
