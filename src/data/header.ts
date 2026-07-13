@@ -6,13 +6,18 @@ export interface NavigationItem {
 
 export const navigationItems: NavigationItem[] = [
   {
-    id: 'marketplace',
-    label: 'Marketplace',
-    href: '/startups',
+    id: 'overview',
+    label: 'Overview',
+    href: '/#about',
   },
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    href: '/dashboard',
+    id: 'process',
+    label: 'How it works',
+    href: '/#process',
+  },
+  {
+    id: 'roadmap',
+    label: 'Roadmap',
+    href: '/#roadmap',
   },
 ];

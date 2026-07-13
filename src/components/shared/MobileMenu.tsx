@@ -3,25 +3,42 @@
 import { useMobileMenuContext } from '@/context/MobileMenuContext';
 import { navigationItems } from '@/data/header';
 import { cn } from '@/utils/cn';
-import logoDark from '@public/images/shared/logo-dark.svg';
-import logo from '@public/images/shared/logo.svg';
-import Image from 'next/image';
+import { CircleHelp, Info, Map, Store, X } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import WalletConnectButton from './WalletConnectButton';
+import Logo from './header/Logo';
+
+const navigationIcons = {
+  overview: Info,
+  process: CircleHelp,
+  roadmap: Map,
+};
 
 const MobileMenu = () => {
   const { isOpen, closeMenu } = useMobileMenuContext();
   const sidebarRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (isOpen && sidebarRef.current) {
-      sidebarRef.current.focus();
-    }
-  }, [isOpen]);
+    if (!isOpen) return;
+
+    sidebarRef.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeMenu();
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [closeMenu, isOpen]);
 
   return (
-    <div className={cn('fixed inset-0 z-[999] xl:hidden', !isOpen && 'pointer-events-none')} aria-hidden={!isOpen}>
+    <div className={cn('fixed inset-0 z-[999] lg:hidden', !isOpen && 'pointer-events-none')} aria-hidden={!isOpen}>
       <button
         type="button"
         onClick={closeMenu}
@@ -39,43 +56,52 @@ const MobileMenu = () => {
         aria-label="Main navigation"
         tabIndex={-1}
         className={cn(
-          'dark:bg-background-7 scroll-bar absolute top-0 right-0 h-dvh w-full max-w-sm bg-white shadow-2xl transition-transform duration-300 ease-in-out',
+          'scroll-bar absolute top-0 right-0 h-dvh w-full max-w-sm border-l border-white/10 bg-[#080808] shadow-2xl transition-transform duration-300 ease-in-out',
           isOpen ? 'translate-x-0' : 'translate-x-full',
         )}>
         <div className="flex h-full flex-col gap-8 p-5 sm:p-8">
           <div className="flex items-center justify-between">
-            <Link href="/" onClick={closeMenu}>
-              <span className="sr-only">Home</span>
-              <figure className="max-w-[44px]">
-                <Image src={logo} alt="Solana Startups Hub" className="block w-full dark:hidden" />
-                <Image src={logoDark} alt="Solana Startups Hub" className="hidden w-full dark:block" />
-              </figure>
-            </Link>
+            <div onClick={closeMenu}>
+              <Logo />
+            </div>
             <button
+              type="button"
               onClick={closeMenu}
-              className="nav-hamburger-close bg-background-4 dark:bg-background-9 hover:bg-background-5 dark:hover:bg-background-8 group relative flex size-10 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-full transition-all duration-200 hover:scale-105"
+              className="flex size-10 cursor-pointer items-center justify-center rounded-full border border-white/10 text-white/60 transition-colors hover:border-white/25 hover:text-white"
               aria-label="Close mobile menu">
-              <span className="sr-only">Close Menu</span>
-              <span className="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 rotate-45 transition-all duration-200 group-hover:bg-stroke-1"></span>
-              <span className="bg-stroke-9/60 dark:bg-stroke-1 absolute block h-0.5 w-4 -rotate-45 transition-all duration-200 group-hover:bg-stroke-1"></span>
+              <X aria-hidden="true" className="size-5" />
             </button>
           </div>
-          <nav aria-label="Mobile navigation" className="flex-1">
+          <nav aria-label="Mobile navigation" className="flex-1 border-t border-white/10 pt-6">
+            <p className="mb-3 px-4 text-xs font-semibold uppercase tracking-[0.15em] text-white/35">Explore the hub</p>
             <ul className="space-y-2">
-              {navigationItems.map((item) => (
-                <li key={item.id}>
-                  <Link
-                    href={item.href}
-                    onClick={closeMenu}
-                    className="dark:text-accent hover:bg-background-4 dark:hover:bg-background-8 flex min-h-14 items-center rounded-md px-4 text-lg font-medium text-secondary transition-colors">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+              {navigationItems.map((item) => {
+                const Icon = navigationIcons[item.id as keyof typeof navigationIcons];
+                return (
+                  <li key={item.id}>
+                    <Link
+                      href={item.href}
+                      onClick={closeMenu}
+                      className="flex min-h-14 items-center gap-3 rounded-md px-4 text-base font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white">
+                      <Icon aria-hidden="true" className="size-5 text-white/35" />
+                      {item.label}
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </nav>
-          <div onClick={closeMenu}>
-            <WalletConnectButton className="w-full" />
+          <div className="space-y-3 border-t border-white/10 pt-5">
+            <Link
+              href="/startups"
+              onClick={closeMenu}
+              className="btn btn-white-dark btn-md flex w-full items-center justify-center gap-2 border border-white/10">
+              <Store aria-hidden="true" className="size-4" />
+              <span>Marketplace</span>
+            </Link>
+            <div onClick={closeMenu}>
+              <WalletConnectButton className="w-full" />
+            </div>
           </div>
         </div>
       </aside>

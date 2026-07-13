@@ -28,9 +28,10 @@ const footerSections = [
   {
     title: 'Hub',
     links: [
-      { label: 'About the hub', href: '/#about' },
+      { label: 'Overview', href: '/#about' },
       { label: 'How it works', href: '/#process' },
-      { label: 'Platform features', href: '/#features' },
+      { label: 'Available now', href: '/#features' },
+      { label: 'Public roadmap', href: '/#roadmap' },
     ],
   },
 ];
