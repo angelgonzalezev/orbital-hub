@@ -27,9 +27,9 @@ Audit date: 2026-06-11.
 
 Current progress:
 
-- Done: 43/55.
-- Partial: 10/55.
-- Pending: 2/55.
+- Done: 44/56.
+- Partial: 10/56.
+- Pending: 2/56.
 
 Build status:
 
@@ -159,3 +159,9 @@ Build status:
 | [x]    | P0       | TASK-053 - Add managed profile image           | Profile saves coordinate Storage upload, database path update, rollback, and cleanup.        |
 | [x]    | P0       | TASK-054 - Add managed startup logos           | New and existing startups support deferred logo upload with owner-scoped paths.              |
 | [~]    | P1       | TASK-055 - Media compatibility, docs, and QA   | Unit/build/route checks pass; interactive browser QA remains unevidenced.                    |
+
+## Phase O: Product Surface Cleanup
+
+| Status | Priority | Task                                   | Notes                                                                                       |
+| :----- | :------- | :------------------------------------- | :------------------------------------------------------------------------------------------ |
+| [x]    | P1       | TASK-056 - Simplify product navigation | Desktop and mobile navigation expose only Marketplace and Dashboard; docs remain in footer. |

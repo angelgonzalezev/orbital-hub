@@ -8,9 +8,6 @@ interface MobileMenuContextType {
   openMenu: () => void;
   closeMenu: () => void;
   toggleMenu: () => void;
-  activeSubmenu: string | null;
-  toggleSubmenu: (menuId: string) => void;
-  closeAllSubmenus: () => void;
 }
 
 const MobileMenuContext = createContext<MobileMenuContextType | undefined>(undefined);

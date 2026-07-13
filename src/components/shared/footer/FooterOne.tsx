@@ -26,12 +26,11 @@ const footerSections = [
     ],
   },
   {
-    title: 'Company',
+    title: 'Hub',
     links: [
-      { label: 'About the hub', href: '/about-01' },
-      { label: 'Contact us', href: '/contact-us' },
-      { label: 'FAQ', href: '/faq' },
-      { label: 'Privacy', href: '/privacy' },
+      { label: 'About the hub', href: '/#about' },
+      { label: 'How it works', href: '/#process' },
+      { label: 'Platform features', href: '/#features' },
     ],
   },
 ];

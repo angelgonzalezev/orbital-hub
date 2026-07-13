@@ -7,11 +7,6 @@ import { useNavbarScroll } from '@/hooks/useScrollHeader';
 import { cn } from '@/utils/cn';
 import { FC } from 'react';
 import MobileMenu from '../MobileMenu';
-import AboutMenu from '../mega-menu/AboutMenu';
-import BlogMenu from '../mega-menu/BlogMenu';
-import HomeMegaMenu from '../mega-menu/HomeMegaMenu';
-import PageMegaMenu from '../mega-menu/PageMegaMenu';
-import ServicesMenu from '../mega-menu/ServicesMenu';
 import Logo from './Logo';
 import MobileMenuButton from './MobileMenuButton';
 import WalletConnectButton from '../WalletConnectButton';
@@ -19,11 +14,10 @@ import NavItemLink from './NavItemLink';
 
 interface NavbarOneProps {
   className?: string;
-  megaMenuColor?: string;
   btnClassName?: string;
 }
 
-const NavbarOne: FC<NavbarOneProps> = ({ className, megaMenuColor, btnClassName }) => {
+const NavbarOne: FC<NavbarOneProps> = ({ className, btnClassName }) => {
   const { isScrolled } = useNavbarScroll(100);
 
   return (
@@ -40,32 +34,11 @@ const NavbarOne: FC<NavbarOneProps> = ({ className, megaMenuColor, btnClassName 
           {/* navigation */}
           <nav className="hidden items-center xl:flex">
             <ul className="flex items-center">
-              {navigationItems.map((item) => {
-                const renderMegaMenu = () => {
-                  switch (item?.megaMenuComponent) {
-                    case 'HomeMegaMenu':
-                      return <HomeMegaMenu className={megaMenuColor} />;
-                    case 'PageMegaMenu':
-                      return <PageMegaMenu className={megaMenuColor} />;
-                    case 'AboutMenu':
-                      return <AboutMenu className={megaMenuColor} />;
-                    case 'ServicesMenu':
-                      return <ServicesMenu className={megaMenuColor} />;
-                    case 'BlogMenu':
-                      return <BlogMenu className={megaMenuColor} />;
-                    default:
-                      return null;
-                  }
-                };
-
-                // mega menu render
-                return (
-                  <li key={item?.id} className={cn('py-2.5', item?.hasDropdown && 'group/nav relative cursor-pointer')}>
-                    <NavItemLink item={item} />
-                    {item.hasDropdown && renderMegaMenu()}
-                  </li>
-                );
-              })}
+              {navigationItems.map((item) => (
+                <li key={item.id} className="group/nav py-2.5">
+                  <NavItemLink item={item} />
+                </li>
+              ))}
             </ul>
           </nav>
           <div className="hidden xl:flex items-center">

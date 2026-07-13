@@ -7,18 +7,14 @@ interface UseMobileMenuReturn {
   openMenu: () => void;
   closeMenu: () => void;
   toggleMenu: () => void;
-  activeSubmenu: string | null;
-  toggleSubmenu: (menuId: string) => void;
-  closeAllSubmenus: () => void;
 }
 
 /**
  * Custom hook for managing mobile menu state and animations
- * Handles sidebar open/close state, submenu toggles, and body scroll lock
+ * Handles sidebar open/close state and body scroll lock.
  */
 export const useMobileMenu = (): UseMobileMenuReturn => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
 
   // Open mobile menu
   const openMenu = useCallback(() => {
@@ -32,8 +28,6 @@ export const useMobileMenu = (): UseMobileMenuReturn => {
     setIsOpen(false);
     // Restore body scroll when menu is closed
     document.body.classList.remove('overflow-hidden');
-    // Close all submenus when main menu closes
-    setActiveSubmenu(null);
   }, []);
 
   // Toggle mobile menu
@@ -44,16 +38,6 @@ export const useMobileMenu = (): UseMobileMenuReturn => {
       openMenu();
     }
   }, [isOpen, closeMenu, openMenu]);
-
-  // Toggle submenu
-  const toggleSubmenu = useCallback((menuId: string) => {
-    setActiveSubmenu((current) => (current === menuId ? null : menuId));
-  }, []);
-
-  // Close all submenus
-  const closeAllSubmenus = useCallback(() => {
-    setActiveSubmenu(null);
-  }, []);
 
   // Handle escape key to close menu
   useEffect(() => {
@@ -81,8 +65,5 @@ export const useMobileMenu = (): UseMobileMenuReturn => {
     openMenu,
     closeMenu,
     toggleMenu,
-    activeSubmenu,
-    toggleSubmenu,
-    closeAllSubmenus,
   };
 };
