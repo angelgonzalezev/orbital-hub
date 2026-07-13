@@ -6,6 +6,8 @@ import { validateProfile, ValidationError } from '@/utils/validation';
 import { userService } from '@/services/userService';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/utils/cn';
+import ImageUploader from '@/components/shared/ImageUploader';
+import { KEEP_MEDIA, type MediaMutation } from '@/interface/media';
 
 interface ProfileFormProps {
   initialData: User | null;
@@ -25,11 +27,13 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
   const { refreshUser, walletAddress } = useAuth();
   const [formData, setFormData] = useState<Partial<User>>(() => normalizeProfileFormData(initialData));
   const [errors, setErrors] = useState<ValidationError[]>([]);
+  const [avatarMutation, setAvatarMutation] = useState<MediaMutation>(KEEP_MEDIA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     setFormData(normalizeProfileFormData(initialData));
+    setAvatarMutation(KEEP_MEDIA);
   }, [initialData]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -53,7 +57,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
     setMessage(null);
 
     try {
-      const updatedUser = await userService.upsertProfile(formData);
+      const updatedUser = await userService.upsertProfile(formData, avatarMutation);
+      setFormData(normalizeProfileFormData(updatedUser));
+      setAvatarMutation(KEEP_MEDIA);
       await refreshUser();
       setMessage({ type: 'success', text: 'Profile updated successfully!' });
       if (onSave) onSave(updatedUser);
@@ -158,18 +164,12 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
         />
       </div>
 
-      {/* Avatar URL */}
-      <div className="space-y-2">
-        <label className="text-sm font-medium text-white/60 ml-1">Avatar URL</label>
-        <input
-          type="text"
-          name="avatar"
-          value={formData.avatar ?? ''}
-          onChange={handleChange}
-          placeholder="https://..."
-          className="w-full bg-black border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
-        />
-      </div>
+      <ImageUploader
+        label="Profile image"
+        value={formData.avatar}
+        mutation={avatarMutation}
+        onMutation={setAvatarMutation}
+      />
 
       {message && (
         <div
