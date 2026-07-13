@@ -87,6 +87,7 @@ src/data/startupTaxonomy.ts      Product taxonomy constants
 src/interface/                   TypeScript interfaces
 src/services/                    Supabase-backed product services
 src/utils/validation.ts          Validation helpers
+public/images/                   Only assets referenced by the product UI
 supabase/migrations/             Database schema, policies, triggers, and RPCs
 supabase/tests/                  pgTAP database authorization tests
 supabase/seed.sql                Local-only development fixtures

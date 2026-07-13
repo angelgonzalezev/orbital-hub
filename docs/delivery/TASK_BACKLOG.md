@@ -27,9 +27,9 @@ Audit date: 2026-06-11.
 
 Current progress:
 
-- Done: 45/56.
-- Partial: 9/56.
-- Pending: 2/56.
+- Done: 46/57.
+- Partial: 9/57.
+- Pending: 2/57.
 
 Build status:
 
@@ -165,3 +165,4 @@ Build status:
 | Status | Priority | Task                                   | Notes                                                                                       |
 | :----- | :------- | :------------------------------------- | :------------------------------------------------------------------------------------------ |
 | [x]    | P1       | TASK-056 - Simplify product navigation | Desktop and mobile navigation expose only Marketplace and Dashboard; docs remain in footer. |
+| [x]    | P1       | TASK-057 - Prune orphan template code  | Removed unreachable template components, mock content, style bundles, assets, and packages. |

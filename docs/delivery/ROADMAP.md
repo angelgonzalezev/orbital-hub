@@ -17,6 +17,7 @@ The MVP is no longer in early setup. Most core product surfaces exist:
 
 - Product routes exist for marketplace, detail, dashboard, profile, startup CRUD, and verification.
 - The public route surface is limited to the landing, product routes, and `/docs`; inherited template pages are gone.
+- Unreachable template components, content, assets, styles, and direct dependencies have been removed.
 - Solana Wallet Standard SIWS auth and Supabase SSR sessions exist.
 - `AuthGate` protects product routes.
 - Local-only profile/startup fixtures exist.
