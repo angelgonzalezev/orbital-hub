@@ -52,7 +52,7 @@ Their goal is to discover real startups, filter them by useful criteria, and und
 
 Included:
 
-- Wallet login or mock wallet login.
+- Solana wallet login through SIWS and Supabase Auth.
 - Basic user/founder profile.
 - Private dashboard.
 - Create, edit, publish, and archive owned startups.
@@ -74,7 +74,6 @@ Out of scope for v1:
 - NDA/document handling.
 - Real domain verification.
 - Real X API integration.
-- Supabase/PostgreSQL migration.
 - Notifications.
 - Admin/reviewer dashboard.
 
@@ -107,7 +106,7 @@ Out of scope for v1:
 4. Founder adds website and X.
 5. Founder requests verification.
 6. Startup moves to `pending`.
-7. Mock verification approves it as `verified`.
+7. A reviewer approves it as `verified` (development builds may expose a local-only simulation).
 8. Founder publishes it.
 9. Startup appears in the logged-in marketplace.
 

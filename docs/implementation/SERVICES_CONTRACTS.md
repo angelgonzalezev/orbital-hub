@@ -11,19 +11,19 @@ Related files:
 - Validation: `docs/implementation/VALIDATION_RULES.md`
 - Task status for services: `docs/delivery/TASK_BACKLOG.md`
 
-Services must isolate UI from data source. In v1, they can use local JSON and in-memory mutation.
+Services isolate the UI from Supabase. Authorization is enforced by PostgreSQL RLS and security-definer RPCs, not by wallet parameters supplied by the browser.
 
 ## userService
 
-- `getCurrentUser(walletAddress)`
+- `getCurrentUser()`
 - `getUserByWallet(walletAddress)`
-- `upsertProfile(walletAddress, input)`
+- `upsertProfile(input)`
 
 Rules:
 
 - Validate profile input.
 - Return `null` when user does not exist.
-- Do not let UI read `users.json` directly.
+- Only update the profile bound to the authenticated Supabase user.
 
 ## startupService
 
@@ -42,25 +42,25 @@ Expected methods:
 
 - `listPublishedStartups(filters)`
 - `getStartupById(id)`
-- `listStartupsByOwner(walletAddress)`
-- `createStartup(ownerWallet, input)`
-- `updateStartup(id, ownerWallet, input)`
-- `archiveStartup(id, ownerWallet)`
-- `publishStartup(id, ownerWallet)`
+- `getAccessibleStartupById(id)`
+- `listStartupsByOwner()`
+- `createStartup(input)`
+- `updateStartup(id, input)`
+- `archiveStartup(id)`
+- `publishStartup(id)`
 
 Rules:
 
 - Marketplace list returns only `verified + published`.
-- Edit/archive/publish must validate `ownerWallet`.
+- Edit/archive/publish are owner-only through RLS/RPC authorization.
 - `publishStartup` fails unless startup is `verified`.
 - `archiveStartup` sets `listingStatus = archived`.
 - Changing website/X on verified startup resets verification.
 
 ## verificationService
 
-- `requestVerification(startupId, ownerWallet)`
-- `mockApproveVerification(startupId)`
-- `mockRejectVerification(startupId, reason)`
+- `requestVerification(startupId)`
+- `devSetVerification(startupId, decision, reason?)`
 
 Rules:
 
@@ -68,4 +68,4 @@ Rules:
 - Request sets checks to `pending`.
 - Approve sets checks to `verified`.
 - Reject sets checks to `failed`.
-- Mock approve/reject are dev-only actions, not admin product features.
+- Development approve/reject requires explicit server and client flags, a non-production runtime, an authenticated owner, and the service-role-backed API route.

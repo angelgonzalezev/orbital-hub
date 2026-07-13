@@ -16,17 +16,17 @@ New product screens must keep the current landing visual style: dark background,
 
 ## Route Map
 
-| Route | Access | Purpose |
-| :--- | :--- | :--- |
-| `/` | Public | Landing page. |
-| `/startups` | Logged-in only | Marketplace of verified and published startups. |
-| `/startups/[id]` | Logged-in only | Startup detail and founder contact. |
-| `/dashboard` | Logged-in only | Private user overview. |
-| `/dashboard/profile` | Logged-in only | Create/edit user profile. |
-| `/dashboard/startups` | Logged-in only | Manage owned startups. |
-| `/dashboard/startups/new` | Logged-in with minimum profile | Create startup draft. |
-| `/dashboard/startups/[id]/edit` | Owner only | Edit owned startup. |
-| `/dashboard/startups/[id]/verification` | Owner only | Request verification and publish. |
+| Route                                   | Access                         | Purpose                                         |
+| :-------------------------------------- | :----------------------------- | :---------------------------------------------- |
+| `/`                                     | Public                         | Landing page.                                   |
+| `/startups`                             | Logged-in only                 | Marketplace of verified and published startups. |
+| `/startups/[id]`                        | Logged-in only                 | Startup detail and founder contact.             |
+| `/dashboard`                            | Logged-in only                 | Private user overview.                          |
+| `/dashboard/profile`                    | Logged-in only                 | Create/edit user profile.                       |
+| `/dashboard/startups`                   | Logged-in only                 | Manage owned startups.                          |
+| `/dashboard/startups/new`               | Logged-in with minimum profile | Create startup draft.                           |
+| `/dashboard/startups/[id]/edit`         | Owner only                     | Edit owned startup.                             |
+| `/dashboard/startups/[id]/verification` | Owner only                     | Request verification and publish.               |
 
 Template routes like `/case-study` and `/use-case` are not final product routes.
 
@@ -98,8 +98,8 @@ Template routes like `/case-study` and `/use-case` are not final product routes.
 - Protected and owner-only.
 - Shows verification checklist.
 - `Request verification` disabled until requirements pass.
-- Mock request sets verification to `pending`.
-- Mock approve/reject is allowed as a dev-only action.
+- The protected database request function sets verification to `pending`.
+- Simulated approve/reject is allowed only through the explicitly gated, non-production development endpoint.
 - Publish is available only when verified.
 
 ## Expected UI Components

@@ -14,7 +14,7 @@ description: End-to-end product flows for founders and marketplace users.
 
 ## Founder profile
 
-1. Founder connects a wallet.
+1. Founder selects an installed Solana wallet and signs the SIWS message.
 2. If no profile exists, the app prompts for profile completion.
 3. Founder adds display name, job title, bio, avatar, X, and Telegram.
 4. The wallet remains the primary identity.
@@ -25,9 +25,9 @@ description: End-to-end product flows for founders and marketplace users.
 2. Founder creates a startup draft.
 3. Founder completes required startup information.
 4. Founder adds website and X.
-5. Founder requests mock verification.
+5. Founder requests verification.
 6. Startup moves to pending.
-7. Mock verification approves it as verified.
+7. A reviewer approves it as verified; local development can explicitly enable a simulated decision.
 8. Founder publishes it.
 9. Startup appears in the logged-in marketplace.
 
@@ -41,6 +41,6 @@ description: End-to-end product flows for founders and marketplace users.
 ## Contacting a founder
 
 1. Logged-in user opens a startup detail page.
-2. App loads the owner profile using the startup owner wallet.
+2. App loads the profile associated with the startup owner.
 3. Founder contact shows avatar, name, job title, X, and Telegram when available.
 4. If no social links exist, the page shows that no public contact channel is available yet.

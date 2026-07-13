@@ -12,14 +12,14 @@ Related files:
 
 ## Profile
 
-| Field | Rule |
-| :--- | :--- |
-| `displayName` | Required for minimum profile. 2-80 characters. |
-| `jobTitle` | Required for minimum profile. 2-80 characters. |
-| `twitterHandle` | Optional; if present, must be valid handle or X URL. |
+| Field            | Rule                                                        |
+| :--------------- | :---------------------------------------------------------- |
+| `displayName`    | Required for minimum profile. 2-80 characters.              |
+| `jobTitle`       | Required for minimum profile. 2-80 characters.              |
+| `twitterHandle`  | Optional; if present, must be valid handle or X URL.        |
 | `telegramHandle` | Optional; if present, must be valid handle or Telegram URL. |
-| `avatar` | Optional URL. |
-| `bio` | Optional. |
+| `avatar`         | Optional URL.                                               |
+| `bio`            | Optional.                                                   |
 
 Minimum profile:
 
@@ -35,20 +35,20 @@ Recommended profile:
 
 ## Startup
 
-| Field | Rule |
-| :--- | :--- |
-| `name` | Required. 2-80 characters. |
-| `oneLiner` | Required. Max 160 characters. |
-| `description` | Required for verification. 200-2000 characters. |
-| `website` | Required for verification. Valid URL. |
-| `twitter` | Required for verification. Valid X handle or URL. |
-| `discord` | Optional. Valid URL if present. |
-| `github` | Optional. Valid URL if present. |
-| `category` | Required. 1-5 options. |
-| `techStack` | Required. 1-10 options. |
-| `mrr` | Optional. Non-negative number. |
-| `teamSize` | Required. Minimum 1. |
-| `logo` | Optional. Use fallback if missing. |
+| Field         | Rule                                              |
+| :------------ | :------------------------------------------------ |
+| `name`        | Required. 2-80 characters.                        |
+| `oneLiner`    | Required. Max 160 characters.                     |
+| `description` | Required for verification. 200-2000 characters.   |
+| `website`     | Required for verification. Valid URL.             |
+| `twitter`     | Required for verification. Valid X handle or URL. |
+| `discord`     | Optional. Valid URL if present.                   |
+| `github`      | Optional. Valid URL if present.                   |
+| `category`    | Required for verification. 1-5 options.           |
+| `techStack`   | Required for verification. 1-10 options.          |
+| `mrr`         | Optional. Non-negative number.                    |
+| `teamSize`    | Required. Minimum 1.                              |
+| `logo`        | Optional. Use fallback if missing.                |
 
 Draft minimum:
 

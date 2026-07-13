@@ -2,19 +2,20 @@
 
 Solana Startups Hub is a curated marketplace directory for startups building in the Solana ecosystem.
 
-The MVP lets founders connect a wallet, complete a professional profile, list a startup, request mock verification, publish verified startups, and make them discoverable to logged-in users.
+The MVP lets founders sign in by signing a message with a Solana wallet, complete a professional profile, list a startup, request verification, publish verified startups, and make them discoverable to logged-in users.
 
 In v1, "marketplace" means structured discovery and founder contact through public social links. It does not include chat, offers, payments, USDC acquisition flows, or deal rooms.
 
 ## Current Status
 
-Last audited: 2026-06-10.
+Last audited: 2026-07-13.
 
 - Core product routes are implemented.
-- Mock wallet authentication is implemented.
+- Solana wallet sign-in (SIWS) and SSR-backed Supabase sessions are implemented.
+- Profiles and startups are persisted in Supabase/PostgreSQL with RLS and protected RPCs.
 - User profile, dashboard, startup CRUD, verification, marketplace, detail page, and founder contact screens exist.
 - Product and implementation documentation lives under `docs/`.
-- The project is not release-ready yet because `npm run build` still fails during lint/type validity checks.
+- Local seed data and database policy tests are included under `supabase/`.
 
 Current task progress is tracked in [docs/delivery/TASK_BACKLOG.md](docs/delivery/TASK_BACKLOG.md).
 
@@ -22,7 +23,7 @@ Current task progress is tracked in [docs/delivery/TASK_BACKLOG.md](docs/deliver
 
 Included in the MVP:
 
-- Wallet login or mock wallet login.
+- Solana wallet login using Wallet Standard-compatible wallets.
 - Founder profile.
 - Private dashboard.
 - Create, edit, archive, verify, and publish owned startups.
@@ -42,7 +43,6 @@ Out of scope for v1:
 - Deal room.
 - Real domain verification.
 - Real X API integration.
-- Supabase/PostgreSQL.
 - Notifications.
 - Admin/reviewer dashboard.
 
@@ -67,8 +67,8 @@ Out of scope for v1:
 - TypeScript.
 - Tailwind CSS 4.
 - GSAP and Lenis for animation and smooth scrolling.
-- Static mock data in JSON files.
-- Mock services for users, startups, verification, and wallet auth.
+- Solana Wallet Standard via `@solana/client` and `@solana/react-hooks`.
+- Supabase Auth, SSR, PostgreSQL, RLS, and SQL RPCs.
 
 ## Project Structure
 
@@ -78,12 +78,15 @@ src/components/solana-hub/       Landing page sections
 src/components/startup/          Startup marketplace and form components
 src/components/profile/          Founder profile form
 src/components/shared/           Shared shell, auth gate, states, badges, wallet button
-src/context/                     React contexts, including mock auth
-src/data/mock/                   Mock users and startups
+src/context/                     React authentication context
+src/lib/supabase/                Browser/server Supabase clients and mappers
 src/data/startupTaxonomy.ts      Product taxonomy constants
 src/interface/                   TypeScript interfaces
-src/services/                    Mock product services
+src/services/                    Supabase-backed product services
 src/utils/validation.ts          Validation helpers
+supabase/migrations/             Database schema, policies, triggers, and RPCs
+supabase/tests/                  pgTAP database authorization tests
+supabase/seed.sql                Local-only development fixtures
 docs/product/                    Product definition and rules
 docs/implementation/             Implementation blueprint and contracts
 docs/delivery/                   Roadmap and task backlog
@@ -126,14 +129,24 @@ Public documentation site:
 
 Prerequisites:
 
-- Node.js 18 or higher.
+- Node.js 20 or higher.
 - npm.
+- A Supabase project, or Docker for the local Supabase stack.
 
 Install dependencies:
 
 ```bash
 npm install
 ```
+
+Copy `.env.example` to `.env.local`. For local Supabase development, start and reset the stack:
+
+```bash
+npm run supabase:start
+npm run db:reset
+```
+
+Use the API URL, publishable key, and service-role key printed by `supabase:start`. For hosted environments, enable the Solana Web3 provider in Supabase Auth and provide the hosted project values instead. `SUPABASE_SERVICE_ROLE_KEY` provisions a profile only after the server verifies the SIWS identity; it also powers the optional development verification endpoint. It must never use a `NEXT_PUBLIC_` prefix.
 
 Run the development server:
 
@@ -160,30 +173,29 @@ npm run lint         # Run lint command configured in package.json
 npm run lint:fix     # Run lint autofix command configured in package.json
 npm run format       # Format files with Prettier
 npm run format:check # Check formatting with Prettier
+npm test             # Run TypeScript unit tests
+npm run db:test      # Run pgTAP RLS/RPC tests (local Supabase required)
 ```
 
-## Mock Auth
+## Wallet Authentication
 
-The app currently uses mock wallet auth for MVP development.
+The app discovers installed Solana wallets through Wallet Standard and asks the selected wallet to sign Supabase's SIWS challenge. The resulting Supabase session is refreshed by middleware and is the only identity accepted by database policies.
 
-The current mock wallet is defined in [src/context/AuthContext.tsx](src/context/AuthContext.tsx).
+Supported wallets depend on the user's installed Wallet Standard-compatible extensions. No embedded wallet or WalletConnect/Reown account is required.
 
-Use the shared wallet button to connect or disconnect in local development. Startup data routes are protected and should show an auth gate when the wallet is disconnected.
+Verification approval/rejection can be enabled only outside production with both `ENABLE_DEV_VERIFICATION=true` and `NEXT_PUBLIC_ENABLE_DEV_VERIFICATION=true`. This is a development aid, not an admin feature.
 
 ## Known Gaps
 
 The product is still mid-MVP. Before release:
 
-- Make `npm run build` pass fully.
-- Fix remaining lint/type errors, including `no-explicit-any`, unused imports, unescaped apostrophes, and hook dependency warnings.
 - Align all landing copy with v1 messaging.
-- Ensure service-level startup visibility cannot return unavailable startups to non-owners.
 - Add the missing tech stack filter UI.
 - Fix unconditional `IS RAISING` badges.
 - Add direct `Save and request verification` flow.
 - Add analytics mock.
-- Add unit tests for validation and services.
-- Update QA evidence after manual/browser checks.
+- Replace development verification with a real reviewer/admin workflow.
+- Add hosted-environment and wallet compatibility QA evidence.
 
 ## Commit Convention
 

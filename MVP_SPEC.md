@@ -17,7 +17,7 @@ Use this file when you need:
 
 Solana Startups Hub is a curated marketplace directory for startups building in the Solana ecosystem.
 
-The MVP lets founders connect a wallet, complete a professional profile, list a startup, request mock verification, publish verified startups, and make them discoverable to logged-in users.
+The MVP lets founders sign in with a Solana wallet, complete a professional profile, list a startup, request verification, publish verified startups, and make them discoverable to logged-in users.
 
 In v1, "marketplace" means structured discovery and founder contact through public social links. It does not include chat, offers, payments, or deal rooms.
 
@@ -25,7 +25,7 @@ In v1, "marketplace" means structured discovery and founder contact through publ
 
 Included:
 
-- Wallet login or mock wallet login.
+- Solana wallet login using SIWS and Supabase Auth.
 - User/founder profile.
 - Private dashboard.
 - Create, edit, archive, verify, and publish owned startups.
@@ -45,7 +45,6 @@ Out of scope:
 - Deal room.
 - Real domain verification.
 - Real X API integration.
-- Supabase/PostgreSQL.
 - Notifications.
 - Admin/reviewer dashboard.
 
@@ -55,7 +54,7 @@ Out of scope:
 - Startup list, startup cards, filters with real results, startup detail, and founder contact require wallet login.
 - A startup appears in marketplace only when `verificationStatus = verified` and `listingStatus = published`.
 - Only the owner can edit, archive, request verification, or publish their startup.
-- Founder contact v1 is limited to X and Telegram from the `User` associated with `Startup.ownerWallet`.
+- Founder contact v1 is limited to X and Telegram from the owner profile associated with the startup.
 - `open_to_discuss` means open to acquisition conversations, not a transaction flow.
 - Landing copy must not promise `trade startups`, `buy startups`, `USDC acquisitions`, or `deal room` in v1.
 
@@ -99,14 +98,14 @@ Delivery:
 
 ## Current Progress Snapshot
 
-Last audited: 2026-06-11.
+Last audited: 2026-07-13.
 
-- Done: 36/45 tasks.
-- Partial: 7/45 tasks.
-- Pending: 2/45 tasks.
+- Done: 40/50 tasks.
+- Partial: 8/50 tasks.
+- Pending: 2/50 tasks.
 
 See [Task Backlog](docs/delivery/TASK_BACKLOG.md) for task-level tracking.
 
 ## Current Technical Status
 
-`npm run build` now passes. Remaining release work is focused on final route cleanup, startup validation hardening, verification flow polish, analytics mocks, and test/QA coverage.
+Wallet authentication and product persistence use Solana Wallet Standard and Supabase. Database authorization is enforced by RLS and protected RPCs; local fixtures and pgTAP policy tests live under `supabase/`. Remaining release work is focused on the production reviewer flow, hosted wallet QA, final route cleanup, analytics, and broader test coverage.

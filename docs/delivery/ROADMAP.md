@@ -11,16 +11,16 @@ Related files:
 - Release checklist: `QA_CHECKLIST.md`
 - Implementation details: `docs/implementation/IMPLEMENTATION_BLUEPRINT.md`
 
-## Current State - 2026-06-10
+## Current State - 2026-07-13
 
 The MVP is no longer in early setup. Most core product surfaces exist:
 
 - Product routes exist for marketplace, detail, dashboard, profile, startup CRUD, and verification.
-- Mock wallet auth exists.
+- Solana Wallet Standard SIWS auth and Supabase SSR sessions exist.
 - `AuthGate` protects product routes.
-- Mock users/startups exist.
+- Local-only profile/startup fixtures exist.
 - Models include verification, listing, acquisition, and MRR visibility fields.
-- Mock services exist for users, startups, and verification.
+- Supabase-backed services, RLS, and protected state-transition RPCs exist.
 - Profile, dashboard, startup form, marketplace, detail, founder contact, and verification pages exist.
 - `QA_CHECKLIST.md` exists.
 
@@ -28,7 +28,7 @@ However, the product is not release-ready:
 
 - `npm run build` now passes.
 - Some core tasks remain partial: final route cleanup, startup validation hardening, generic service visibility helpers, and direct save-and-request verification flow.
-- Analytics mock and unit tests are not implemented.
+- Analytics and broader service/UI tests remain incomplete.
 
 ## Roadmap Priorities
 
@@ -172,21 +172,21 @@ Relevant backlog items:
 The first release candidate should include:
 
 - Landing aligned with v1 messaging.
-- Mock wallet auth.
+- Solana SIWS wallet auth.
 - `AuthGate`.
 - Editable profile.
 - Private dashboard.
 - Owned startup list.
 - Startup draft creation.
 - Startup editing.
-- Mock verification.
+- Database-controlled verification transitions with an explicitly gated development simulator.
 - Publishing verified startups.
 - Protected marketplace.
 - Protected startup detail.
 - `Founder Contact`.
 - Combined filters including tech stack.
 - Empty/loading/error states.
-- Sufficient mock data.
+- Sufficient local development fixtures.
 - Build passing.
 - Critical unit tests passing.
 - Updated QA checklist.
@@ -203,19 +203,17 @@ The first release candidate must not include:
 - Real admin dashboard.
 - Real domain verification.
 - X API integration.
-- Supabase/PostgreSQL migration.
 
 ## Post-MVP Roadmap
 
 Only start these after v1.0 is stable and validated:
 
-1. Real Solana Wallet Adapter integration.
-2. Supabase/PostgreSQL persistence.
-3. Real domain verification.
-4. Real X verification.
-5. Admin/reviewer workflow.
-6. XMTP wallet-to-wallet messaging.
-7. Anonymous contact request flow.
-8. Notifications.
-9. Private deal room.
-10. Paid/premium features.
+1. Real domain verification.
+2. Real X verification.
+3. Admin/reviewer workflow.
+4. Hosted wallet compatibility and RPC resilience work.
+5. XMTP wallet-to-wallet messaging.
+6. Anonymous contact request flow.
+7. Notifications.
+8. Private deal room.
+9. Paid/premium features.

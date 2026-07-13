@@ -12,7 +12,8 @@ description: Frameworks, libraries, and development tools used by the project.
 - TypeScript.
 - Tailwind CSS 4.
 - GSAP and Lenis for animation and smooth scrolling.
-- Static mock data for the MVP.
+- `@solana/client` and `@solana/react-hooks` for Wallet Standard discovery and wallet sessions.
+- Supabase Auth/SSR, PostgreSQL, RLS, and SQL RPCs.
 
 ## Documentation
 
@@ -27,7 +28,10 @@ description: Frameworks, libraries, and development tools used by the project.
 - Prettier.
 - Husky and lint-staged.
 - Commitlint is installed, but product commits use the task-based format documented in the repository.
+- Vitest for TypeScript unit tests and pgTAP through the Supabase CLI for database policy tests.
 
-## Current limitation
+## Release limitations
 
-The main app build currently compiles the bundle but fails during lint/type validity. This must be fixed before a release candidate.
+- The service-role key is server-only and required for verified profile provisioning.
+- Development verification actions are disabled in production; a reviewer workflow is still required.
+- Use a dedicated Solana RPC endpoint in hosted environments instead of relying on the public mainnet endpoint.

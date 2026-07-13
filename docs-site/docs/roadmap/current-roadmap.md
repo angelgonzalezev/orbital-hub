@@ -59,7 +59,7 @@ Key work:
 The first release candidate must include:
 
 - Landing aligned with v1 messaging.
-- Mock wallet auth.
+- Solana wallet SIWS auth.
 - Protected marketplace and startup detail pages.
 - Editable profile.
 - Private dashboard.
@@ -67,7 +67,8 @@ The first release candidate must include:
 - Founder contact.
 - Combined filters including tech stack.
 - Empty, loading, and error states.
-- Sufficient mock data.
+- Local development fixtures.
+- Supabase RLS/RPC policy coverage.
 - Passing build.
 - Critical unit tests.
 - Updated QA checklist.

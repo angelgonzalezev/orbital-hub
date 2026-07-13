@@ -5,14 +5,14 @@ description: Current delivery status and task conventions.
 
 # Task Progress
 
-Last audited: 2026-06-11.
+Last audited: 2026-07-13.
 
 ## Current snapshot
 
 | Status  | Count |
 | ------- | ----: |
-| Done    |    36 |
-| Partial |     7 |
+| Done    |    40 |
+| Partial |     8 |
 | Pending |     2 |
 
 The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the repository.
@@ -21,10 +21,11 @@ The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the reposit
 
 - Startup taxonomy.
 - User and startup models.
-- Mock user and startup data.
+- Local user and startup fixtures.
 - Profile validation helpers.
-- Mock user, startup, and verification services.
-- Mock wallet authentication.
+- Supabase-backed user, startup, and verification services.
+- Solana SIWS authentication and SSR session refresh.
+- PostgreSQL schema, RLS, protected RPCs, triggers, and database policy tests.
 - Auth gate.
 - Dashboard shell.
 - Shared state components.
@@ -41,6 +42,7 @@ The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the reposit
 - Public Docusaurus documentation.
 - Shared footer redesign.
 - Footer menu option cleanup.
+- Unit tests for data mapping and draft/verification validation.
 
 ## Partial areas
 
@@ -49,11 +51,13 @@ The canonical internal tracker is `docs/delivery/TASK_BACKLOG.md` in the reposit
 - Startup service visibility filtering.
 - Startup form save-and-request flow.
 - QA coverage and visual evidence.
+- Hosted wallet authentication QA.
+- Broader service and UI test coverage.
 
 ## Pending areas
 
 - Analytics mock.
-- Unit tests.
+- Production reviewer workflow.
 
 ## Commit convention
 

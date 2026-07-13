@@ -48,15 +48,15 @@ Build status:
 
 ## Phase B: Services, Validation, Auth
 
-| Status | Priority | Task                                  | Notes                                                                                                     |
-| :----- | :------- | :------------------------------------ | :-------------------------------------------------------------------------------------------------------- |
-| [x]    | P0       | TASK-007 - Profile validation helpers | Implemented in `src/utils/validation.ts`.                                                                 |
-| [~]    | P0       | TASK-008 - Startup validation helpers | Exists, but some URL/field rules are lighter than spec.                                                   |
-| [x]    | P0       | TASK-009 - `userService` mock         | Implemented.                                                                                              |
-| [~]    | P0       | TASK-010 - `startupService` mock      | Public detail now uses an accessible lookup helper, but the raw service API still exposes generic lookup. |
-| [x]    | P0       | TASK-011 - `verificationService` mock | Implemented.                                                                                              |
-| [x]    | P0       | TASK-012 - Mock wallet auth           | Implemented with `CURRENT_MOCK_WALLET`.                                                                   |
-| [x]    | P0       | TASK-013 - `AuthGate`                 | Implemented.                                                                                              |
+| Status | Priority | Task                                  | Notes                                                                         |
+| :----- | :------- | :------------------------------------ | :---------------------------------------------------------------------------- |
+| [x]    | P0       | TASK-007 - Profile validation helpers | Implemented in `src/utils/validation.ts`.                                     |
+| [~]    | P0       | TASK-008 - Startup validation helpers | Exists, but some URL/field rules are lighter than spec.                       |
+| [x]    | P0       | TASK-009 - `userService` mock         | Original mock completed; now replaced by the Supabase-backed service.         |
+| [x]    | P0       | TASK-010 - `startupService` mock      | Replaced by owner-only tables and protected marketplace/detail RPCs.          |
+| [x]    | P0       | TASK-011 - `verificationService` mock | Replaced by protected SQL transitions and a gated development-only simulator. |
+| [x]    | P0       | TASK-012 - Mock wallet auth           | Original mock completed; now replaced by TASK-046 SIWS authentication.        |
+| [x]    | P0       | TASK-013 - `AuthGate`                 | Implemented.                                                                  |
 
 ## Phase C: Shared UI and Visual System
 
@@ -119,7 +119,7 @@ Build status:
 | Status | Priority | Task                                | Notes                                                                                                |
 | :----- | :------- | :---------------------------------- | :--------------------------------------------------------------------------------------------------- |
 | [ ]    | P2       | TASK-035 - Analytics mock           | No `trackEvent` helper found.                                                                        |
-| [ ]    | P1       | TASK-036 - Unit tests               | No project tests found for validation/services.                                                      |
+| [~]    | P1       | TASK-036 - Unit tests               | Mapper and draft/verification validation tests exist; broader service/UI coverage remains.           |
 | [~]    | P1       | TASK-037 - QA protected routes      | QA checklist exists; build now passes, but manual protected-route QA is still not evidenced in repo. |
 | [~]    | P1       | TASK-038 - Responsive and visual QA | Checklist says done; no automated/browser evidence in repo.                                          |
 | [x]    | P1       | TASK-039 - Copy QA                  | Landing copy is now aligned with v1 messaging.                                                       |
@@ -139,3 +139,13 @@ Build status:
 | :----- | :------- | :------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
 | [x]    | P1       | TASK-044 - Redesign shared footer      | `FooterOne` now matches the Solana landing style with dark cards, gradient brand treatment, and product CTAs. |
 | [x]    | P1       | TASK-045 - Correct footer menu options | Replaced template/social/legal menu options with product, docs, and company links aligned to current routes.  |
+
+## Phase M: Solana Authentication and Supabase Persistence
+
+| Status | Priority | Task                                            | Notes                                                                                      |
+| :----- | :------- | :---------------------------------------------- | :----------------------------------------------------------------------------------------- |
+| [x]    | P0       | TASK-046 - Replace mock auth with Solana SIWS   | Wallet Standard discovery, message signing, Supabase Auth, SSR refresh, and sign-out.      |
+| [x]    | P0       | TASK-047 - Persist profiles and startups        | Supabase schema, local fixtures, typed services, RLS, protected RPCs, and MRR redaction.   |
+| [x]    | P0       | TASK-048 - Move verification transitions to SQL | Request, publish, archive, and verification-reset rules execute in protected DB functions. |
+| [~]    | P1       | TASK-049 - Hosted auth and wallet QA            | Hosted Supabase and MetaMask SIWS are validated; broader wallet/browser evidence remains.  |
+| [ ]    | P0       | TASK-050 - Production reviewer workflow         | Replace the explicitly gated development verification endpoint before production launch.   |

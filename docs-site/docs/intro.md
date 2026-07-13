@@ -10,7 +10,7 @@ description: Public documentation for the Solana Startups Hub MVP.
 
 Solana Startups Hub is a curated marketplace directory for startups building in the Solana ecosystem.
 
-The MVP helps founders connect a wallet, complete a professional profile, list a startup, request mock verification, publish verified projects, and make those projects discoverable to logged-in users.
+The MVP helps founders sign in with a Solana wallet, complete a professional profile, list a startup, request verification, publish verified projects, and make those projects discoverable to logged-in users.
 
 In v1, marketplace means structured discovery and founder contact through public social links. It does not mean chat, offers, payments, USDC acquisition flows, or deal rooms.
 
@@ -22,12 +22,13 @@ In v1, marketplace means structured discovery and founder contact through public
 
 ## Current state
 
-Last audited: 2026-06-10.
+Last audited: 2026-07-13.
 
 - Core product routes exist.
-- Mock wallet authentication is implemented.
+- SIWS authentication with Wallet Standard-compatible Solana wallets is implemented.
+- Profiles and startups use Supabase/PostgreSQL with RLS and protected RPCs.
 - Profile, dashboard, startup CRUD, verification, marketplace, detail page, and founder contact screens exist.
-- The MVP is not release-ready yet because the main app build still fails during lint/type validity checks.
+- Production still needs a real reviewer workflow and hosted wallet compatibility QA.
 
 ## Where to start
 

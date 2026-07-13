@@ -7,7 +7,7 @@ description: What is included and excluded in the v1 MVP.
 
 ## Included in v1
 
-- Wallet login or mock wallet login.
+- Solana wallet login through SIWS and Supabase Auth.
 - Founder profile.
 - Private dashboard.
 - Create, edit, archive, verify, and publish owned startups.
@@ -27,7 +27,6 @@ description: What is included and excluded in the v1 MVP.
 - Deal room.
 - Real domain verification.
 - Real X API integration.
-- Supabase or PostgreSQL.
 - Notifications.
 - Admin or reviewer dashboard.
 

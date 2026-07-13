@@ -2,7 +2,7 @@
 
 ## Agent Context Guide
 
-Open this file when changing TypeScript interfaces, mock data shape, service inputs/outputs, or visibility fields like `showMrr`, `verificationStatus`, and `listingStatus`. Do not use this file for screen behavior; use `IMPLEMENTATION_BLUEPRINT.md`.
+Open this file when changing TypeScript interfaces, Supabase tables, service inputs/outputs, or visibility fields like `showMrr`, `verificationStatus`, and `listingStatus`. Do not use this file for screen behavior; use `IMPLEMENTATION_BLUEPRINT.md`.
 
 Related files:
 
@@ -11,6 +11,8 @@ Related files:
 - Mock data requirements: `docs/implementation/MOCK_DATA_REQUIREMENTS.md`
 
 ## User
+
+The database stores this product model in `profiles`. `profiles.auth_user_id` binds it to `auth.users`; `walletAddress` remains the public Solana identity exposed to the UI.
 
 ```ts
 export interface User {
@@ -26,6 +28,8 @@ export interface User {
 ```
 
 ## Startup
+
+The database stores this model in `startups` using `owner_profile_id`; `ownerWallet` is derived when mapping database results to the UI model.
 
 ```ts
 export type StartupStage = 'Idea' | 'MVP' | 'Early-stage' | 'Scaling' | 'Established';
@@ -77,8 +81,7 @@ export interface Startup {
 A startup appears in marketplace only when:
 
 ```ts
-startup.verificationStatus === 'verified' &&
-startup.listingStatus === 'published'
+startup.verificationStatus === 'verified' && startup.listingStatus === 'published';
 ```
 
 ## MRR Rule
@@ -86,3 +89,4 @@ startup.listingStatus === 'published'
 - `mrr` is optional.
 - `showMrr` controls whether MRR appears to logged-in users.
 - If `showMrr = false`, do not show MRR in marketplace or detail.
+- RLS-protected marketplace/detail RPCs remove `mrr` from their JSON response when `showMrr = false`; this is not only a presentation rule.
