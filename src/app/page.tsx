@@ -1,19 +1,19 @@
 import About from '@/components/solana-hub/About';
-import Stats from '@/components/solana-hub/Stats';
 import CTA from '@/components/solana-hub/CTA';
 import Hero from '@/components/solana-hub/Hero';
 import Process from '@/components/solana-hub/Process';
 import Features from '@/components/solana-hub/Features';
-import Partners from '@/components/solana-hub/Partners';
+import ProjectStatus from '@/components/solana-hub/ProjectStatus';
+import Roadmap from '@/components/solana-hub/Roadmap';
 import FooterOne from '@/components/shared/footer/FooterOne';
 import NavbarOne from '@/components/shared/header/NavbarOne';
 import { Metadata } from 'next';
 import { Fragment } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Solana Startups Hub - Discover the Future of Web3',
+  title: 'Solana Startups Hub - Startup Directory in Active Development',
   description:
-    'The centralized discovery platform for founders, investors, and ecosystem participants to find and showcase startups building on Solana.',
+    'An early-stage directory where Solana founders can create startup profiles and make projects easier to discover. Follow the public roadmap as the MVP evolves.',
 };
 
 const Homepage = () => {
@@ -25,11 +25,11 @@ const Homepage = () => {
       />
       <main className="bg-black text-white overflow-x-hidden">
         <Hero />
+        <ProjectStatus />
         <About />
         <Process />
-        <Stats />
-        <Partners />
         <Features />
+        <Roadmap />
         <CTA />
       </main>
       <FooterOne className="bg-black border-t border-white/10" />

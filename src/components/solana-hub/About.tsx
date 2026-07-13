@@ -1,63 +1,49 @@
-import about1 from '@public/images/solana-hub/about-main.png';
-import about2 from '@public/images/solana-hub/about-small.png';
-import Image from 'next/image';
+import { CheckCircle2 } from 'lucide-react';
 import RevealAnimation from '../animation/RevealAnimation';
-import LinkButton from '../ui/button/LinkButton';
+
+const principles = [
+  'Prioritize trustworthy, maintained listings over vanity growth.',
+  'Keep startup data protected behind wallet authentication.',
+  'Separate capabilities that work today from ideas on the roadmap.',
+];
 
 const About = () => {
   return (
-    <section className="xl:py-[100px] lg:py-[90px] md:py-20 py-16 bg-black" id="about">
+    <section className="bg-black py-16 md:py-24" id="about">
       <div className="main-container">
-        <div className="grid grid-cols-12 gap-y-10 lg:gap-10 items-center">
-          <div className="col-span-12 lg:col-span-6">
-            <div className="relative">
-              <RevealAnimation delay={0.2} direction="left">
-                <figure className="rounded-[20px] overflow-hidden max-w-[500px] w-full border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-                  <Image src={about1} alt="Solving fragmentation" className="w-full h-full object-cover" />
-                </figure>
-              </RevealAnimation>
-              <RevealAnimation
-                delay={0.4}
-                direction="right"
-                className="absolute -bottom-10 -right-5 md:right-10 hidden sm:block">
-                <figure className="rounded-[20px] overflow-hidden max-w-[280px] w-full border-4 border-black dark:border-black shadow-2xl shadow-primary-500/10">
-                  <Image src={about2} alt="Verified builders" className="w-full h-full object-cover" />
-                </figure>
-              </RevealAnimation>
-            </div>
-          </div>
-          <div className="col-span-12 lg:col-span-6 space-y-8">
-            <div className="space-y-4">
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:gap-20">
+          <div className="space-y-6">
+            <RevealAnimation delay={0.1}>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#14F195]">Why this exists</p>
+            </RevealAnimation>
+            <div className="space-y-5">
               <RevealAnimation delay={0.2}>
-                <h2 className="text-heading-3 md:text-heading-2 font-bold text-white leading-tight">
-                  Bridging the Gap in the <br />
-                  <span className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent">
-                    Solana Ecosystem
-                  </span>
+                <h2 className="max-w-[720px] text-heading-3 font-bold leading-tight text-white md:text-heading-2">
+                  Startup information is scattered. The first goal is simply to organize it.
                 </h2>
               </RevealAnimation>
               <RevealAnimation delay={0.3}>
-                <p className="text-lg text-white/70">
-                  Today, information about Solana startups is fragmented across X, Telegram, Discord, and multiple
-                  community channels. This makes it difficult for projects to gain visibility and for investors to
-                  discover promising teams.
-                </p>
-              </RevealAnimation>
-              <RevealAnimation delay={0.4}>
-                <p className="text-lg font-medium text-accent">
-                  Solana Startups Hub provides a centralized directory where founders can showcase their products,
-                  verify ownership via their wallets, and explore acquisition opportunities.
+                <p className="max-w-[720px] text-lg leading-8 text-white/65">
+                  Solana projects are often introduced across X, Telegram, Discord, demo days, and private groups.
+                  Solana Startups Hub is being built as a structured directory where founders can maintain one clear
+                  profile for their work.
                 </p>
               </RevealAnimation>
             </div>
-            <RevealAnimation delay={0.5}>
-              <LinkButton
-                href="/startups"
-                className="btn btn-primary btn-md hover:btn-white w-[90%] md:w-auto shadow-lg shadow-primary-500/20">
-                Explore startups
-              </LinkButton>
-            </RevealAnimation>
           </div>
+          <RevealAnimation delay={0.35} direction="right">
+            <div className="border-l border-white/10 pl-6 md:pl-8">
+              <p className="mb-6 text-sm font-semibold uppercase tracking-[0.16em] text-white/45">Product principles</p>
+              <ul className="space-y-6">
+                {principles.map((principle) => (
+                  <li key={principle} className="flex gap-4 text-base leading-7 text-white/70">
+                    <CheckCircle2 aria-hidden="true" className="mt-1 size-5 shrink-0 text-[#14F195]" />
+                    <span>{principle}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </RevealAnimation>
         </div>
       </div>
     </section>

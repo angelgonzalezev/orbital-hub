@@ -1,85 +1,70 @@
-import hero1 from '@public/images/solana-hub/hero1.png';
-import hero2 from '@public/images/solana-hub/hero2.png';
-import hero3 from '@public/images/solana-hub/hero3.png';
 import hero4 from '@public/images/solana-hub/hero4.png';
-import hero5 from '@public/images/solana-hub/hero-5.png';
-import hero6 from '@public/images/solana-hub/hero6.png';
-import hero7 from '@public/images/solana-hub/hero7.png';
 import Image from 'next/image';
 import RevealAnimation from '../animation/RevealAnimation';
 import LinkButton from '../ui/button/LinkButton';
-import LineExpand from './LineExpand';
-import ScrollExpand from './ScrollExpand';
 
 const Hero = () => {
   return (
-    <section className="lg:pb-[100px] pb-16 lg:pt-[234px] pt-[150px] relative overflow-hidden bg-black" id="hero">
-      <LineExpand />
-      <div className="main-container mb-[100px]">
-        <div className="space-y-14 text-center">
-          <div className="space-y-4">
+    <section
+      className="relative flex min-h-[720px] items-end overflow-hidden bg-black pb-16 pt-[150px] md:min-h-[780px] md:pb-20 md:pt-[180px]"
+      id="hero">
+      <Image
+        src={hero4}
+        alt="Solana Startups Hub concept"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-center opacity-45"
+      />
+      <div className="absolute inset-0 bg-black/50" />
+      <div className="main-container relative z-10 w-full">
+        <div className="max-w-[900px] space-y-8 text-left">
+          <RevealAnimation delay={0.1}>
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/60 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-md">
+              <span className="size-2 rounded-full bg-[#14F195]" />
+              MVP · Active development
+            </div>
+          </RevealAnimation>
+          <div className="space-y-5">
             <RevealAnimation delay={0.2}>
-              <h1 className="mx-auto max-w-[886px] w-full text-heading-2 md:text-heading-1 font-bold leading-tight text-white">
-                The Central Hub for <br />
-                <span className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent">
-                  Solana Startups
-                </span>
+              <h1 className="max-w-[860px] text-4xl font-bold leading-tight text-white sm:text-5xl md:text-heading-1">
+                Solana Startups Hub
               </h1>
             </RevealAnimation>
             <RevealAnimation delay={0.3}>
-              <p className="mx-auto max-w-[750px] w-full text-lg text-white/70">
-                Discover, showcase, and connect with the most promising projects building on Solana. A centralized
-                directory for founders, investors, and the community.
+              <p className="max-w-[720px] text-lg leading-8 text-white/75 md:text-xl">
+                An early-stage directory for founders building on Solana. Create a structured startup profile, signal
+                what you are working on, and help make the ecosystem easier to navigate.
+              </p>
+            </RevealAnimation>
+            <RevealAnimation delay={0.35}>
+              <p className="text-sm font-medium text-white/50">
+                The product is evolving in public. Wallet sign-in is required to access startup listings.
               </p>
             </RevealAnimation>
           </div>
-          <ul className="flex flex-col md:flex-row items-center justify-center gap-4">
-            <RevealAnimation delay={0.3} direction="left" offset={50}>
-              <li className="w-full sm:w-auto">
-                <LinkButton
-                  href="/dashboard/startups/new"
-                  className="btn btn-primary btn-md md:btn-xl hover:btn-white w-[90%] md:w-auto shadow-lg shadow-primary-500/20">
-                  Register Startup
-                </LinkButton>
-              </li>
-            </RevealAnimation>
-            <RevealAnimation delay={0.5} direction="left" offset={60}>
-              <li className="w-full sm:w-auto">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <RevealAnimation delay={0.4} direction="left" offset={30}>
+              <div className="w-full sm:w-auto">
                 <LinkButton
                   href="/startups"
-                  className="btn btn-white-dark btn-md md:btn-xl hover:btn-primary w-[90%] md:w-auto border border-white/10">
-                  Explore Startups
+                  className="btn btn-primary btn-xl w-full shadow-lg shadow-primary-500/20 hover:btn-white sm:w-auto">
+                  Explore marketplace
                 </LinkButton>
-              </li>
+              </div>
             </RevealAnimation>
-          </ul>
-        </div>
-      </div>
-      <RevealAnimation delay={0.2} offset={90}>
-        <div>
-          <div className="flex gap-4 justify-center items-center overflow-y-auto overflow-x-hidden scroll-bar">
-            <figure className="rounded-[20px] overflow-hidden max-h-[380px] min-w-[257px] w-full ml-4 border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-              <Image src={hero1} className="w-full h-full object-cover" alt="Solana project 1" />
-            </figure>
-            <figure className="rounded-[20px] overflow-hidden max-h-[380px] min-w-[257px] w-full border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-              <Image src={hero2} className="w-full h-full object-cover" alt="Solana project 2" />
-            </figure>
-            <figure className="rounded-[20px] overflow-hidden max-h-[380px] min-w-[257px] w-full border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-              <Image src={hero3} className="w-full h-full object-cover" alt="Solana project 3" />
-            </figure>
-            <ScrollExpand image={hero4} />
-            <figure className="rounded-[20px] overflow-hidden max-h-[380px] min-w-[257px] w-full border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-              <Image src={hero5} className="w-full h-full object-cover" alt="Solana project 5" />
-            </figure>
-            <figure className="rounded-[20px] overflow-hidden max-h-[380px] min-w-[257px] w-full border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-              <Image src={hero6} className="w-full h-full object-cover" alt="Solana project 6" />
-            </figure>
-            <figure className="rounded-[20px] overflow-hidden max-h-[380px] min-w-[257px] w-full border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
-              <Image src={hero7} className="w-full h-full object-cover" alt="Solana project 7" />
-            </figure>
+            <RevealAnimation delay={0.5} direction="left" offset={30}>
+              <div className="w-full sm:w-auto">
+                <LinkButton
+                  href="/#roadmap"
+                  className="btn btn-white-dark btn-xl w-full border border-white/15 hover:btn-primary sm:w-auto">
+                  View roadmap
+                </LinkButton>
+              </div>
+            </RevealAnimation>
           </div>
         </div>
-      </RevealAnimation>
+      </div>
     </section>
   );
 };

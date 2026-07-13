@@ -27,9 +27,9 @@ Audit date: 2026-06-11.
 
 Current progress:
 
-- Done: 49/60.
-- Partial: 9/60.
-- Pending: 2/60.
+- Done: 50/65.
+- Partial: 9/65.
+- Pending: 6/65.
 
 Build status:
 
@@ -169,3 +169,13 @@ Build status:
 | [x]    | P1       | TASK-058 - Restore How it Works step 2 | Restored the missing central Create Profile step and its original content.                  |
 | [x]    | P1       | TASK-059 - Align How it Works cards    | Step 2 now uses the same card treatment and reveal animation pattern as steps 1 and 3.      |
 | [x]    | P1       | TASK-060 - Stabilize How it Works grid | All three cards render inside one reveal animation so no individual step can remain hidden. |
+
+## Phase P: Honest Landing and Responsive Product UI
+
+| Status | Priority | Task                                         | Notes                                                                                         |
+| :----- | :------- | :------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| [x]    | P0       | TASK-061 - Redesign honest product landing   | Removes fabricated scale and partner claims, documents the live MVP, and exposes the roadmap. |
+| [ ]    | P1       | TASK-062 - Reorganize contextual navigation  | Replace the two-item menu with landing anchors and contextual product actions.                |
+| [ ]    | P0       | TASK-063 - Improve marketplace mobile UX     | Add compact mobile filters and prevent startup-card collisions and overflow.                  |
+| [ ]    | P0       | TASK-064 - Improve protected mobile surfaces | Rework dashboard navigation and audit every protected product screen at mobile widths.        |
+| [ ]    | P1       | TASK-065 - Validate responsive product UI    | Run full checks, capture responsive evidence, and record verified QA outcomes.                |

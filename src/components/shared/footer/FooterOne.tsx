@@ -59,8 +59,8 @@ const FooterOne = ({ className }: { className?: string }) => {
                   </span>
                 </Link>
                 <p className="mt-5 text-base leading-7 text-white/70">
-                  Discover, showcase, and connect with verified startups building on Solana. The hub keeps founder
-                  profiles, marketplace signals, and ecosystem documentation in one place.
+                  An early-stage directory for founders building on Solana. Create a structured startup profile and
+                  follow the public roadmap as the MVP evolves.
                 </p>
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                   <Link
@@ -104,7 +104,7 @@ const FooterOne = ({ className }: { className?: string }) => {
           <FooterDivider />
           <RevealAnimation delay={0.7} offset={10} start="top 105%">
             <p className="text-tagline-1 font-normal text-white/55">
-              Copyright &copy; Solana Startups Hub. Curated marketplace directory for the Solana ecosystem.
+              Copyright &copy; Solana Startups Hub. MVP in active development.
             </p>
           </RevealAnimation>
           <RevealAnimation delay={0.75} offset={10} start="top 105%">

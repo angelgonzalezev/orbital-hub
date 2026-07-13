@@ -3,33 +3,31 @@ import LinkButton from '../ui/button/LinkButton';
 
 const CTA = () => {
   return (
-    <section className="xl:py-[100px] lg:py-[90px] md:py-20 py-16 bg-[#050505] border-t border-white/5">
-      <div className="main-container text-center">
-        <div className="max-w-[800px] mx-auto space-y-8">
+    <section className="border-t border-white/10 bg-[#050505] py-16 md:py-24">
+      <div className="main-container text-left">
+        <div className="max-w-[800px] space-y-8">
           <RevealAnimation delay={0.2}>
-            <h2 className="text-heading-3 md:text-heading-2 font-bold italic text-white">
-              Ready to showcase your project on{' '}
-              <span className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent">Solana</span>
-              ?
+            <h2 className="text-heading-3 font-bold text-white md:text-heading-2">
+              Build the directory with real projects, one listing at a time.
             </h2>
           </RevealAnimation>
           <RevealAnimation delay={0.3}>
-            <p className="text-lg text-white/70 text-center">
-              Join the official discovery platform for the Solana ecosystem. Gain visibility, connect with investors,
-              and find your next big opportunity.
+            <p className="max-w-[680px] text-lg leading-8 text-white/65">
+              Create a draft if you are building on Solana, or explore the current product and follow its progress in
+              the public documentation.
             </p>
           </RevealAnimation>
           <RevealAnimation delay={0.4}>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <LinkButton
                 href="/dashboard/startups/new"
                 className="btn btn-primary btn-md md:btn-xl hover:btn-white w-full sm:w-auto">
                 List Your Startup
               </LinkButton>
               <LinkButton
-                href="/#process"
+                href="/#roadmap"
                 className="btn btn-white-dark btn-md md:btn-xl hover:btn-primary w-full sm:w-auto">
-                How it works
+                Read the roadmap
               </LinkButton>
             </div>
           </RevealAnimation>
