@@ -3,6 +3,8 @@ import { isStartupRow, mapStartupRow } from '@/lib/supabase/mappers';
 import { validateStartup } from '@/utils/validation';
 import type { AcquisitionStatus, Startup, StartupStage } from '@/interface/startup';
 import type { Json, StartupRow } from '@/types/database';
+import { KEEP_MEDIA, type MediaMutation } from '@/interface/media';
+import { mediaService } from '@/services/mediaService';
 
 export type StartupFilters = {
   acquisitionStatus?: AcquisitionStatus;
@@ -32,7 +34,6 @@ const toEditableRow = (input: Partial<Startup>) => ({
   discord: input.discord || null,
   github: input.github || null,
   is_raising: input.isRaising,
-  logo: input.logo,
   mrr: input.mrr ?? null,
   name: input.name,
   one_liner: input.oneLiner,
@@ -44,6 +45,14 @@ const toEditableRow = (input: Partial<Startup>) => ({
   twitter: input.twitter,
   website: input.website,
 });
+
+const cleanupReplacedMedia = async (path?: string | null) => {
+  try {
+    await mediaService.deleteManagedObject(path);
+  } catch (error) {
+    console.error('Unable to remove replaced startup media:', error);
+  }
+};
 
 const mapRpcStartup = (value: Json | null, ownerWallet?: string): Startup | null => {
   if (!isStartupRow(value)) return null;
@@ -92,15 +101,26 @@ export const startupService = {
     return (data as StartupRow[]).map((row) => mapStartupRow(row, profile.wallet_address));
   },
 
-  createStartup: async (input: Partial<Startup>): Promise<Startup> => {
+  createStartup: async (input: Partial<Startup>, logoMutation: MediaMutation = KEEP_MEDIA): Promise<Startup> => {
     const errors = validateStartup(input);
     if (errors.length > 0) throw new Error(errors[0].message);
 
     const profile = await getCurrentProfile();
+    const startupId = crypto.randomUUID();
+    let uploadedLogo: string | null = null;
+
+    if (logoMutation.type === 'replace') {
+      uploadedLogo = await mediaService.uploadStartupLogo(startupId, logoMutation.blob);
+    }
+
+    const logo =
+      logoMutation.type === 'replace' ? uploadedLogo || '' : logoMutation.type === 'remove' ? '' : input.logo || '';
     const { data, error } = await getSupabaseBrowserClient()
       .from('startups')
       .insert({
         ...toEditableRow(input),
+        id: startupId,
+        logo,
         name: input.name || '',
         one_liner: input.oneLiner || '',
         owner_profile_id: profile.id,
@@ -109,23 +129,54 @@ export const startupService = {
       .select('*')
       .single();
 
-    if (error) throw error;
+    if (error) {
+      await cleanupReplacedMedia(uploadedLogo);
+      throw error;
+    }
     return mapStartupRow(data, profile.wallet_address);
   },
 
-  updateStartup: async (id: string, input: Partial<Startup>): Promise<Startup> => {
+  updateStartup: async (
+    id: string,
+    input: Partial<Startup>,
+    logoMutation: MediaMutation = KEEP_MEDIA,
+  ): Promise<Startup> => {
     const errors = validateStartup(input);
     if (errors.length > 0) throw new Error(errors[0].message);
 
     const profile = await getCurrentProfile();
-    const { data, error } = await getSupabaseBrowserClient()
+    const supabase = getSupabaseBrowserClient();
+    const { data: currentStartup, error: currentError } = await supabase
       .from('startups')
-      .update(toEditableRow(input))
+      .select('*')
+      .eq('id', id)
+      .single();
+    if (currentError) throw currentError;
+
+    let uploadedLogo: string | null = null;
+    if (logoMutation.type === 'replace') {
+      uploadedLogo = await mediaService.uploadStartupLogo(id, logoMutation.blob);
+    }
+
+    const nextLogo =
+      logoMutation.type === 'replace' ? uploadedLogo || '' : logoMutation.type === 'remove' ? '' : currentStartup.logo;
+
+    const { data, error } = await supabase
+      .from('startups')
+      .update({ ...toEditableRow(input), logo: nextLogo })
       .eq('id', id)
       .select('*')
       .single();
 
-    if (error) throw error;
+    if (error) {
+      await cleanupReplacedMedia(uploadedLogo);
+      throw error;
+    }
+
+    if (currentStartup.logo !== nextLogo) {
+      await cleanupReplacedMedia(currentStartup.logo);
+    }
+
     return mapStartupRow(data, profile.wallet_address);
   },
 

@@ -7,6 +7,8 @@ import { startupService } from '@/services/startupService';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/utils/cn';
 import { STARTUP_STAGES, STARTUP_CATEGORIES, TECH_STACK_OPTIONS } from '@/data/startupTaxonomy';
+import ImageUploader from '@/components/shared/ImageUploader';
+import { KEEP_MEDIA, type MediaMutation } from '@/interface/media';
 
 interface StartupFormProps {
   initialData?: Partial<Startup>;
@@ -37,6 +39,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
     },
   );
   const [errors, setErrors] = useState<ValidationError[]>([]);
+  const [logoMutation, setLogoMutation] = useState<MediaMutation>(KEEP_MEDIA);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{
     type: 'success' | 'error';
@@ -89,10 +92,10 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
     try {
       let result: Startup;
       if (isEditing && formData.id) {
-        result = await startupService.updateStartup(formData.id, formData);
+        result = await startupService.updateStartup(formData.id, formData, logoMutation);
         setMessage({ type: 'success', text: 'Startup updated successfully!' });
       } else {
-        result = await startupService.createStartup(formData);
+        result = await startupService.createStartup(formData, logoMutation);
         setMessage({ type: 'success', text: 'Startup created as draft!' });
       }
       if (onSave) onSave(result);
@@ -132,18 +135,12 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
             {getError('name') && <p className="text-red-500 text-xs mt-1 ml-1">{getError('name')}</p>}
           </div>
 
-          {/* Logo URL */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-white/60 ml-1">Logo URL</label>
-            <input
-              type="text"
-              name="logo"
-              value={formData.logo ?? ''}
-              onChange={handleChange}
-              placeholder="https://..."
-              className="w-full bg-black border border-white/10 rounded-2xl px-6 py-4 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all"
-            />
-          </div>
+          <ImageUploader
+            label="Startup logo"
+            value={formData.logo}
+            mutation={logoMutation}
+            onMutation={setLogoMutation}
+          />
 
           {/* One Liner */}
           <div className="col-span-1 md:col-span-2 space-y-2">

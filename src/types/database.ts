@@ -85,7 +85,7 @@ export interface Database {
         Update: Partial<Omit<ProfileRow, 'id'>>;
       };
       startups: {
-        Insert: Partial<Omit<StartupRow, 'id' | 'owner_wallet'>> & {
+        Insert: Partial<Omit<StartupRow, 'owner_wallet'>> & {
           name: string;
           one_liner: string;
           owner_profile_id: string;
