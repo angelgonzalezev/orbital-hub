@@ -27,9 +27,9 @@ Audit date: 2026-06-11.
 
 Current progress:
 
-- Done: 46/57.
-- Partial: 9/57.
-- Pending: 2/57.
+- Done: 47/58.
+- Partial: 9/58.
+- Pending: 2/58.
 
 Build status:
 
@@ -162,7 +162,8 @@ Build status:
 
 ## Phase O: Product Surface Cleanup
 
-| Status | Priority | Task                                   | Notes                                                                                       |
-| :----- | :------- | :------------------------------------- | :------------------------------------------------------------------------------------------ |
-| [x]    | P1       | TASK-056 - Simplify product navigation | Desktop and mobile navigation expose only Marketplace and Dashboard; docs remain in footer. |
-| [x]    | P1       | TASK-057 - Prune orphan template code  | Removed unreachable template components, mock content, style bundles, assets, and packages. |
+| Status | Priority | Task                                   | Notes                                                                                           |
+| :----- | :------- | :------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| [x]    | P1       | TASK-056 - Simplify product navigation | Desktop and mobile navigation expose only Marketplace and Dashboard; docs remain in footer.     |
+| [x]    | P1       | TASK-057 - Prune orphan template code  | Removed unreachable template components, mock content, style bundles, assets, and packages.     |
+| [x]    | P1       | TASK-058 - Restore How it Works step 2 | The central Create Profile step now renders persistently instead of remaining animation-hidden. |
