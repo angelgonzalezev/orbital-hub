@@ -129,7 +129,7 @@ Public documentation site:
 
 Prerequisites:
 
-- Node.js 20 or higher.
+- Node.js 22 or higher.
 - npm.
 - A Supabase project, or Docker for the local Supabase stack.
 
@@ -165,6 +165,7 @@ http://localhost:3000
 ```bash
 npm run dev          # Start the local development server
 npm run build        # Build for production
+npm run build:netlify # Install docs dependencies and build for Netlify
 npm run build:with-docs # Build Docusaurus docs and then the app
 npm run docs:dev     # Start Docusaurus locally
 npm run docs:build   # Generate static Docusaurus files under public/docs
@@ -184,6 +185,23 @@ The app discovers installed Solana wallets through Wallet Standard and asks the 
 Supported wallets depend on the user's installed Wallet Standard-compatible extensions. No embedded wallet or WalletConnect/Reown account is required.
 
 Verification approval/rejection can be enabled only outside production with both `ENABLE_DEV_VERIFICATION=true` and `NEXT_PUBLIC_ENABLE_DEV_VERIFICATION=true`. This is a development aid, not an admin feature.
+
+## Deploy to Netlify
+
+Connect this repository to Netlify and select `main` as the production branch. The committed `netlify.toml` configures Node.js 22, builds the Docusaurus site under `/docs`, runs the Next.js production build, and publishes the `.next` output. Netlify detects Next.js and provisions its OpenNext adapter automatically; do not add or pin a legacy Next.js plugin.
+
+Add these environment variables in **Project configuration → Environment variables** with access to both Builds and Functions:
+
+```text
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+NEXT_PUBLIC_SOLANA_RPC_URL
+SUPABASE_SERVICE_ROLE_KEY
+```
+
+Use the hosted Supabase project values, not the local `127.0.0.1` values. Keep `SUPABASE_SERVICE_ROLE_KEY` secret. Leave `ENABLE_DEV_VERIFICATION` and `NEXT_PUBLIC_ENABLE_DEV_VERIFICATION` unset or set to `false` in production.
+
+In Supabase, keep the Solana Web3 provider enabled and set **Authentication → URL Configuration → Site URL** to the final Netlify production URL (or the custom domain). After saving the variables and URL, trigger a new production deploy.
 
 ## Known Gaps
 

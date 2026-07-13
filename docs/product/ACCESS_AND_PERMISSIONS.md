@@ -12,13 +12,13 @@ Related files:
 
 ## Access Matrix
 
-| User State | Can Do | Cannot Do |
-| :--- | :--- | :--- |
-| Anonymous visitor | View landing, marketing copy, aggregate counters. | View startup list, startup cards, startup names, filters with real results, startup details, founder contact. |
-| Wallet connected, no profile | View protected marketplace and details, create profile. | Create startups until profile minimum is complete. |
-| Logged-in user with profile | View marketplace, startup details, founder contacts, edit own profile. | Edit, archive, verify, or publish startups owned by others. |
-| Founder owner | Create, edit, archive, request verification, and publish owned startups. | Approve real verification, edit other users' startups. |
-| Admin/reviewer | Not part of v1. | Do not build an admin dashboard in v1. |
+| User State                   | Can Do                                                                   | Cannot Do                                                                                                     |
+| :--------------------------- | :----------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------ |
+| Anonymous visitor            | View landing, marketing copy, aggregate counters.                        | View startup list, startup cards, startup names, filters with real results, startup details, founder contact. |
+| Wallet connected, no profile | View protected marketplace and details, create profile.                  | Create startups until profile minimum is complete.                                                            |
+| Logged-in user with profile  | View marketplace, startup details, founder contacts, edit own profile.   | Edit, archive, verify, or publish startups owned by others.                                                   |
+| Founder owner                | Create, edit, archive, request verification, and publish owned startups. | Approve real verification, edit other users' startups.                                                        |
+| Admin/reviewer               | Not part of v1.                                                          | Do not build an admin dashboard in v1.                                                                        |
 
 ## Protected Routes
 

@@ -16,7 +16,7 @@ Related files:
 Number of startups with:
 
 ```ts
-verificationStatus === 'verified' && listingStatus === 'published'
+verificationStatus === 'verified' && listingStatus === 'published';
 ```
 
 This is the clearest proxy for marketplace value in v1.

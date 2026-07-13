@@ -2,10 +2,15 @@
   "name": "nextsaas-next",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "npm@10.9.3",
   "scripts": {
     "dev": "next dev --turbopack",
     "prebuild": "npm run docs:build",
     "build": "next build",
+    "build:netlify": "npm ci --prefix docs-site --no-audit --no-fund && npm run build",
     "build:with-docs": "npm run docs:build && npm run build",
     "docs:build": "npm --prefix docs-site run build",
     "docs:dev": "npm --prefix docs-site run start",

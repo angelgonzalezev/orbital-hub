@@ -85,4 +85,3 @@ agonzalez/TASK-029/add-tech-stack-filter
 Verification:
 - npm run build: passes
 ```
-

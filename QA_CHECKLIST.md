@@ -7,18 +7,21 @@ Open this file when validating whether the current implementation satisfies the 
 Este documento valida el cumplimiento de los requisitos del MVP v1.0 según la especificación.
 
 ## 1. Fundamentos y Auth
+
 - [x] Rutas de producto implementadas (`/startups`, `/dashboard`, etc.)
 - [x] Mock Wallet Auth funcional (Marco Vulcan como default)
 - [x] `AuthGate` protegiendo marketplace y dashboard
 - [x] Landing page alineada con messaging v1 (no promesas de trading/pagos)
 
 ## 2. Perfil de Usuario
+
 - [x] Pantalla `/dashboard/profile` funcional
 - [x] Validación de perfil mínimo (Display Name, Job Title)
 - [x] Bloqueo de creación de startup si el perfil está incompleto
 - [x] Almacenamiento mock de redes sociales (X, Telegram)
 
 ## 3. Gestión de Startups (Founder)
+
 - [x] Dashboard principal con resumen y stats
 - [x] Creación de startup en estado `draft`
 - [x] Edición de startups propias
@@ -26,24 +29,28 @@ Este documento valida el cumplimiento de los requisitos del MVP v1.0 según la e
 - [x] Formulario con taxonomía cerrada (Stages, Categories, Tech Stack)
 
 ## 4. Verificación y Publicación
+
 - [x] Pantalla de verificación con checklist de requisitos
 - [x] Solicitud de verificación (pasa a `pending`)
 - [x] Helpers de desarrollo para aprobar/rechazar verificación
 - [x] Acción de `Publish` disponible solo para startups verificadas
 
 ## 5. Marketplace y Descubrimiento
+
 - [x] Listado protegido de startups `verified + published`
 - [x] Filtros combinables (Category, Stage, Tech Stack, Raising, Acquisition)
 - [x] Búsqueda por nombre o keyword
 - [x] Startup Cards con señales de mercado (Raising, Open to Acquisition)
 
 ## 6. Detalle y Contacto
+
 - [x] Página de detalle protegida
 - [x] `Founder Contact` mostrando redes sociales del owner
 - [x] Empty state cuando el founder no tiene redes configuradas
 - [x] Información pública completa (About, Stack, Categories, Metrics)
 
 ## 7. Calidad y UX
+
 - [x] Diseño responsive en todas las pantallas nuevas
 - [x] Empty states en marketplace, dashboard y contacto
 - [x] Loading states durante la carga de servicios mock

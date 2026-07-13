@@ -1,4 +1,5 @@
 module.exports = {
+  ignores: [(message) => /^agonzalez\/TASK-\d+\/[a-z0-9]+(?:-[a-z0-9]+)*$/.test(message.split('\n', 1)[0].trim())],
   // Define all rules inline to avoid ES module dependencies
   rules: {
     'type-enum': [

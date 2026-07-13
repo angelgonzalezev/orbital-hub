@@ -10,10 +10,7 @@ export default function ProfilePage() {
 
   return (
     <AuthGate>
-      <DashboardShell
-        title="My Profile"
-        subtitle="Manage your professional identity and contact information."
-      >
+      <DashboardShell title="My Profile" subtitle="Manage your professional identity and contact information.">
         <div className="max-w-4xl">
           <ProfileForm initialData={user} />
         </div>

@@ -71,9 +71,7 @@
     "teamSize": 5,
     "techStack": ["Rust", "Python", "TypeScript"],
     "category": ["Security", "Infra"],
-    "team": [
-      { "walletAddress": "9mK2...p5Ts", "role": "Founder" }
-    ],
+    "team": [{ "walletAddress": "9mK2...p5Ts", "role": "Founder" }],
     "verificationStatus": "pending",
     "listingStatus": "draft",
     "domainVerificationStatus": "pending",
@@ -96,9 +94,7 @@
     "teamSize": 1,
     "techStack": ["Next.js"],
     "category": ["Consumer"],
-    "team": [
-      { "walletAddress": "9mK2...p5Ts", "role": "Solo Founder" }
-    ],
+    "team": [{ "walletAddress": "9mK2...p5Ts", "role": "Solo Founder" }],
     "verificationStatus": "draft",
     "listingStatus": "archived",
     "domainVerificationStatus": "not_started",
@@ -123,9 +119,7 @@
     "teamSize": 6,
     "techStack": ["TypeScript", "Solana Pay", "Metaplex"],
     "category": ["Gaming", "NFT"],
-    "team": [
-      { "walletAddress": "2wR4...q1Ab", "role": "Game Designer" }
-    ],
+    "team": [{ "walletAddress": "2wR4...q1Ab", "role": "Game Designer" }],
     "verificationStatus": "verified",
     "listingStatus": "published",
     "domainVerificationStatus": "verified",
@@ -150,9 +144,7 @@
     "teamSize": 12,
     "techStack": ["TypeScript", "Pyth", "Helius"],
     "category": ["Analytics", "DeFi"],
-    "team": [
-      { "walletAddress": "4nB5...t8Lk", "role": "CEO" }
-    ],
+    "team": [{ "walletAddress": "4nB5...t8Lk", "role": "CEO" }],
     "verificationStatus": "verified",
     "listingStatus": "published",
     "domainVerificationStatus": "verified",
@@ -175,9 +167,7 @@
     "teamSize": 2,
     "techStack": ["Rust"],
     "category": ["Infra"],
-    "team": [
-      { "walletAddress": "3vX1...z9Mq", "role": "Founder" }
-    ],
+    "team": [{ "walletAddress": "3vX1...z9Mq", "role": "Founder" }],
     "verificationStatus": "rejected",
     "listingStatus": "draft",
     "domainVerificationStatus": "failed",
@@ -200,9 +190,7 @@
     "teamSize": 1,
     "techStack": ["Next.js"],
     "category": ["AI"],
-    "team": [
-      { "walletAddress": "9mK2...p5Ts", "role": "Founder" }
-    ],
+    "team": [{ "walletAddress": "9mK2...p5Ts", "role": "Founder" }],
     "verificationStatus": "draft",
     "listingStatus": "draft",
     "domainVerificationStatus": "not_started",
