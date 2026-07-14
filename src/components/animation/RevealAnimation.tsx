@@ -57,6 +57,8 @@ const RevealAnimation = ({
     element.style.opacity = '1';
     element.style.filter = 'blur(0)';
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     // Set animation properties based on animation type
     let animationProps: gsap.TweenVars;
 

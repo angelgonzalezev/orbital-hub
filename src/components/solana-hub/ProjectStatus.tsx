@@ -1,10 +1,10 @@
 import RevealAnimation from '../animation/RevealAnimation';
 
 const statusItems = [
-  { label: 'Product focus', value: 'Founder-managed startup directory' },
-  { label: 'Founder flow', value: 'Profiles and startup drafts available' },
-  { label: 'Directory access', value: 'Protected by wallet sign-in' },
-  { label: 'Listing quality', value: 'Structured review before publication' },
+  { label: 'Listing cost', value: 'Free during early access — no fees, no token gates' },
+  { label: 'Time to draft', value: 'From wallet connect to saved draft in about five minutes' },
+  { label: 'Your identity', value: 'Your wallet is your account — no email, no password' },
+  { label: 'Quality bar', value: 'Every listing reviewed before it goes live' },
 ];
 
 const ProjectStatus = () => (

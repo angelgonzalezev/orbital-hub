@@ -14,7 +14,7 @@ const About = () => {
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:gap-20">
           <div className="space-y-6">
             <RevealAnimation delay={0.1}>
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[#14F195]">Why this exists</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-accent">Why this exists</p>
             </RevealAnimation>
             <div className="space-y-5">
               <RevealAnimation delay={0.2}>
@@ -37,7 +37,7 @@ const About = () => {
               <ul className="space-y-6">
                 {principles.map((principle) => (
                   <li key={principle} className="flex gap-4 text-base leading-7 text-white/70">
-                    <CheckCircle2 aria-hidden="true" className="mt-1 size-5 shrink-0 text-[#14F195]" />
+                    <CheckCircle2 aria-hidden="true" className="mt-1 size-5 shrink-0 text-accent" />
                     <span>{principle}</span>
                   </li>
                 ))}
