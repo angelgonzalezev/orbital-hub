@@ -2,7 +2,6 @@ import RevealAnimation from '@/components/animation/RevealAnimation';
 import { cn } from '@/utils/cn';
 import Image from 'next/image';
 import Link from 'next/link';
-import ThemeToggle from '../ThemeToggle';
 import FooterDivider from './FooterDivider';
 import FooterLeftGradient from './FooterLeftGradient';
 import FooterRightGradient from './FooterRightGradient';
@@ -119,7 +118,6 @@ const FooterOne = ({ className }: { className?: string }) => {
           </RevealAnimation>
         </div>
       </div>
-      <ThemeToggle />
     </footer>
   );
 };

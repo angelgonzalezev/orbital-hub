@@ -319,24 +319,6 @@ Common Styles all over the sites
   }
 }
 
-#theme-toggle::before {
-  @apply absolute top-[-3px] right-[-4px] h-[7px] w-3.5 rotate-90 bg-radial-[circle_at_0_100%,transparent_6px,var(--color-background-8)_7px] bg-size-[50%_100%] bg-no-repeat content-[''];
-}
-
-#theme-toggle::after {
-  @apply absolute right-[-7px] bottom-[-7px] h-[7px] w-3.5 rotate-0 bg-radial-[circle_at_0_100%,transparent_6px,var(--color-background-8)_7px] bg-size-[50%_100%] bg-no-repeat content-[''];
-}
-
-.dark {
-  #theme-toggle::before {
-    @apply bg-radial-[circle_at_0_100%,transparent_6px,#ffffff_7px];
-  }
-
-  #theme-toggle::after {
-    @apply bg-radial-[circle_at_0_100%,transparent_6px,#ffffff_7px];
-  }
-}
-
 /* career details body  */
 .career-details-body {
   @apply space-y-[70px];
