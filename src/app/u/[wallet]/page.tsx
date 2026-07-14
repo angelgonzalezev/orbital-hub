@@ -71,8 +71,9 @@ export default function PublicProfilePage({ params }: { params: Promise<{ wallet
         {isLoading ? (
           <ProfileSkeleton />
         ) : !profile ? (
-          <div className="flex min-h-[70vh] flex-col items-center justify-center">
+          <div className="flex min-h-[70vh] flex-col items-center justify-center gap-8">
             <ErrorState message="This profile doesn't exist or isn't available." />
+            <OrbitalBadge />
           </div>
         ) : (
           <div className="flex w-full min-w-0 flex-col gap-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-16">
@@ -142,6 +143,10 @@ export default function PublicProfilePage({ params }: { params: Promise<{ wallet
                       {new Date(profile.joinedAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
                     </span>
                   </p>
+
+                  <div className="lg:mt-[22rem]">
+                    <OrbitalBadge />
+                  </div>
                 </section>
               </aside>
             </RevealAnimation>
@@ -185,19 +190,17 @@ export default function PublicProfilePage({ params }: { params: Promise<{ wallet
           </div>
         )}
       </main>
-
-      <OrbitalBadge />
     </div>
   );
 }
 
-// The only piece of Orbital chrome on the page: a floating pill inviting
-// visitors to create their own page, like indiepage's "built with" badge.
-// Bottom-right on mobile, bottom-left on desktop.
+// The only piece of Orbital chrome on the page, inviting visitors to create
+// their own page. Floats at the bottom-right on mobile; on desktop it sits
+// in the flow of the profile column, below the profile details.
 const OrbitalBadge = () => (
   <Link
     href="/"
-    className="group fixed bottom-5 right-5 z-50 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/10 bg-black/80 px-5 text-xs font-bold uppercase tracking-widest text-white/60 shadow-2xl shadow-black/50 backdrop-blur-md transition-all hover:border-primary-500/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 lg:bottom-8 lg:left-8 lg:right-auto">
+    className="group fixed bottom-5 right-5 z-50 inline-flex min-h-11 items-center gap-2.5 rounded-full border border-white/10 bg-black/80 px-5 text-sm font-bold tracking-wide text-white/60 shadow-2xl shadow-black/50 backdrop-blur-md transition-all hover:border-primary-500/40 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 lg:static lg:bottom-auto lg:right-auto lg:z-auto lg:shadow-none">
     <span aria-hidden="true" className="size-2 rounded-full bg-gradient-to-r from-[#9945FF] to-[#14F195]" />
     Build your Orbit
   </Link>
