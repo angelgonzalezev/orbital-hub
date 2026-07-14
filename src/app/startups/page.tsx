@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { startupService, StartupFilters as IStartupFilters } from '@/services/startupService';
 import { Startup } from '@/interface/startup';
-import AuthGate from '@/components/shared/AuthGate';
 import NavbarOne from '@/components/shared/header/NavbarOne';
 import FooterOne from '@/components/shared/footer/FooterOne';
 import StartupCard from '@/components/startup/StartupCard';
@@ -66,8 +65,6 @@ export default function StartupsPage() {
     };
   }, [isFiltersOpen]);
 
-  // The listing RPC is public, so the fetch also runs for anonymous visitors:
-  // they see the real grid blurred behind the Access Protected overlay.
   useEffect(() => {
     let cancelled = false;
 
@@ -104,79 +101,77 @@ export default function StartupsPage() {
       />
 
       <main className="flex-grow pb-16 pt-[120px] md:pb-20 md:pt-[150px]">
-        <AuthGate mode="overlay">
-          <div className="main-container">
-            <div className="space-y-8 md:space-y-12">
-              <RevealAnimation delay={0.1}>
-                <div className="max-w-[800px] space-y-4">
-                  <h1 className="text-4xl font-bold tracking-tight text-white md:text-6xl">
-                    Marketplace <br className="hidden sm:block" />
-                    <span className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent">
-                      Solana Startups
-                    </span>
-                  </h1>
-                  <p className="text-white/60 text-lg md:text-xl max-w-[600px]">
-                    Discover verified projects, track their progress, and connect with founders building the future of
-                    Web3.
-                  </p>
-                </div>
-              </RevealAnimation>
-
-              <div className="flex items-center justify-between gap-4 border-y border-white/10 py-4 lg:hidden">
-                <div>
-                  <p className="text-sm font-semibold text-white">
-                    {isLoading ? 'Loading startups' : `${startups.length} results`}
-                  </p>
-                  <p className="mt-1 text-xs text-white/40">Filter the directory</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsFiltersOpen(true)}
-                  className="inline-flex min-h-11 items-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white">
-                  <SlidersHorizontal aria-hidden="true" className="size-4" />
-                  Filters
-                  {activeFilterCount > 0 && (
-                    <span className="flex size-5 items-center justify-center rounded-full bg-primary-500 text-[11px] text-white">
-                      {activeFilterCount}
-                    </span>
-                  )}
-                </button>
+        <div className="main-container">
+          <div className="space-y-8 md:space-y-12">
+            <RevealAnimation delay={0.1}>
+              <div className="max-w-[800px] space-y-4">
+                <h1 className="text-4xl font-bold tracking-tight text-white md:text-6xl">
+                  Marketplace <br className="hidden sm:block" />
+                  <span className="bg-gradient-to-r from-[#9945FF] to-[#14F195] bg-clip-text text-transparent">
+                    Solana Startups
+                  </span>
+                </h1>
+                <p className="text-white/60 text-lg md:text-xl max-w-[600px]">
+                  Discover verified projects, track their progress, and connect with founders building the future of
+                  Web3.
+                </p>
               </div>
+            </RevealAnimation>
 
-              <div className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:gap-10">
-                {/* Filters Sidebar */}
-                <aside className="hidden lg:block">
-                  <RevealAnimation delay={0.2}>
-                    <StartupFilters filters={filters} onChange={setFilters} className="sticky top-[130px]" />
-                  </RevealAnimation>
-                </aside>
+            <div className="flex items-center justify-between gap-4 border-y border-white/10 py-4 lg:hidden">
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  {isLoading ? 'Loading startups' : `${startups.length} results`}
+                </p>
+                <p className="mt-1 text-xs text-white/40">Filter the directory</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsFiltersOpen(true)}
+                className="inline-flex min-h-11 items-center gap-2 rounded-md border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white">
+                <SlidersHorizontal aria-hidden="true" className="size-4" />
+                Filters
+                {activeFilterCount > 0 && (
+                  <span className="flex size-5 items-center justify-center rounded-full bg-primary-500 text-[11px] text-white">
+                    {activeFilterCount}
+                  </span>
+                )}
+              </button>
+            </div>
 
-                {/* Results Grid */}
-                <div className="min-w-0">
-                  {isLoading ? (
-                    <StartupGridSkeleton />
-                  ) : hasError ? (
-                    <ErrorState
-                      message="We couldn't load the startups right now. Please try again."
-                      onRetry={() => setReloadKey((key) => key + 1)}
-                    />
-                  ) : startups.length === 0 ? (
-                    <EmptyState
-                      title="No Startups Found"
-                      description="We couldn't find any startups matching your current filters. Try adjusting your search or categories."
-                    />
-                  ) : (
-                    <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 xl:gap-6">
-                      {startups.map((startup, index) => (
-                        <StartupCard key={startup.id} startup={startup} index={index} />
-                      ))}
-                    </div>
-                  )}
-                </div>
+            <div className="grid gap-8 lg:grid-cols-[270px_minmax(0,1fr)] lg:gap-10">
+              {/* Filters Sidebar */}
+              <aside className="hidden lg:block">
+                <RevealAnimation delay={0.2}>
+                  <StartupFilters filters={filters} onChange={setFilters} className="sticky top-[130px]" />
+                </RevealAnimation>
+              </aside>
+
+              {/* Results Grid */}
+              <div className="min-w-0">
+                {isLoading ? (
+                  <StartupGridSkeleton />
+                ) : hasError ? (
+                  <ErrorState
+                    message="We couldn't load the startups right now. Please try again."
+                    onRetry={() => setReloadKey((key) => key + 1)}
+                  />
+                ) : startups.length === 0 ? (
+                  <EmptyState
+                    title="No Startups Found"
+                    description="We couldn't find any startups matching your current filters. Try adjusting your search or categories."
+                  />
+                ) : (
+                  <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 xl:gap-6">
+                    {startups.map((startup, index) => (
+                      <StartupCard key={startup.id} startup={startup} index={index} />
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        </AuthGate>
+        </div>
       </main>
 
       <div
