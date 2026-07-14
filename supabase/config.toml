@@ -37,3 +37,11 @@ port = 54323
 # not by a Supabase JWT.
 [functions.tweet-new-startup]
 verify_jwt = false
+
+[functions.telegram-startup-review]
+verify_jwt = false
+
+# Called by Telegram, which authenticates with the secret token it echoes in the
+# X-Telegram-Bot-Api-Secret-Token header.
+[functions.telegram-review-callback]
+verify_jwt = false
