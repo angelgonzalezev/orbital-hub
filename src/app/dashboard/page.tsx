@@ -6,7 +6,7 @@ import { startupService } from '@/services/startupService';
 import { Startup } from '@/interface/startup';
 import DashboardShell from '@/components/shared/DashboardShell';
 import AuthGate from '@/components/shared/AuthGate';
-import { VerificationStatusBadge } from '@/components/shared/Badges';
+import { ListingStatusBadge, VerificationStatusBadge } from '@/components/shared/Badges';
 import { LoadingState, ErrorState } from '@/components/shared/States';
 import { isProfileMinimumComplete } from '@/utils/validation';
 import Link from 'next/link';
@@ -227,8 +227,9 @@ export default function DashboardPage() {
                               <h4 className="truncate font-bold text-white transition-colors group-hover:text-primary-500">
                                 {startup.name}
                               </h4>
-                              <div className="flex gap-2">
+                              <div className="flex flex-wrap gap-2">
                                 <VerificationStatusBadge status={startup.verificationStatus} />
+                                <ListingStatusBadge status={startup.listingStatus} />
                               </div>
                             </div>
                           </div>
