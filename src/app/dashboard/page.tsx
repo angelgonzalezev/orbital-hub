@@ -202,29 +202,44 @@ export default function DashboardPage() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {startups.slice(0, 3).map((startup) => (
-                    <Link key={startup.id} href={`/dashboard/startups/${startup.id}/edit`}>
-                      <div className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black p-4 transition-colors hover:border-white/20 sm:p-5">
-                        <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-                          <div className="flex size-11 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[#0A0A0A] font-bold text-white/20 sm:size-12">
-                            {startup.name.slice(0, 1).toUpperCase()}
-                          </div>
-                          <div className="min-w-0 space-y-1">
-                            <h4 className="truncate font-bold text-white transition-colors group-hover:text-primary-500">
-                              {startup.name}
-                            </h4>
-                            <div className="flex gap-2">
-                              <VerificationStatusBadge status={startup.verificationStatus} />
+                  {startups.slice(0, 3).map((startup) => {
+                    const startupLogoUrl = resolveMediaUrl(startup.logo);
+                    return (
+                      <Link key={startup.id} href={`/dashboard/startups/${startup.id}/edit`}>
+                        <div className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black p-4 transition-colors hover:border-white/20 sm:p-5">
+                          <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                            <div className="relative size-11 flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-[#0A0A0A] sm:size-12">
+                              {startupLogoUrl ? (
+                                <Image
+                                  src={startupLogoUrl}
+                                  alt={startup.name}
+                                  fill
+                                  sizes="48px"
+                                  className="object-cover p-1.5"
+                                />
+                              ) : (
+                                <div className="flex h-full w-full items-center justify-center font-bold text-white/20">
+                                  {startup.name.slice(0, 1).toUpperCase()}
+                                </div>
+                              )}
+                            </div>
+                            <div className="min-w-0 space-y-1">
+                              <h4 className="truncate font-bold text-white transition-colors group-hover:text-primary-500">
+                                {startup.name}
+                              </h4>
+                              <div className="flex gap-2">
+                                <VerificationStatusBadge status={startup.verificationStatus} />
+                              </div>
                             </div>
                           </div>
+                          <ChevronRight
+                            aria-hidden="true"
+                            className="size-5 shrink-0 text-white/20 transition-all group-hover:translate-x-1 group-hover:text-white"
+                          />
                         </div>
-                        <ChevronRight
-                          aria-hidden="true"
-                          className="size-5 shrink-0 text-white/20 transition-all group-hover:translate-x-1 group-hover:text-white"
-                        />
-                      </div>
-                    </Link>
-                  ))}
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>
