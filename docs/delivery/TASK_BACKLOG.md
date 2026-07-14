@@ -27,9 +27,9 @@ Audit date: 2026-06-11.
 
 Current progress:
 
-- Done: 59/70.
-- Partial: 9/70.
-- Pending: 2/70.
+- Done: 60/71.
+- Partial: 9/71.
+- Pending: 2/71.
 
 Build status:
 
@@ -186,6 +186,7 @@ Build status:
 
 ## Phase Q: Media Reliability and Product Preview
 
-| Status | Priority | Task                                   | Notes                                                                                   |
-| :----- | :------- | :------------------------------------- | :-------------------------------------------------------------------------------------- |
-| [x]    | P0       | TASK-070 - Repair hosted media storage | Deploys the pending Storage migration and replaces raw missing-bucket errors in the UI. |
+| Status | Priority | Task                                   | Notes                                                                                     |
+| :----- | :------- | :------------------------------------- | :---------------------------------------------------------------------------------------- |
+| [x]    | P0       | TASK-070 - Repair hosted media storage | Deploys the pending Storage migration and replaces raw missing-bucket errors in the UI.   |
+| [x]    | P1       | TASK-071 - Add landing product preview | Adds the supplied marketplace demo with responsive framing and an illustrative-data note. |

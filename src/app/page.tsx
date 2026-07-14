@@ -3,6 +3,7 @@ import CTA from '@/components/solana-hub/CTA';
 import Hero from '@/components/solana-hub/Hero';
 import Process from '@/components/solana-hub/Process';
 import Features from '@/components/solana-hub/Features';
+import ProductPreview from '@/components/solana-hub/ProductPreview';
 import ProjectStatus from '@/components/solana-hub/ProjectStatus';
 import FooterOne from '@/components/shared/footer/FooterOne';
 import NavbarOne from '@/components/shared/header/NavbarOne';
@@ -26,6 +27,7 @@ const Homepage = () => {
       <main className="bg-black text-white overflow-x-hidden">
         <Hero />
         <ProjectStatus />
+        <ProductPreview />
         <About />
         <Process />
         <Features />
