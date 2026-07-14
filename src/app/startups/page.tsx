@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { startupService, StartupFilters as IStartupFilters } from '@/services/startupService';
 import { Startup } from '@/interface/startup';
 import AuthGate from '@/components/shared/AuthGate';
@@ -8,17 +8,40 @@ import NavbarOne from '@/components/shared/header/NavbarOne';
 import FooterOne from '@/components/shared/footer/FooterOne';
 import StartupCard from '@/components/startup/StartupCard';
 import StartupFilters from '@/components/startup/StartupFilters';
-import { LoadingState, EmptyState } from '@/components/shared/States';
+import { StartupGridSkeleton, EmptyState, ErrorState } from '@/components/shared/States';
 import RevealAnimation from '@/components/animation/RevealAnimation';
 import { useAuth } from '@/context/AuthContext';
 import { SlidersHorizontal, X } from 'lucide-react';
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 export default function StartupsPage() {
   const { isAuthenticated } = useAuth();
   const [startups, setStartups] = useState<Startup[]>([]);
   const [filters, setFilters] = useState<IStartupFilters>({});
+  const [debouncedSearch, setDebouncedSearch] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    const handle = setTimeout(() => setDebouncedSearch(filters.search), SEARCH_DEBOUNCE_MS);
+    return () => clearTimeout(handle);
+  }, [filters.search]);
+
+  // The input stays responsive via `filters`, while queries only fire once the search term settles.
+  const queryFilters = useMemo<IStartupFilters>(
+    () => ({
+      acquisitionStatus: filters.acquisitionStatus,
+      category: filters.category,
+      isRaising: filters.isRaising,
+      search: debouncedSearch,
+      stage: filters.stage,
+      techStack: filters.techStack,
+    }),
+    [filters.acquisitionStatus, filters.category, filters.isRaising, filters.stage, filters.techStack, debouncedSearch],
+  );
 
   const activeFilterCount = [
     Boolean(filters.search),
@@ -56,13 +79,17 @@ export default function StartupsPage() {
 
     (async () => {
       setIsLoading(true);
+      setHasError(false);
       try {
-        const data = await startupService.listPublishedStartups(filters);
+        const data = await startupService.listPublishedStartups(queryFilters);
         if (!cancelled) {
           setStartups(data);
         }
       } catch (error) {
         console.error('Error loading startups:', error);
+        if (!cancelled) {
+          setHasError(true);
+        }
       } finally {
         if (!cancelled) {
           setIsLoading(false);
@@ -73,7 +100,7 @@ export default function StartupsPage() {
     return () => {
       cancelled = true;
     };
-  }, [filters, isAuthenticated]);
+  }, [queryFilters, isAuthenticated, reloadKey]);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
@@ -133,7 +160,12 @@ export default function StartupsPage() {
                 {/* Results Grid */}
                 <div className="min-w-0">
                   {isLoading ? (
-                    <LoadingState />
+                    <StartupGridSkeleton />
+                  ) : hasError ? (
+                    <ErrorState
+                      message="We couldn't load the startups right now. Please try again."
+                      onRetry={() => setReloadKey((key) => key + 1)}
+                    />
                   ) : startups.length === 0 ? (
                     <EmptyState
                       title="No Startups Found"

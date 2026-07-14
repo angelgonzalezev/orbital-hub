@@ -12,7 +12,7 @@ import FooterOne from '@/components/shared/footer/FooterOne';
 import StartupDetailHeader from '@/components/startup/StartupDetailHeader';
 import FounderContact from '@/components/startup/FounderContact';
 import StartupTeam from '@/components/startup/StartupTeam';
-import { LoadingState, ErrorState } from '@/components/shared/States';
+import { StartupDetailSkeleton, ErrorState } from '@/components/shared/States';
 import RevealAnimation from '@/components/animation/RevealAnimation';
 import type { TeamMember } from '@/interface/startup';
 
@@ -38,11 +38,13 @@ export default function StartupDetailPage({ params }: { params: Promise<{ id: st
         const s = await startupService.getAccessibleStartupById(id);
         if (!cancelled) {
           if (s) {
-            const [u, teamProfiles] = await Promise.all([
-              userService.getUserByWallet(s.ownerWallet),
-              userService.listUsersByWallets(s.team.map((member) => member.walletAddress)),
-            ]);
-            const profilesByWallet = new Map(teamProfiles.map((profile) => [profile.walletAddress, profile]));
+            // The owner wallet is fetched together with the team, in a single profiles query.
+            const wallets = Array.from(
+              new Set([s.ownerWallet, ...s.team.map((member) => member.walletAddress)].filter(Boolean)),
+            );
+            const profiles = await userService.listUsersByWallets(wallets);
+            const profilesByWallet = new Map(profiles.map((profile) => [profile.walletAddress, profile]));
+            const u = s.ownerWallet ? (profilesByWallet.get(s.ownerWallet) ?? null) : null;
             const enrichedTeam: TeamMember[] = s.team.map((member) => {
               const profile = profilesByWallet.get(member.walletAddress);
               return profile
@@ -88,7 +90,7 @@ export default function StartupDetailPage({ params }: { params: Promise<{ id: st
         <AuthGate>
           <div className="main-container">
             {isLoading ? (
-              <LoadingState />
+              <StartupDetailSkeleton />
             ) : !startup ? (
               <ErrorState message="Startup not found or not available." />
             ) : (

@@ -1,23 +1,23 @@
 'use client';
 
+import { useAuth } from '@/context/AuthContext';
 import { useMobileMenuContext } from '@/context/MobileMenuContext';
-import { navigationItems } from '@/data/header';
+import { navigationItems, platformNavigationItems } from '@/data/header';
 import { cn } from '@/utils/cn';
-import { CircleHelp, Info, LayoutGrid, Store, X } from 'lucide-react';
+import { isNavItemActive } from '@/utils/isNavItemActive';
+import { LayoutGrid, LogOut, Store, X } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import WalletConnectButton from './WalletConnectButton';
 import Logo from './header/Logo';
 
-const navigationIcons = {
-  overview: Info,
-  process: CircleHelp,
-  features: LayoutGrid,
-};
-
 const MobileMenu = () => {
   const { isOpen, closeMenu } = useMobileMenuContext();
+  const { isAuthenticated, signOut } = useAuth();
+  const pathname = usePathname();
   const sidebarRef = useRef<HTMLElement>(null);
+  const items = isAuthenticated ? platformNavigationItems : navigationItems;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -73,17 +73,24 @@ const MobileMenu = () => {
             </button>
           </div>
           <nav aria-label="Mobile navigation" className="flex-1 border-t border-white/10 pt-6">
-            <p className="mb-3 px-4 text-xs font-semibold uppercase tracking-[0.15em] text-white/35">Explore Orbital</p>
+            <p className="mb-3 px-4 text-xs font-semibold uppercase tracking-[0.15em] text-white/35">
+              {isAuthenticated ? 'Your workspace' : 'Explore Orbital'}
+            </p>
             <ul className="space-y-2">
-              {navigationItems.map((item) => {
-                const Icon = navigationIcons[item.id as keyof typeof navigationIcons];
+              {items.map((item) => {
+                const Icon = item.icon ?? LayoutGrid;
+                const isActive = isAuthenticated && isNavItemActive(pathname, item.href);
                 return (
                   <li key={item.id}>
                     <Link
                       href={item.href}
                       onClick={closeMenu}
-                      className="flex min-h-14 items-center gap-3 rounded-md px-4 text-base font-medium text-white/70 transition-colors hover:bg-white/5 hover:text-white">
-                      <Icon aria-hidden="true" className="size-5 text-white/35" />
+                      aria-current={isActive ? 'page' : undefined}
+                      className={cn(
+                        'flex min-h-14 items-center gap-3 rounded-md px-4 text-base font-medium transition-colors',
+                        isActive ? 'bg-white/5 text-white' : 'text-white/70 hover:bg-white/5 hover:text-white',
+                      )}>
+                      <Icon aria-hidden="true" className={cn('size-5', isActive ? 'text-white' : 'text-white/35')} />
                       {item.label}
                     </Link>
                   </li>
@@ -92,16 +99,30 @@ const MobileMenu = () => {
             </ul>
           </nav>
           <div className="space-y-3 border-t border-white/10 pt-5">
-            <Link
-              href="/startups"
-              onClick={closeMenu}
-              className="btn btn-white-dark btn-md flex w-full items-center justify-center gap-2 border border-white/10">
-              <Store aria-hidden="true" className="size-4" />
-              <span>Marketplace</span>
-            </Link>
+            {!isAuthenticated && (
+              <Link
+                href="/startups"
+                onClick={closeMenu}
+                className="btn btn-white-dark btn-md flex w-full items-center justify-center gap-2 border border-white/10">
+                <Store aria-hidden="true" className="size-4" />
+                <span>Marketplace</span>
+              </Link>
+            )}
             <div onClick={closeMenu}>
               <WalletConnectButton className="w-full" />
             </div>
+            {isAuthenticated && (
+              <button
+                type="button"
+                onClick={() => {
+                  void signOut();
+                  closeMenu();
+                }}
+                className="flex min-h-12 w-full cursor-pointer items-center justify-center gap-2 rounded-md border border-white/10 text-sm font-medium text-white/60 transition-colors hover:border-white/25 hover:text-white">
+                <LogOut aria-hidden="true" className="size-4" />
+                Sign out
+              </button>
+            )}
           </div>
         </div>
       </aside>

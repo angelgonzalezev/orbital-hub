@@ -7,6 +7,7 @@ export type NavItemVariant = 'default' | 'border' | 'white' | 'light';
 interface NavItemLinkProps {
   item: NavigationItem;
   variant?: NavItemVariant;
+  isActive?: boolean;
 }
 
 const getVariantClasses = (variant: NavItemVariant = 'default'): string => {
@@ -24,9 +25,16 @@ const getVariantClasses = (variant: NavItemVariant = 'default'): string => {
   return variants[variant];
 };
 
-const NavItemLink = ({ item, variant = 'default' }: NavItemLinkProps) => {
+const NavItemLink = ({ item, variant = 'default', isActive = false }: NavItemLinkProps) => {
   return (
-    <Link href={item.href} className={cn(getVariantClasses(variant))}>
+    <Link
+      href={item.href}
+      aria-current={isActive ? 'page' : undefined}
+      className={cn(
+        getVariantClasses(variant),
+        isActive &&
+          'border-stroke-2 dark:border-stroke-7 bg-accent/20 dark:bg-transparent text-secondary dark:text-accent',
+      )}>
       <span>{item.label}</span>
     </Link>
   );

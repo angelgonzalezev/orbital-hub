@@ -30,7 +30,7 @@ export default function VerificationPage({ params }: { params: Promise<{ id: str
 
     setIsLoading(true);
     try {
-      const data = await startupService.getStartupById(id);
+      const data = await startupService.getAccessibleStartupById(id);
       if (data && data.ownerWallet === walletAddress) {
         setStartup(data);
       } else {

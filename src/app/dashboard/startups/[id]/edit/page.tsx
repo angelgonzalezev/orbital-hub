@@ -27,7 +27,7 @@ export default function EditStartupPage({ params }: { params: Promise<{ id: stri
     (async () => {
       setIsLoading(true);
       try {
-        const data = await startupService.getStartupById(id);
+        const data = await startupService.getAccessibleStartupById(id);
         if (!cancelled && data && data.ownerWallet === walletAddress) {
           setStartup(data);
         }

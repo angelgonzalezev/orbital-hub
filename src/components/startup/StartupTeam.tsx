@@ -34,7 +34,7 @@ const StartupTeam: React.FC<StartupTeamProps> = ({ members }) => {
                 aria-label={`${displayName} - ${member.role}`}
                 className="relative size-14 shrink-0 overflow-hidden rounded-full border border-white/10 bg-[#0A0A0A] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50">
                 {avatarUrl ? (
-                  <Image src={avatarUrl} alt={displayName} fill className="object-cover" />
+                  <Image src={avatarUrl} alt={displayName} fill sizes="56px" className="object-cover" />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-base font-bold text-white/20">
                     {displayName.slice(0, 1).toUpperCase()}

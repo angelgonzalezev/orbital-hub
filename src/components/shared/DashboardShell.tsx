@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/utils/cn';
+import { isNavItemActive } from '@/utils/isNavItemActive';
 import NavbarOne from './header/NavbarOne';
 import FooterOne from './footer/FooterOne';
 import RevealAnimation from '../animation/RevealAnimation';
@@ -25,11 +26,7 @@ const navItems = [
 
 const DashboardShell: React.FC<DashboardShellProps> = ({ children, title, subtitle, actions }) => {
   const pathname = usePathname();
-  const isItemActive = (href: string) => {
-    if (href === '/dashboard') return pathname === href;
-    if (href === '/startups') return pathname === href || pathname.startsWith('/startups/');
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  const isItemActive = (href: string) => isNavItemActive(pathname, href);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">

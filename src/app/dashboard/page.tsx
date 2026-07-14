@@ -7,7 +7,7 @@ import { Startup } from '@/interface/startup';
 import DashboardShell from '@/components/shared/DashboardShell';
 import AuthGate from '@/components/shared/AuthGate';
 import { VerificationStatusBadge } from '@/components/shared/Badges';
-import { LoadingState } from '@/components/shared/States';
+import { LoadingState, ErrorState } from '@/components/shared/States';
 import { isProfileMinimumComplete } from '@/utils/validation';
 import Link from 'next/link';
 import RevealAnimation from '@/components/animation/RevealAnimation';
@@ -21,6 +21,8 @@ export default function DashboardPage() {
   const { isLoading: isAuthLoading, signOut, user, walletAddress } = useAuth();
   const [startups, setStartups] = useState<Startup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   const handleSignOut = async () => {
     await signOut();
@@ -38,6 +40,7 @@ export default function DashboardPage() {
     let cancelled = false;
     (async () => {
       setIsLoading(true);
+      setHasError(false);
       try {
         const data = await startupService.listStartupsByOwner();
         if (!cancelled) {
@@ -45,6 +48,9 @@ export default function DashboardPage() {
         }
       } catch (error) {
         console.error('Error loading startups:', error);
+        if (!cancelled) {
+          setHasError(true);
+        }
       } finally {
         if (!cancelled) {
           setIsLoading(false);
@@ -55,7 +61,7 @@ export default function DashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [walletAddress]);
+  }, [walletAddress, reloadKey]);
 
   const isProfileComplete = user ? isProfileMinimumComplete(user) : false;
   const avatarUrl = resolveMediaUrl(user?.avatar);
@@ -75,6 +81,7 @@ export default function DashboardPage() {
                         src={avatarUrl}
                         alt={user?.displayName || 'Profile avatar'}
                         fill
+                        sizes="64px"
                         className="object-cover"
                       />
                     ) : (
@@ -184,6 +191,11 @@ export default function DashboardPage() {
 
               {isLoading ? (
                 <LoadingState />
+              ) : hasError ? (
+                <ErrorState
+                  message="We couldn't load your startups right now. Please try again."
+                  onRetry={() => setReloadKey((key) => key + 1)}
+                />
               ) : startups.length === 0 ? (
                 <div className="rounded-[30px] border border-dashed border-white/10 bg-white/5 p-8 text-center">
                   <p className="text-white/30 italic">You haven&apos;t listed any startups yet.</p>

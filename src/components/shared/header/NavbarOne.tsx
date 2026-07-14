@@ -2,11 +2,14 @@
 
 // Header v1
 import { MobileMenuProvider } from '@/context/MobileMenuContext';
-import { navigationItems } from '@/data/header';
+import { useAuth } from '@/context/AuthContext';
+import { navigationItems, platformNavigationItems } from '@/data/header';
 import { useNavbarScroll } from '@/hooks/useScrollHeader';
 import { cn } from '@/utils/cn';
+import { isNavItemActive } from '@/utils/isNavItemActive';
 import { Store } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { FC } from 'react';
 import MobileMenu from '../MobileMenu';
 import Logo from './Logo';
@@ -21,6 +24,9 @@ interface NavbarOneProps {
 
 const NavbarOne: FC<NavbarOneProps> = ({ className, btnClassName }) => {
   const { isScrolled } = useNavbarScroll(100);
+  const { isAuthenticated } = useAuth();
+  const pathname = usePathname();
+  const items = isAuthenticated ? platformNavigationItems : navigationItems;
 
   return (
     <MobileMenuProvider>
@@ -36,20 +42,22 @@ const NavbarOne: FC<NavbarOneProps> = ({ className, btnClassName }) => {
           {/* navigation */}
           <nav className="hidden items-center lg:flex">
             <ul className="flex items-center">
-              {navigationItems.map((item) => (
+              {items.map((item) => (
                 <li key={item.id} className="group/nav py-2.5">
-                  <NavItemLink item={item} />
+                  <NavItemLink item={item} isActive={isAuthenticated && isNavItemActive(pathname, item.href)} />
                 </li>
               ))}
             </ul>
           </nav>
           <div className="hidden items-center gap-3 lg:flex">
-            <Link
-              href="/startups"
-              className="btn btn-white-dark btn-md inline-flex items-center gap-2 border border-white/10 hover:btn-primary">
-              <Store aria-hidden="true" className="size-4" />
-              <span>Marketplace</span>
-            </Link>
+            {!isAuthenticated && (
+              <Link
+                href="/startups"
+                className="btn btn-white-dark btn-md inline-flex items-center gap-2 border border-white/10 hover:btn-primary">
+                <Store aria-hidden="true" className="size-4" />
+                <span>Marketplace</span>
+              </Link>
+            )}
             <WalletConnectButton className={cn('btn-sm', btnClassName)} />
           </div>
           {/* mobile menu btn */}

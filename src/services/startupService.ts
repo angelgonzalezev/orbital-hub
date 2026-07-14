@@ -104,12 +104,6 @@ export const startupService = {
     });
   },
 
-  getStartupById: async (id: string): Promise<Startup | null> => {
-    const { data, error } = await getSupabaseBrowserClient().rpc('get_accessible_startup', { startup_id: id });
-    if (error) throw error;
-    return mapRpcStartup(data);
-  },
-
   getAccessibleStartupById: async (id: string): Promise<Startup | null> => {
     const { data, error } = await getSupabaseBrowserClient().rpc('get_accessible_startup', { startup_id: id });
     if (error) throw error;

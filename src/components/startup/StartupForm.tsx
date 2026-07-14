@@ -521,7 +521,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
                       className="flex min-w-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3 text-left transition hover:border-primary-500/50 hover:bg-primary-500/5">
                       <span className="relative size-10 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black">
                         {avatarUrl ? (
-                          <Image src={avatarUrl} alt={user.displayName} fill className="object-cover" />
+                          <Image src={avatarUrl} alt={user.displayName} fill sizes="40px" className="object-cover" />
                         ) : (
                           <span className="flex h-full w-full items-center justify-center text-sm font-bold text-white/20">
                             {user.displayName.slice(0, 1).toUpperCase() || '?'}
@@ -561,6 +561,7 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
                           src={avatarUrl}
                           alt={member.displayName || member.walletAddress}
                           fill
+                          sizes="44px"
                           className="object-cover"
                         />
                       ) : (

@@ -7,6 +7,88 @@ export const LoadingState: React.FC = () => (
   </div>
 );
 
+const SkeletonBlock: React.FC<{ className?: string }> = ({ className }) => (
+  <div className={`animate-pulse rounded-xl bg-white/5 ${className ?? ''}`} />
+);
+
+export const StartupCardSkeleton: React.FC = () => (
+  <div className="flex h-full flex-col rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 sm:p-6 lg:p-8">
+    <div className="mb-5 flex min-h-6 items-center gap-2">
+      <SkeletonBlock className="h-6 w-24 rounded-full" />
+    </div>
+    <div className="flex-grow space-y-5">
+      <div className="flex items-start gap-4">
+        <SkeletonBlock className="size-14 flex-shrink-0 rounded-2xl sm:size-16" />
+        <div className="min-w-0 flex-1 space-y-2">
+          <SkeletonBlock className="h-7 w-2/3" />
+          <SkeletonBlock className="h-5 w-24 rounded-full" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-5/6" />
+        <SkeletonBlock className="h-4 w-2/3" />
+      </div>
+      <div className="flex flex-wrap gap-2 pt-2">
+        <SkeletonBlock className="h-6 w-20 rounded-full" />
+        <SkeletonBlock className="h-6 w-16 rounded-full" />
+        <SkeletonBlock className="h-6 w-24 rounded-full" />
+      </div>
+    </div>
+    <div className="mt-7 flex flex-col gap-4 border-t border-white/5 pt-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="space-y-2">
+        <SkeletonBlock className="h-3 w-12" />
+        <SkeletonBlock className="h-5 w-20" />
+      </div>
+      <SkeletonBlock className="h-11 w-full sm:w-32" />
+    </div>
+  </div>
+);
+
+export const StartupGridSkeleton: React.FC<{ count?: number }> = ({ count = 6 }) => (
+  <div className="grid grid-cols-1 gap-5 xl:grid-cols-2 xl:gap-6" aria-hidden="true">
+    {Array.from({ length: count }, (_, index) => (
+      <StartupCardSkeleton key={index} />
+    ))}
+  </div>
+);
+
+export const StartupDetailSkeleton: React.FC = () => (
+  <div className="flex w-full min-w-0 flex-col gap-10 lg:grid lg:grid-cols-12 lg:gap-12" aria-hidden="true">
+    <div className="w-full min-w-0 space-y-12 lg:col-span-8">
+      <div className="flex items-start gap-5">
+        <SkeletonBlock className="size-20 flex-shrink-0 rounded-2xl sm:size-24" />
+        <div className="min-w-0 flex-1 space-y-3">
+          <SkeletonBlock className="h-9 w-2/3" />
+          <SkeletonBlock className="h-5 w-full" />
+          <SkeletonBlock className="h-5 w-32 rounded-full" />
+        </div>
+      </div>
+      <div className="space-y-3">
+        <SkeletonBlock className="h-8 w-56" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-3/4" />
+      </div>
+    </div>
+    <aside className="w-full min-w-0 space-y-8 lg:col-span-4">
+      <div className="space-y-4 rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 sm:p-6">
+        <SkeletonBlock className="h-5 w-32" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-full" />
+        <SkeletonBlock className="h-4 w-2/3" />
+      </div>
+      <div className="space-y-4 rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 sm:p-6">
+        <SkeletonBlock className="h-5 w-24" />
+        <div className="flex items-center gap-3">
+          <SkeletonBlock className="size-12 rounded-full" />
+          <SkeletonBlock className="h-4 w-32" />
+        </div>
+      </div>
+    </aside>
+  </div>
+);
+
 export const ErrorState: React.FC<{ message?: string; onRetry?: () => void }> = ({
   message = 'Something went wrong while loading data.',
   onRetry,

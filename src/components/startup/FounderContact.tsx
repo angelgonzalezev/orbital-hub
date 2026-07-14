@@ -25,7 +25,7 @@ const FounderContact: React.FC<FounderContactProps> = ({ founder }) => {
       <div className="flex flex-col items-center gap-5 border-b border-white/10 pb-7 sm:flex-row sm:items-start">
         <div className="relative size-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-black">
           {avatarUrl ? (
-            <Image src={avatarUrl} alt={founder.displayName} fill className="object-cover" />
+            <Image src={avatarUrl} alt={founder.displayName} fill sizes="80px" className="object-cover" />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-white/10 font-bold text-2xl">
               {founder.displayName.slice(0, 1).toUpperCase()}
