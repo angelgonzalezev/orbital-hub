@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { useHydrated } from '@/hooks/useHydrated';
+import { getCurrentDappUrl, isMobileUserAgent, walletDeepLinks } from '@/lib/walletDeepLinks';
 
 interface WalletConnectButtonProps {
   className?: string;
@@ -132,12 +133,45 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({ className = '
                   </button>
                 ))}
 
-                {availableWallets.length === 0 && (
-                  <div className="rounded-2xl border border-white/10 bg-black p-5 text-sm leading-6 text-white/55">
-                    No Wallet Standard compatible extension was detected. Install Phantom, Solflare, Backpack, or
-                    another compatible Solana wallet and reload the page.
-                  </div>
-                )}
+                {availableWallets.length === 0 &&
+                  (isMobileUserAgent() ? (
+                    <div className="space-y-3">
+                      <p className="text-sm leading-6 text-white/55">
+                        No wallet detected in this browser. Open this site inside your wallet&apos;s app to sign in:
+                      </p>
+                      {walletDeepLinks.map((wallet) => (
+                        <a
+                          key={wallet.name}
+                          href={wallet.buildUrl(getCurrentDappUrl(), window.location.origin)}
+                          className="flex w-full items-center gap-4 rounded-2xl border border-white/10 bg-black px-4 py-3.5 text-left text-white transition hover:border-primary-500/50 hover:bg-primary-500/5 sm:px-5 sm:py-4">
+                          <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-white">
+                            {getWalletIcon(wallet.name) ? (
+                              <Image
+                                alt={`${wallet.name} logo`}
+                                className="h-full w-full object-cover"
+                                height={44}
+                                src={getWalletIcon(wallet.name) || ''}
+                                width={44}
+                              />
+                            ) : (
+                              <span className="flex h-full w-full items-center justify-center bg-gradient-to-br from-[#9945FF]/25 to-[#14F195]/20 font-semibold text-white">
+                                {wallet.name.slice(0, 1).toUpperCase()}
+                              </span>
+                            )}
+                          </span>
+                          <span className="font-medium">Open in {wallet.name}</span>
+                        </a>
+                      ))}
+                      <p className="text-xs leading-5 text-white/40">
+                        Don&apos;t have one? The link opens the wallet&apos;s install page automatically.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="rounded-2xl border border-white/10 bg-black p-5 text-sm leading-6 text-white/55">
+                      No Wallet Standard compatible extension was detected. Install Phantom, Solflare, Backpack, or
+                      another compatible Solana wallet and reload the page.
+                    </div>
+                  ))}
               </div>
 
               {error && <p className="mt-5 rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
