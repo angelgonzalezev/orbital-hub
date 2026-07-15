@@ -7,7 +7,7 @@ import { isCurrentlyFeatured } from '@/utils/featured';
 import { useAuth } from '@/context/AuthContext';
 import { useFeaturedPurchase } from '@/hooks/useFeaturedPurchase';
 import FeaturedSuccessModal from './FeaturedSuccessModal';
-import { FEATURED_LISTING_PRICE_USDC } from '@/services/paymentService';
+import { FEATURED_LISTING_DAYS, FEATURED_LISTING_PRICE_USDC } from '@/services/paymentService';
 import Link from 'next/link';
 import Image from 'next/image';
 import { resolveMediaUrl } from '@/services/mediaService';
@@ -23,15 +23,6 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onFea
   const { isWalletConnected } = useAuth();
   const { phase, error, success, buy, dismissSuccess, busy, available } = useFeaturedPurchase(startup, onFeatured);
   const featured = isCurrentlyFeatured(startup);
-
-  const featureLabel =
-    phase === 'paying'
-      ? 'Waiting for wallet…'
-      : phase === 'verifying'
-        ? 'Confirming…'
-        : featured
-          ? 'Extend featured'
-          : `★ Feature — $${FEATURED_LISTING_PRICE_USDC}`;
 
   return (
     <article className="flex flex-col items-center gap-5 rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 transition-colors hover:border-white/10 sm:flex-row sm:items-start sm:p-6 lg:items-center">
@@ -59,15 +50,30 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onFea
         {error && <p className="text-sm font-medium text-red-500">{error}</p>}
       </div>
 
+      {available && (
+        <button
+          onClick={buy}
+          disabled={busy || !isWalletConnected}
+          className="flex w-full flex-shrink-0 flex-col items-center justify-center gap-1.5 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-6 py-5 text-amber-400 transition-colors hover:border-amber-400/60 hover:bg-amber-400/20 disabled:opacity-50 sm:w-44 sm:self-stretch">
+          <span className="text-3xl leading-none">★</span>
+          <span className="text-sm font-bold uppercase tracking-wider">
+            {phase === 'paying'
+              ? 'Waiting for wallet…'
+              : phase === 'verifying'
+                ? 'Confirming…'
+                : featured
+                  ? 'Extend featured'
+                  : 'Feature'}
+          </span>
+          {!busy && (
+            <span className="text-xs font-medium text-amber-400/70">
+              ${FEATURED_LISTING_PRICE_USDC} · {featured ? `+${FEATURED_LISTING_DAYS}` : FEATURED_LISTING_DAYS} days
+            </span>
+          )}
+        </button>
+      )}
+
       <div className="flex w-full flex-col gap-2 border-t border-white/10 pt-5 sm:w-auto sm:border-l sm:border-t-0 sm:pl-5 sm:pt-0">
-        {available && (
-          <button
-            onClick={buy}
-            disabled={busy || !isWalletConnected}
-            className="btn btn-sm w-full border-amber-400/30 bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 disabled:opacity-50">
-            {featureLabel}
-          </button>
-        )}
         <Link href={`/startups/${startup.id}`} className="btn btn-white-dark btn-sm w-full hover:btn-primary">
           View
         </Link>
