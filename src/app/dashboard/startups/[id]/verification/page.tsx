@@ -8,6 +8,7 @@ import { Startup } from '@/interface/startup';
 import DashboardShell from '@/components/shared/DashboardShell';
 import AuthGate from '@/components/shared/AuthGate';
 import { VerificationStatusBadge, ListingStatusBadge } from '@/components/shared/Badges';
+import FeatureStartupButton from '@/components/startup/FeatureStartupButton';
 import { LoadingState, ErrorState } from '@/components/shared/States';
 import { canRequestVerification } from '@/utils/validation';
 import { cn } from '@/utils/cn';
@@ -190,6 +191,8 @@ export default function VerificationPage({ params }: { params: Promise<{ id: str
                 )}
               </div>
             </div>
+
+            <FeatureStartupButton startup={startup} onFeatured={refreshStartup} />
 
             {/* Dev Mock Actions */}
             {process.env.NEXT_PUBLIC_ENABLE_DEV_VERIFICATION === 'true' && (

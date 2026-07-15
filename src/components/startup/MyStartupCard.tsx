@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Startup } from '@/interface/startup';
-import { VerificationStatusBadge, ListingStatusBadge, StartupStageBadge } from '../shared/Badges';
+import { VerificationStatusBadge, ListingStatusBadge, StartupStageBadge, FeaturedBadge } from '../shared/Badges';
+import { isCurrentlyFeatured } from '@/utils/featured';
 import Link from 'next/link';
 import Image from 'next/image';
 import { resolveMediaUrl } from '@/services/mediaService';
@@ -36,6 +37,7 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive }) => 
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1 sm:justify-start">
           <VerificationStatusBadge status={startup.verificationStatus} />
           <ListingStatusBadge status={startup.listingStatus} />
+          {isCurrentlyFeatured(startup) && <FeaturedBadge />}
         </div>
       </div>
 

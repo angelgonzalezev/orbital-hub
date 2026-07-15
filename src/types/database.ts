@@ -35,6 +35,7 @@ export type StartupRow = {
   description: string;
   discord: string | null;
   domain_verification_status: string;
+  featured_until: string | null;
   github: string | null;
   id: string;
   is_raising: boolean;

@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { Startup } from '@/interface/startup';
-import { StartupStageBadge, MarketSignalBadge } from '../shared/Badges';
+import { StartupStageBadge, MarketSignalBadge, FeaturedBadge } from '../shared/Badges';
+import { isCurrentlyFeatured } from '@/utils/featured';
 import Link from 'next/link';
 import Image from 'next/image';
 import RevealAnimation from '../animation/RevealAnimation';
@@ -20,6 +21,7 @@ const StartupCard: React.FC<StartupCardProps> = ({ startup, index = 0 }) => {
     <RevealAnimation delay={0.1 * (index % 4)}>
       <article className="group flex h-full flex-col overflow-hidden rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 transition-colors duration-300 hover:border-primary-500/30 sm:p-6 lg:p-8">
         <div className="mb-5 flex min-h-6 flex-wrap items-center gap-2">
+          {isCurrentlyFeatured(startup) && <FeaturedBadge />}
           {startup.isRaising && <MarketSignalBadge type="raising" />}
           <MarketSignalBadge type="acquisition" status={startup.acquisitionStatus} />
         </div>

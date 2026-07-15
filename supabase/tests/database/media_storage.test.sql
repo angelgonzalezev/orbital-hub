@@ -62,22 +62,28 @@ select lives_ok(
 
 select set_config('request.jwt.claim.sub', '40000000-0000-4000-8000-000000000002', true);
 
+-- RLS hides the row from the intruder, so this update matches zero rows. It has
+-- to be a top-level statement (a data-modifying CTE inside is() is invalid SQL),
+-- so the assertion is the owner reading their metadata back unchanged.
+update storage.objects
+set metadata = '{"intruder":true}'
+where bucket_id = 'media'
+  and name = '40000000-0000-4000-8000-000000000001/profiles/avatar/test.webp';
+
+select set_config('request.jwt.claim.sub', '40000000-0000-4000-8000-000000000001', true);
+
 select is(
-  (
-    with changed as (
-      update storage.objects
-      set metadata = '{"intruder":true}'
-      where bucket_id = 'media'
-        and name = '40000000-0000-4000-8000-000000000001/profiles/avatar/test.webp'
-      returning 1
-    )
-    select count(*)::integer from changed
-  ),
-  0,
+  (select metadata from storage.objects
+   where bucket_id = 'media'
+     and name = '40000000-0000-4000-8000-000000000001/profiles/avatar/test.webp'),
+  '{"updated":true}'::jsonb,
   'another authenticated user cannot update the owner media object'
 );
 
-select set_config('request.jwt.claim.sub', '40000000-0000-4000-8000-000000000001', true);
+-- Storage ships a protect_delete trigger that blocks direct SQL deletes unless
+-- this setting is on; disabling it here lets the test exercise the RLS policy,
+-- which is what actually guards the Storage API path.
+select set_config('storage.allow_delete_query', 'true', true);
 
 select lives_ok(
   $$delete from storage.objects
@@ -93,7 +99,7 @@ select throws_ok(
   $$insert into storage.objects (bucket_id, name)
     values ('media', 'anonymous/profiles/avatar/test.webp')$$,
   '42501',
-  'permission denied for table objects',
+  'new row violates row-level security policy for table "objects"',
   'anonymous users cannot create media'
 );
 

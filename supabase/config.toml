@@ -45,3 +45,8 @@ verify_jwt = false
 # X-Telegram-Bot-Api-Secret-Token header.
 [functions.telegram-review-callback]
 verify_jwt = false
+
+# Called by the browser with the user's JWT — that is what binds the payment to
+# a wallet, so the platform JWT check stays on.
+[functions.verify-payment]
+verify_jwt = true

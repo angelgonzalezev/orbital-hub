@@ -51,6 +51,7 @@ export const mapStartupRow = (row: StartupRow, ownerWallet?: string): Startup =>
   description: row.description,
   discord: row.discord || undefined,
   domainVerificationStatus: row.domain_verification_status as VerificationCheckStatus,
+  featuredUntil: row.featured_until || undefined,
   github: row.github || undefined,
   id: row.id,
   isRaising: row.is_raising,

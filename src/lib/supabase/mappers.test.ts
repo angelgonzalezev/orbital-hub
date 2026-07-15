@@ -24,6 +24,7 @@ const startupRow: StartupRow = {
   description: 'Description',
   discord: null,
   domain_verification_status: 'verified',
+  featured_until: null,
   github: null,
   id: 'startup-id',
   is_raising: true,

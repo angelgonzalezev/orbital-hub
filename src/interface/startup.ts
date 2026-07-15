@@ -39,6 +39,7 @@ export interface Startup {
   team: TeamMember[];
   verificationStatus: VerificationStatus;
   listingStatus: ListingStatus;
+  featuredUntil?: string;
   domainVerificationStatus: VerificationCheckStatus;
   xVerificationStatus: VerificationCheckStatus;
   verificationRejectionReason?: string;

@@ -36,6 +36,10 @@ export const StartupStageBadge: React.FC<{ stage: StartupStage }> = ({ stage }) 
   return <Badge className="bg-white/5 border-white/10 text-white/80">{stage}</Badge>;
 };
 
+export const FeaturedBadge: React.FC = () => (
+  <Badge className="bg-amber-400/10 border-amber-400/25 text-amber-400">★ FEATURED</Badge>
+);
+
 export const MarketSignalBadge: React.FC<{
   type: 'raising' | 'acquisition';
   status?: AcquisitionStatus;
