@@ -73,12 +73,27 @@ function treasuryReceived(tx: RpcTransaction, treasuryWallet: string, usdcMint: 
   return sum(tx.meta.postTokenBalances) - sum(tx.meta.preTokenBalances);
 }
 
+// Unlike the telegram-* functions this one is called from the browser, so it
+// must answer the CORS preflight. The wildcard origin is fine: the JWT in the
+// Authorization header is what gates access, not the origin.
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+};
+
 const json = (status: number, body: unknown) =>
-  new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  });
 
 Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 204, headers: corsHeaders });
+  }
   if (req.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return new Response('Method not allowed', { status: 405, headers: corsHeaders });
   }
 
   const rpcUrl = Deno.env.get('SOLANA_RPC_URL');
