@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { ExternalLink } from 'lucide-react';
 import { User } from '@/interface/user';
 import { validateProfile, ValidationError } from '@/utils/validation';
 import { userService } from '@/services/userService';
@@ -103,9 +105,20 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
         </div>
         {getError('username') ? (
           <p className="text-red-500 text-xs mt-1 ml-1">{getError('username')}</p>
+        ) : formData.username && formData.username === initialData?.username ? (
+          <p className="mt-1 ml-1 text-base font-semibold text-[#14F195]">
+            Your public page:{' '}
+            <Link
+              href={`/${formData.username}`}
+              className="inline-flex items-center gap-1.5 underline decoration-[#14F195]/40 underline-offset-4 transition-colors hover:decoration-[#14F195] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50">
+              orbitalhub.dev/{formData.username}
+              <ExternalLink aria-hidden="true" className="size-4" />
+            </Link>
+          </p>
         ) : formData.username ? (
           <p className="mt-1 ml-1 text-base font-semibold text-[#14F195]">
             Your public page: orbitalhub.dev/{formData.username}
+            <span className="ml-2 text-xs font-medium text-white/40">(save to claim it)</span>
           </p>
         ) : (
           <p className="text-white/30 text-xs mt-1 ml-1">
