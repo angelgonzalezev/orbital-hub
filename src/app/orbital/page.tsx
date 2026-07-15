@@ -5,6 +5,7 @@ import { startupService } from '@/services/startupService';
 import { Startup } from '@/interface/startup';
 import NavbarOne from '@/components/shared/header/NavbarOne';
 import OrbitalGlobe from '@/components/orbital/OrbitalGlobe';
+import OrbitalSidePanels from '@/components/orbital/OrbitalSidePanels';
 
 export default function OrbitalPage() {
   const [startups, setStartups] = useState<Startup[]>([]);
@@ -41,6 +42,8 @@ export default function OrbitalPage() {
       <div className="absolute inset-0">
         <OrbitalGlobe startups={locatedStartups} />
       </div>
+
+      <OrbitalSidePanels startups={startups} />
     </div>
   );
 }
