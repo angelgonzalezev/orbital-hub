@@ -221,7 +221,7 @@ export default function DashboardPage() {
                     const startupLogoUrl = resolveMediaUrl(startup.logo);
                     return (
                       <Link key={startup.id} href={`/dashboard/startups/${startup.id}/edit`}>
-                        <div className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black p-4 transition-colors hover:border-white/20 sm:p-5">
+                        <div className="group flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black p-4 transition-colors hover:border-white/20 sm:p-5 my-3">
                           <div className="flex min-w-0 items-center gap-3 sm:gap-4">
                             <div className="relative size-11 flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-[#0A0A0A] sm:size-12">
                               {startupLogoUrl ? (
