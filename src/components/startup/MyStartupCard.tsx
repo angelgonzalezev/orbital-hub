@@ -14,9 +14,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { resolveMediaUrl } from '@/services/mediaService';
 
+type PendingAction = 'archive' | 'delete';
+
 interface MyStartupCardProps {
   startup: Startup;
-  onArchive?: (id: string) => void;
+  onArchive?: (id: string) => Promise<void> | void;
   onDelete?: (id: string) => Promise<void> | void;
   onFeatured?: () => Promise<void> | void;
 }
@@ -27,23 +29,24 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
   const { isWalletConnected } = useAuth();
   const { phase, error, success, buy, dismissSuccess, busy, available } = useFeaturedPurchase(startup, onFeatured);
   const featured = isCurrentlyFeatured(startup);
-  const [confirmingDelete, setConfirmingDelete] = useState(false);
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
+  const [actionBusy, setActionBusy] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const goToStartup = () => router.push(`/startups/${startup.id}`);
 
-  const handleDelete = async () => {
-    setDeleting(true);
-    setDeleteError(null);
+  const runPendingAction = async () => {
+    if (!pendingAction) return;
+    setActionBusy(true);
+    setActionError(null);
     try {
-      await onDelete?.(startup.id);
-      setConfirmingDelete(false);
+      await (pendingAction === 'archive' ? onArchive?.(startup.id) : onDelete?.(startup.id));
     } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Unable to delete the startup.');
-      setConfirmingDelete(false);
+      const fallback = pendingAction === 'archive' ? 'Unable to archive the startup.' : 'Unable to delete the startup.';
+      setActionError(err instanceof Error ? err.message : fallback);
     } finally {
-      setDeleting(false);
+      setActionBusy(false);
+      setPendingAction(null);
     }
   };
 
@@ -83,7 +86,7 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
             {featured && <FeaturedBadge />}
           </div>
           {error && <p className="text-sm font-medium text-red-500">{error}</p>}
-          {deleteError && <p className="text-sm font-medium text-red-500">{deleteError}</p>}
+          {actionError && <p className="text-sm font-medium text-red-500">{actionError}</p>}
         </div>
 
         <div
@@ -102,13 +105,13 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
           </Link>
           {startup.listingStatus !== 'archived' ? (
             <button
-              onClick={() => onArchive && onArchive(startup.id)}
+              onClick={() => setPendingAction('archive')}
               className="btn btn-white-dark btn-sm w-full border-red-500/10 text-red-500/60 hover:btn-red hover:text-red-500">
               Archive
             </button>
           ) : (
             <button
-              onClick={() => setConfirmingDelete(true)}
+              onClick={() => setPendingAction('delete')}
               className="btn btn-sm w-full border-red-500/30 bg-red-500/10 text-red-500 hover:bg-red-500/20">
               Delete
             </button>
@@ -139,14 +142,25 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
         </button>
       )}
 
-      {confirmingDelete && (
+      {pendingAction === 'archive' && (
+        <ConfirmModal
+          title={`Archive ${startup.name}?`}
+          message="The startup will no longer be visible in the marketplace. You can find it in the Archived tab and delete it permanently from there."
+          confirmLabel={actionBusy ? 'Archiving…' : 'Archive'}
+          busy={actionBusy}
+          onConfirm={runPendingAction}
+          onCancel={() => setPendingAction(null)}
+        />
+      )}
+
+      {pendingAction === 'delete' && (
         <ConfirmModal
           title={`Delete ${startup.name}?`}
           message="This will permanently delete the startup and everything attached to it. This action cannot be undone."
-          confirmLabel={deleting ? 'Deleting…' : 'Delete forever'}
-          busy={deleting}
-          onConfirm={handleDelete}
-          onCancel={() => setConfirmingDelete(false)}
+          confirmLabel={actionBusy ? 'Deleting…' : 'Delete forever'}
+          busy={actionBusy}
+          onConfirm={runPendingAction}
+          onCancel={() => setPendingAction(null)}
         />
       )}
 

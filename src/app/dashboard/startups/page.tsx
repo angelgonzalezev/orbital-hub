@@ -46,18 +46,13 @@ export default function MyStartupsPage() {
     void refreshStartups();
   }, [refreshStartups]);
 
+  // Confirmation happens in MyStartupCard's modal; errors propagate back to it
+  // and are surfaced inline.
   const handleArchive = async (id: string) => {
-    if (confirm('Are you sure you want to archive this startup? It will no longer be visible in the marketplace.')) {
-      try {
-        await startupService.archiveStartup(id);
-        await refreshStartups();
-      } catch (error) {
-        console.error('Error archiving startup:', error);
-      }
-    }
+    await startupService.archiveStartup(id);
+    await refreshStartups({ silent: true });
   };
 
-  // Errors propagate to MyStartupCard, which surfaces them inline.
   const handleDelete = async (id: string) => {
     await startupService.deleteStartup(id);
     await refreshStartups({ silent: true });
