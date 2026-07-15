@@ -147,6 +147,9 @@ export default function StartupDetailPage({ params }: { params: Promise<{ id: st
                     <h4 className="text-lg font-bold text-white uppercase tracking-widest">Key Metrics</h4>
                     <div className="space-y-4">
                       <MetricItem label="Stage" value={startup.stage} />
+                      {startup.city && startup.country && (
+                        <MetricItem label="Location" value={`${startup.city}, ${startup.country}`} />
+                      )}
                       <MetricItem label="Team Size" value={`${startup.teamSize} members`} />
                       {startup.showMrr && startup.mrr !== undefined && (
                         <div

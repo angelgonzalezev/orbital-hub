@@ -124,6 +124,10 @@ export const validateStartup = (startup: Partial<Startup>): ValidationError[] =>
     });
   }
 
+  if (!startup.city || !startup.country) {
+    errors.push({ field: 'location', message: 'Location is required. Pick a city from the suggestions.' });
+  }
+
   // Drafts may contain a short description. Verification applies the minimum length.
   if (startup.description && startup.description.length > 2000) {
     errors.push({

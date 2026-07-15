@@ -51,6 +51,11 @@ const StartupCard: React.FC<StartupCardProps> = ({ startup, index = 0 }) => {
               <div className="flex items-center gap-2">
                 <StartupStageBadge stage={startup.stage} />
               </div>
+              {startup.city && startup.country && (
+                <p className="text-xs text-white/40">
+                  📍 {startup.city}, {startup.country}
+                </p>
+              )}
             </div>
           </div>
 

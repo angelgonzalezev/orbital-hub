@@ -28,6 +28,11 @@ export interface Startup {
   twitter: string;
   discord?: string;
   github?: string;
+  city?: string;
+  country?: string;
+  countryCode?: string;
+  latitude?: number;
+  longitude?: number;
   stage: StartupStage;
   isRaising: boolean;
   acquisitionStatus: AcquisitionStatus;

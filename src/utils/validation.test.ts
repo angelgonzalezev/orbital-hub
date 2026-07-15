@@ -6,6 +6,8 @@ import { canRequestVerification, validateStartup } from '@/utils/validation';
 
 const draft: Partial<Startup> = {
   category: [],
+  city: 'Madrid',
+  country: 'Spain',
   description: 'A short draft description.',
   name: 'Draft startup',
   oneLiner: 'A useful product built on Solana.',
@@ -16,6 +18,13 @@ const draft: Partial<Startup> = {
 describe('startup validation', () => {
   it('allows incomplete verification fields when saving a draft', () => {
     expect(validateStartup(draft)).toEqual([]);
+  });
+
+  it('requires a location', () => {
+    const withoutLocation = { ...draft };
+    delete withoutLocation.city;
+    delete withoutLocation.country;
+    expect(validateStartup(withoutLocation).map((error) => error.field)).toContain('location');
   });
 
   it('keeps verification requirements strict', () => {

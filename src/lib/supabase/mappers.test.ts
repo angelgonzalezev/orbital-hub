@@ -20,6 +20,9 @@ const profileRow: ProfileRow = {
 const startupRow: StartupRow = {
   acquisition_status: 'not_open',
   category: ['Infra'],
+  city: 'Madrid',
+  country: 'Spain',
+  country_code: 'ES',
   created_at: '2026-01-01T00:00:00Z',
   description: 'Description',
   discord: null,
@@ -28,8 +31,10 @@ const startupRow: StartupRow = {
   github: null,
   id: 'startup-id',
   is_raising: true,
+  latitude: 40.416782,
   listing_status: 'published',
   logo: '',
+  longitude: -3.703507,
   mrr: null,
   name: 'Solana Startup',
   one_liner: 'A useful startup.',
@@ -71,5 +76,18 @@ describe('Supabase mappers', () => {
     expect(startup.mrr).toBeUndefined();
     expect(startup.ownerWallet).toBe(profileRow.wallet_address);
     expect(startup.team).toEqual([{ role: 'Founder', walletAddress: profileRow.wallet_address }]);
+  });
+
+  it('maps the location fields', () => {
+    const startup = mapStartupRow(startupRow);
+    expect(startup.city).toBe('Madrid');
+    expect(startup.country).toBe('Spain');
+    expect(startup.countryCode).toBe('ES');
+    expect(startup.latitude).toBe(40.416782);
+    expect(startup.longitude).toBe(-3.703507);
+
+    const legacy = mapStartupRow({ ...startupRow, city: null, country: null, latitude: null, longitude: null });
+    expect(legacy.city).toBeUndefined();
+    expect(legacy.latitude).toBeUndefined();
   });
 });

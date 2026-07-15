@@ -31,6 +31,9 @@ export type ProfileRow = {
 export type StartupRow = {
   acquisition_status: string;
   category: string[];
+  city: string | null;
+  country: string | null;
+  country_code: string | null;
   created_at: string;
   description: string;
   discord: string | null;
@@ -39,8 +42,10 @@ export type StartupRow = {
   github: string | null;
   id: string;
   is_raising: boolean;
+  latitude: number | null;
   listing_status: string;
   logo: string;
+  longitude: number | null;
   mrr: number | null;
   name: string;
   one_liner: string;

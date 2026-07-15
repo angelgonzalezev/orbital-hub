@@ -13,6 +13,7 @@ import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/utils/cn';
 import { STARTUP_STAGES, STARTUP_CATEGORIES, TECH_STACK_OPTIONS } from '@/data/startupTaxonomy';
 import ImageUploader from '@/components/shared/ImageUploader';
+import LocationAutocomplete, { type StartupLocation } from '@/components/startup/LocationAutocomplete';
 import { KEEP_MEDIA, type MediaMutation } from '@/interface/media';
 
 interface StartupFormProps {
@@ -68,6 +69,18 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
 
     setFormData((prev) => ({ ...prev, [name]: val }));
     setErrors((prev) => prev.filter((err) => err.field !== name));
+  };
+
+  const handleLocationSelect = (location: StartupLocation | null) => {
+    setFormData((prev) => ({
+      ...prev,
+      city: location?.city,
+      country: location?.country,
+      countryCode: location?.countryCode,
+      latitude: location?.latitude,
+      longitude: location?.longitude,
+    }));
+    setErrors((prev) => prev.filter((err) => err.field !== 'location'));
   };
 
   const handleToggle = (name: 'showMrr' | 'isRaising') => {
@@ -218,6 +231,27 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
             mutation={logoMutation}
             onMutation={setLogoMutation}
           />
+
+          {/* Location */}
+          <div className="col-span-1 md:col-span-2 space-y-2">
+            <label className="text-sm font-medium text-white/60 ml-1">Location (City) *</label>
+            <LocationAutocomplete
+              {...(formData.city && formData.country
+                ? {
+                    value: {
+                      city: formData.city,
+                      country: formData.country,
+                      countryCode: formData.countryCode,
+                      latitude: formData.latitude,
+                      longitude: formData.longitude,
+                    },
+                  }
+                : {})}
+              hasError={Boolean(getError('location'))}
+              onSelect={handleLocationSelect}
+            />
+            {getError('location') && <p className="text-red-500 text-xs mt-1 ml-1">{getError('location')}</p>}
+          </div>
 
           {/* One Liner */}
           <div className="col-span-1 md:col-span-2 space-y-2">
