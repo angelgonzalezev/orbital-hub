@@ -19,23 +19,28 @@ export default function MyStartupsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<ListingTab>('published');
 
-  const refreshStartups = useCallback(async () => {
-    if (!walletAddress) {
-      setStartups([]);
-      setIsLoading(false);
-      return;
-    }
+  // silent skips the loading state so an in-place refresh (e.g. right after a
+  // featured purchase) does not unmount the list and the success modal with it.
+  const refreshStartups = useCallback(
+    async (options?: { silent?: boolean }) => {
+      if (!walletAddress) {
+        setStartups([]);
+        setIsLoading(false);
+        return;
+      }
 
-    setIsLoading(true);
-    try {
-      const data = await startupService.listStartupsByOwner();
-      setStartups(data);
-    } catch (error) {
-      console.error('Error loading startups:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [walletAddress]);
+      if (!options?.silent) setIsLoading(true);
+      try {
+        const data = await startupService.listStartupsByOwner();
+        setStartups(data);
+      } catch (error) {
+        console.error('Error loading startups:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [walletAddress],
+  );
 
   useEffect(() => {
     void refreshStartups();
@@ -114,7 +119,12 @@ export default function MyStartupsPage() {
             ) : (
               <div className="space-y-6">
                 {visibleStartups.map((startup) => (
-                  <MyStartupCard key={startup.id} startup={startup} onArchive={handleArchive} />
+                  <MyStartupCard
+                    key={startup.id}
+                    startup={startup}
+                    onArchive={handleArchive}
+                    onFeatured={() => refreshStartups({ silent: true })}
+                  />
                 ))}
               </div>
             )}

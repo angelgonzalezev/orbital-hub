@@ -1,97 +1,28 @@
 'use client';
 
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useSplToken } from '@solana/react-hooks';
+import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { Startup } from '@/interface/startup';
 import { isCurrentlyFeatured } from '@/utils/featured';
+import { useFeaturedPurchase } from '@/hooks/useFeaturedPurchase';
 import FeaturedSuccessModal from './FeaturedSuccessModal';
-import {
-  FEATURED_LISTING_BASE_UNITS,
-  FEATURED_LISTING_DAYS,
-  FEATURED_LISTING_PRICE_USDC,
-  FEATURED_LISTING_SKU,
-  PaymentVerificationError,
-  paymentService,
-  TREASURY_WALLET,
-  USDC_MINT,
-} from '@/services/paymentService';
-
-type Phase = 'idle' | 'paying' | 'verifying' | 'done';
+import { FEATURED_LISTING_DAYS, FEATURED_LISTING_PRICE_USDC } from '@/services/paymentService';
 
 interface FeatureStartupButtonProps {
   startup: Startup;
   onFeatured?: () => Promise<void> | void;
 }
 
-// Buys a featured listing: USDC transfer to the treasury signed by the
-// connected wallet, then server-side verification through the verify-payment
-// edge function. The signature is persisted before verification, so a refresh
-// mid-purchase resumes instead of charging twice.
+// The full-width featured-listing offer shown on the verification page; the
+// purchase flow itself lives in useFeaturedPurchase.
 const FeatureStartupButton: React.FC<FeatureStartupButtonProps> = ({ startup, onFeatured }) => {
   const { isWalletConnected } = useAuth();
-  const { send } = useSplToken(USDC_MINT);
-  const [phase, setPhase] = useState<Phase>('idle');
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<{ txSignature: string; featuredUntil?: string } | null>(null);
-  const resumeAttempted = useRef(false);
+  const { phase, error, success, buy, dismissSuccess, busy, available } = useFeaturedPurchase(startup, onFeatured);
 
   const featured = isCurrentlyFeatured(startup);
 
-  const verify = useCallback(
-    async (txSignature: string) => {
-      setPhase('verifying');
-      setError(null);
-      try {
-        const result = await paymentService.verifyPayment({
-          sku: FEATURED_LISTING_SKU,
-          targetId: startup.id,
-          txSignature,
-        });
-        paymentService.clearPendingSignature(FEATURED_LISTING_SKU, startup.id);
-        setPhase('done');
-        setSuccess({ txSignature, featuredUntil: result.featuredUntil ?? undefined });
-        await onFeatured?.();
-      } catch (verifyError) {
-        if (verifyError instanceof PaymentVerificationError && !verifyError.retriable) {
-          paymentService.clearPendingSignature(FEATURED_LISTING_SKU, startup.id);
-        }
-        setPhase('idle');
-        setError(verifyError instanceof Error ? verifyError.message : 'Payment verification failed.');
-      }
-    },
-    [onFeatured, startup.id],
-  );
+  if (!available) return null;
 
-  // Resume a purchase whose verification never completed (refresh, lost
-  // connection): the transfer already happened, only the verify call is redone.
-  useEffect(() => {
-    if (resumeAttempted.current) return;
-    resumeAttempted.current = true;
-    const pending = paymentService.readPendingSignature(FEATURED_LISTING_SKU, startup.id);
-    if (pending) void verify(pending);
-  }, [startup.id, verify]);
-
-  const handleBuy = async () => {
-    setError(null);
-    setPhase('paying');
-    try {
-      const signature = await send(
-        { amount: FEATURED_LISTING_BASE_UNITS, amountInBaseUnits: true, destinationOwner: TREASURY_WALLET },
-        { commitment: 'confirmed' },
-      );
-      paymentService.savePendingSignature(FEATURED_LISTING_SKU, startup.id, String(signature));
-      await verify(String(signature));
-    } catch (sendError) {
-      setPhase('idle');
-      setError(sendError instanceof Error ? sendError.message : 'The payment was not sent.');
-    }
-  };
-
-  if (!TREASURY_WALLET) return null;
-  if (startup.listingStatus !== 'published' || startup.verificationStatus !== 'verified') return null;
-
-  const busy = phase === 'paying' || phase === 'verifying';
   const buttonLabel =
     phase === 'paying'
       ? 'Waiting for wallet approval…'
@@ -116,7 +47,7 @@ const FeatureStartupButton: React.FC<FeatureStartupButtonProps> = ({ startup, on
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <button
-          onClick={handleBuy}
+          onClick={buy}
           disabled={busy || !isWalletConnected}
           className="btn btn-xl w-full border-amber-400/30 bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 disabled:opacity-50 sm:w-auto">
           {buttonLabel}
@@ -141,7 +72,7 @@ const FeatureStartupButton: React.FC<FeatureStartupButtonProps> = ({ startup, on
           startupName={startup.name}
           txSignature={success.txSignature}
           featuredUntil={success.featuredUntil ?? startup.featuredUntil}
-          onClose={() => setSuccess(null)}
+          onClose={dismissSuccess}
         />
       )}
     </div>
