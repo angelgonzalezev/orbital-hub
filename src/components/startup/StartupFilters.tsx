@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { StartupFilters as IStartupFilters } from '@/services/startupService';
-import { STARTUP_STAGES, STARTUP_CATEGORIES, TECH_STACK_OPTIONS } from '@/data/startupTaxonomy';
+import { STARTUP_STAGES, CATEGORY_GROUPS, TECH_STACK_OPTIONS } from '@/data/startupTaxonomy';
 import { cn } from '@/utils/cn';
 import { Search } from 'lucide-react';
 
@@ -65,23 +65,30 @@ const StartupFilters: React.FC<StartupFiltersProps> = ({ filters, onChange, clas
       </div>
 
       {/* Categories */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         <label className="text-xs text-white/40 uppercase tracking-widest font-bold ml-1">Categories</label>
-        <div className="flex flex-wrap gap-2">
-          {STARTUP_CATEGORIES.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => handleToggle('category', cat)}
-              className={cn(
-                'rounded-xl border px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
-                filters.category?.includes(cat)
-                  ? 'bg-primary-500/10 border-primary-500 text-primary-500'
-                  : 'bg-black border-white/10 text-white/40 hover:border-white/30 hover:text-white',
-              )}>
-              {cat}
-            </button>
-          ))}
-        </div>
+        {CATEGORY_GROUPS.map((group) => (
+          <div key={group.label} className="space-y-2">
+            <span className="block text-[10px] text-white/25 uppercase tracking-widest font-bold ml-1">
+              {group.label}
+            </span>
+            <div className="flex flex-wrap gap-2">
+              {group.items.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => handleToggle('category', cat)}
+                  className={cn(
+                    'rounded-xl border px-3 py-2 text-[11px] font-bold uppercase tracking-wider transition-all duration-300',
+                    filters.category?.includes(cat)
+                      ? 'bg-primary-500/10 border-primary-500 text-primary-500'
+                      : 'bg-black border-white/10 text-white/40 hover:border-white/30 hover:text-white',
+                  )}>
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Stages */}

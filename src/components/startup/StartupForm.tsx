@@ -11,7 +11,7 @@ import { userService } from '@/services/userService';
 import { resolveMediaUrl } from '@/services/mediaService';
 import { useAuth } from '@/context/AuthContext';
 import { cn } from '@/utils/cn';
-import { STARTUP_STAGES, STARTUP_CATEGORIES, TECH_STACK_OPTIONS } from '@/data/startupTaxonomy';
+import { STARTUP_STAGES, CATEGORY_GROUPS, TECH_STACK_OPTIONS } from '@/data/startupTaxonomy';
 import ImageUploader from '@/components/shared/ImageUploader';
 import LocationAutocomplete, { type StartupLocation } from '@/components/startup/LocationAutocomplete';
 import { KEEP_MEDIA, type MediaMutation } from '@/interface/media';
@@ -637,24 +637,31 @@ const StartupForm: React.FC<StartupFormProps> = ({ initialData, onSave, isEditin
         <h2 className="text-2xl font-bold text-white border-b border-white/5 pb-4">Taxonomy</h2>
 
         {/* Categories */}
-        <div className="space-y-4">
+        <div className="space-y-5">
           <label className="text-lg font-bold text-white ml-1">Categories (1-5) *</label>
-          <div className="flex flex-wrap gap-3">
-            {STARTUP_CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => handleArrayToggle('category', cat)}
-                className={cn(
-                  'rounded-full border px-4 py-2.5 text-sm font-medium transition-all duration-300',
-                  formData.category?.includes(cat)
-                    ? 'bg-primary-500/10 border-primary-500 text-primary-500'
-                    : 'bg-black border-white/10 text-white/50 hover:border-white/30 hover:text-white',
-                )}>
-                {cat}
-              </button>
-            ))}
-          </div>
+          {CATEGORY_GROUPS.map((group) => (
+            <div key={group.label} className="space-y-3">
+              <span className="block text-xs text-white/40 uppercase tracking-widest font-bold ml-1">
+                {group.label}
+              </span>
+              <div className="flex flex-wrap gap-3">
+                {group.items.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => handleArrayToggle('category', cat)}
+                    className={cn(
+                      'rounded-full border px-4 py-2.5 text-sm font-medium transition-all duration-300',
+                      formData.category?.includes(cat)
+                        ? 'bg-primary-500/10 border-primary-500 text-primary-500'
+                        : 'bg-black border-white/10 text-white/50 hover:border-white/30 hover:text-white',
+                    )}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
           {getError('category') && <p className="text-red-500 text-xs mt-1 ml-1">{getError('category')}</p>}
         </div>
 
