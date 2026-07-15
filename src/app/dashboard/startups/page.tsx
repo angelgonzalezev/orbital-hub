@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { startupService } from '@/services/startupService';
 import { Startup } from '@/interface/startup';
@@ -9,11 +9,15 @@ import AuthGate from '@/components/shared/AuthGate';
 import MyStartupCard from '@/components/startup/MyStartupCard';
 import { LoadingState, EmptyState } from '@/components/shared/States';
 import Link from 'next/link';
+import { cn } from '@/utils/cn';
+
+type ListingTab = 'published' | 'archived';
 
 export default function MyStartupsPage() {
   const { walletAddress } = useAuth();
   const [startups, setStartups] = useState<Startup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<ListingTab>('published');
 
   const refreshStartups = useCallback(async () => {
     if (!walletAddress) {
@@ -48,6 +52,10 @@ export default function MyStartupsPage() {
     }
   };
 
+  const publishedStartups = useMemo(() => startups.filter((s) => s.listingStatus !== 'archived'), [startups]);
+  const archivedStartups = useMemo(() => startups.filter((s) => s.listingStatus === 'archived'), [startups]);
+  const visibleStartups = activeTab === 'published' ? publishedStartups : archivedStartups;
+
   return (
     <AuthGate>
       <DashboardShell
@@ -69,9 +77,47 @@ export default function MyStartupsPage() {
           />
         ) : (
           <div className="space-y-6">
-            {startups.map((startup) => (
-              <MyStartupCard key={startup.id} startup={startup} onArchive={handleArchive} />
-            ))}
+            <div className="flex gap-2 border-b border-white/10">
+              {(
+                [
+                  { id: 'published', label: 'Published', count: publishedStartups.length },
+                  { id: 'archived', label: 'Archived', count: archivedStartups.length },
+                ] as const
+              ).map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    'border-b-2 px-4 py-3 text-sm font-bold transition-colors',
+                    activeTab === tab.id
+                      ? 'border-primary-500 text-white'
+                      : 'border-transparent text-white/40 hover:text-white/70',
+                  )}>
+                  {tab.label} ({tab.count})
+                </button>
+              ))}
+            </div>
+
+            {visibleStartups.length === 0 ? (
+              <EmptyState
+                title={activeTab === 'published' ? 'No Published Startups' : 'No Archived Startups'}
+                description={
+                  activeTab === 'published'
+                    ? "You don't have any published startups yet."
+                    : "You haven't archived any startups yet."
+                }
+                {...(activeTab === 'published'
+                  ? { actionHref: '/dashboard/startups/new', actionLabel: 'List New Startup' }
+                  : {})}
+              />
+            ) : (
+              <div className="space-y-6">
+                {visibleStartups.map((startup) => (
+                  <MyStartupCard key={startup.id} startup={startup} onArchive={handleArchive} />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </DashboardShell>
