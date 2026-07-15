@@ -1,24 +1,25 @@
 'use client';
 
 import React, { use, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { userService } from '@/services/userService';
 import { startupService } from '@/services/startupService';
 import { User } from '@/interface/user';
 import { Startup } from '@/interface/startup';
 import PublicProfileView from '@/components/profile/PublicProfileView';
+import { USERNAME_PATTERN } from '@/utils/validation';
 
-// Wallet-based fallback route. Profiles that have claimed a username get
-// redirected to their canonical /<username> URL.
-export default function WalletProfilePage({ params }: { params: Promise<{ wallet: string }> }) {
-  const { wallet } = use(params);
-  const router = useRouter();
+// Root-level vanity URLs (orbitalhub.dev/<username>). Static routes such as
+// /startups or /dashboard always win over this dynamic segment, and the
+// username rules reserve those names so the collision can never happen.
+export default function UsernameProfilePage({ params }: { params: Promise<{ username: string }> }) {
+  const { username } = use(params);
   const [profile, setProfile] = useState<User | null>(null);
   const [startups, setStartups] = useState<Startup[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!wallet) {
+    const normalized = decodeURIComponent(username ?? '').toLowerCase();
+    if (!USERNAME_PATTERN.test(normalized)) {
       setProfile(null);
       setStartups([]);
       setIsLoading(false);
@@ -26,21 +27,12 @@ export default function WalletProfilePage({ params }: { params: Promise<{ wallet
     }
 
     let cancelled = false;
-    // Stays true while navigating away so the error state never flashes.
-    let redirected = false;
     (async () => {
       setIsLoading(true);
       try {
-        const [user, involved] = await Promise.all([
-          userService.getPublicProfile(wallet),
-          startupService.listPublicStartupsByWallet(wallet),
-        ]);
+        const user = await userService.getPublicProfileByUsername(normalized);
+        const involved = user ? await startupService.listPublicStartupsByWallet(user.walletAddress) : [];
         if (!cancelled) {
-          if (user?.username) {
-            redirected = true;
-            router.replace(`/${user.username}`);
-            return;
-          }
           setProfile(user);
           setStartups(involved);
         }
@@ -51,7 +43,7 @@ export default function WalletProfilePage({ params }: { params: Promise<{ wallet
           setStartups([]);
         }
       } finally {
-        if (!cancelled && !redirected) {
+        if (!cancelled) {
           setIsLoading(false);
         }
       }
@@ -60,7 +52,7 @@ export default function WalletProfilePage({ params }: { params: Promise<{ wallet
     return () => {
       cancelled = true;
     };
-  }, [wallet, router]);
+  }, [username]);
 
   return <PublicProfileView profile={profile} startups={startups} isLoading={isLoading} />;
 }

@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { resolveMediaUrl } from '@/services/mediaService';
+import { profilePath } from '@/utils/profilePath';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -115,7 +116,7 @@ export default function DashboardPage() {
 
                 {walletAddress && (
                   <Link
-                    href={`/u/${walletAddress}`}
+                    href={profilePath({ username: user?.username, walletAddress })}
                     className="btn btn-md inline-flex w-full items-center justify-center gap-2 border border-primary-500/30 bg-primary-500/10 text-primary-400 transition hover:border-primary-500/50 hover:bg-primary-500/20">
                     <ExternalLink aria-hidden="true" className="size-4" />
                     View Public Page

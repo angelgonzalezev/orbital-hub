@@ -15,6 +15,7 @@ interface ProfileFormProps {
 }
 
 const normalizeProfileFormData = (user: User | null): Partial<User> => ({
+  username: user?.username ?? '',
   displayName: user?.displayName ?? '',
   jobTitle: user?.jobTitle ?? '',
   twitterHandle: user?.twitterHandle ?? '',
@@ -38,7 +39,8 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    // Usernames are lowercase by definition; normalize while typing.
+    setFormData((prev) => ({ ...prev, [name]: name === 'username' ? value.toLowerCase() : value }));
     // Clear error for this field
     setErrors((prev) => prev.filter((err) => err.field !== name));
   };
@@ -77,6 +79,37 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ initialData, onSave }) => {
     <form
       onSubmit={handleSubmit}
       className="space-y-8 rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 sm:p-6 md:p-8">
+      {/* Username */}
+      <div className="space-y-2">
+        <label htmlFor="profile-username" className="text-sm font-medium text-white/60 ml-1">
+          Username
+        </label>
+        <div className="relative">
+          <span className="absolute left-6 top-1/2 -translate-y-1/2 text-white/30 text-lg">@</span>
+          <input
+            id="profile-username"
+            type="text"
+            name="username"
+            value={formData.username ?? ''}
+            onChange={handleChange}
+            placeholder="username"
+            autoComplete="username"
+            maxLength={30}
+            className={cn(
+              'w-full rounded-2xl border bg-black py-3.5 pl-10 pr-4 text-white transition-all focus:outline-none focus:ring-2 focus:ring-primary-500/50 sm:py-4 sm:pl-11 sm:pr-5',
+              getError('username') ? 'border-red-500/50' : 'border-white/10',
+            )}
+          />
+        </div>
+        {getError('username') ? (
+          <p className="text-red-500 text-xs mt-1 ml-1">{getError('username')}</p>
+        ) : (
+          <p className="text-white/30 text-xs mt-1 ml-1">
+            Your public page: orbitalhub.dev/{formData.username || 'username'}
+          </p>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Display Name */}
         <div className="space-y-2">

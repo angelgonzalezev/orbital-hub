@@ -50,6 +50,7 @@ export default function StartupDetailPage({ params }: { params: Promise<{ id: st
                     avatar: profile.avatar,
                     displayName: profile.displayName,
                     jobTitle: profile.jobTitle,
+                    username: profile.username,
                   }
                 : member;
             });

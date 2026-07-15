@@ -1,8 +1,45 @@
 begin;
-select plan(7);
+select plan(12);
+
+-- Give Alex Rivera a username (as the table owner; column-level grants for
+-- authenticated users are asserted separately below).
+update public.profiles set username = 'arivera' where id = '10000000-0000-4000-8000-000000000002';
+
+select throws_ok(
+  $$update public.profiles set username = 'Bad Name!' where id = '10000000-0000-4000-8000-000000000001'$$,
+  '23514',
+  null,
+  'usernames must be lowercase alphanumerics or underscores'
+);
+
+select throws_ok(
+  $$update public.profiles set username = 'dashboard' where id = '10000000-0000-4000-8000-000000000001'$$,
+  '23514',
+  null,
+  'route names are reserved and cannot be claimed as usernames'
+);
+
+select throws_ok(
+  $$update public.profiles set username = 'arivera' where id = '10000000-0000-4000-8000-000000000001'$$,
+  '23505',
+  null,
+  'usernames are unique'
+);
 
 set local role anon;
 select set_config('request.jwt.claim.sub', '', true);
+
+select is(
+  (select public.get_public_profile_by_username('arivera')->>'display_name'),
+  'Alex Rivera',
+  'anonymous visitors can look up a profile by username'
+);
+
+select is(
+  (select public.get_public_profile_by_username('ARivera')->>'display_name'),
+  'Alex Rivera',
+  'username lookup is case-insensitive'
+);
 
 -- Alex Rivera (Vote111...) owns Neon Garden (published) and is Lead Dev in the
 -- Solana Pay Pro team (published, owned by Marco).

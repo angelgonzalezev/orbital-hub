@@ -6,6 +6,7 @@ import ProfileForm from '@/components/profile/ProfileForm';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
+import { profilePath } from '@/utils/profilePath';
 
 export default function ProfilePage() {
   const { user, walletAddress } = useAuth();
@@ -18,7 +19,7 @@ export default function ProfilePage() {
         actions={
           walletAddress && (
             <Link
-              href={`/u/${walletAddress}`}
+              href={profilePath({ username: user?.username, walletAddress })}
               className="btn btn-white-dark btn-md inline-flex items-center justify-center gap-2 border-white/10">
               <ExternalLink aria-hidden="true" className="size-4" />
               View public page

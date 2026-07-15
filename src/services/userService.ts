@@ -49,6 +49,16 @@ export const userService = {
     return isPublicProfileRow(data) ? mapProfileRow(data) : null;
   },
 
+  // Works without a session: backs the public /<username> profile page.
+  getPublicProfileByUsername: async (username: string): Promise<User | null> => {
+    const { data, error } = await getSupabaseBrowserClient().rpc('get_public_profile_by_username', {
+      name: username,
+    });
+
+    if (error) throw error;
+    return isPublicProfileRow(data) ? mapProfileRow(data) : null;
+  },
+
   // Works without a session: the detail page is public, so the owner and team
   // profiles come from an RPC scoped to one startup instead of the profiles table.
   listStartupTeamProfiles: async (startupId: string): Promise<User[]> => {
@@ -140,6 +150,7 @@ export const userService = {
         job_title: input.jobTitle || '',
         telegram_handle: input.telegramHandle || null,
         twitter_handle: input.twitterHandle || null,
+        username: input.username?.trim().toLowerCase() || null,
       })
       .eq('auth_user_id', user.id)
       .select('*')
@@ -147,6 +158,11 @@ export const userService = {
 
     if (error) {
       await cleanupReplacedMedia(uploadedAvatar);
+      // 23505 = unique_violation; the only unique constraint reachable from
+      // this update is the username index.
+      if (error.code === '23505') {
+        throw new Error('That username is already taken. Please pick another one.');
+      }
       throw error;
     }
 

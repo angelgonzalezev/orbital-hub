@@ -1,6 +1,6 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
-// Shape returned by get_startup_team_profiles: the public subset of a profile.
+// Shape returned by the public profile RPCs: the public subset of a profile.
 export type PublicProfileRow = {
   avatar: string | null;
   bio: string | null;
@@ -9,6 +9,7 @@ export type PublicProfileRow = {
   joined_at: string;
   telegram_handle: string | null;
   twitter_handle: string | null;
+  username: string | null;
   wallet_address: string;
 };
 
@@ -23,6 +24,7 @@ export type ProfileRow = {
   telegram_handle: string | null;
   twitter_handle: string | null;
   updated_at: string;
+  username: string | null;
   wallet_address: string;
 };
 
@@ -64,6 +66,7 @@ export interface Database {
       archive_startup: { Args: { startup_id: string }; Returns: Json };
       get_accessible_startup: { Args: { startup_id: string }; Returns: Json };
       get_public_profile: { Args: { wallet: string }; Returns: Json };
+      get_public_profile_by_username: { Args: { name: string }; Returns: Json };
       get_startup_team_profiles: { Args: { startup_id: string }; Returns: Json[] };
       list_public_startups_by_wallet: { Args: { wallet: string }; Returns: Json[] };
       list_published_startups: {

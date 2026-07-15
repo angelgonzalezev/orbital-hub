@@ -12,6 +12,7 @@ export interface TeamMember {
   avatar?: string;
   displayName?: string;
   jobTitle?: string;
+  username?: string;
   walletAddress: string;
   role: string;
 }

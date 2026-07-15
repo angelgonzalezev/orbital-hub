@@ -13,6 +13,7 @@ const profileRow: ProfileRow = {
   telegram_handle: null,
   twitter_handle: 'adasol',
   updated_at: '2026-01-01T00:00:00Z',
+  username: 'adasol',
   wallet_address: '11111111111111111111111111111111',
 };
 
@@ -59,6 +60,7 @@ describe('Supabase mappers', () => {
       joinedAt: '2026-01-01T00:00:00Z',
       telegramHandle: undefined,
       twitterHandle: 'adasol',
+      username: 'adasol',
       walletAddress: profileRow.wallet_address,
     });
   });

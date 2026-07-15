@@ -8,8 +8,53 @@ export type ValidationError = {
 
 // --- Profile Validation ---
 
+// Kept in sync with the profiles_username_format / profiles_username_reserved
+// constraints in the 20260715150000_profile_usernames.sql migration.
+export const USERNAME_PATTERN = /^[a-z0-9_]{3,30}$/;
+export const RESERVED_USERNAMES = [
+  'api',
+  'dashboard',
+  'startups',
+  'startup',
+  'u',
+  'admin',
+  'auth',
+  'login',
+  'logout',
+  'signup',
+  'profile',
+  'profiles',
+  'settings',
+  'docs',
+  'blog',
+  'about',
+  'terms',
+  'privacy',
+  'support',
+  'help',
+  'orbital',
+  'marketplace',
+  'home',
+  '404',
+  '500',
+];
+
 export const validateProfile = (user: Partial<User>): ValidationError[] => {
   const errors: ValidationError[] = [];
+
+  if (user.username && user.username.length > 0) {
+    if (!USERNAME_PATTERN.test(user.username)) {
+      errors.push({
+        field: 'username',
+        message: 'Username must be 3-30 characters: lowercase letters, numbers, and underscores only.',
+      });
+    } else if (RESERVED_USERNAMES.includes(user.username)) {
+      errors.push({
+        field: 'username',
+        message: 'This username is reserved. Please pick another one.',
+      });
+    }
+  }
 
   if (!user.displayName || user.displayName.length < 2 || user.displayName.length > 80) {
     errors.push({

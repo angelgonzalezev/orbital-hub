@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React from 'react';
 import type { TeamMember } from '@/interface/startup';
 import { resolveMediaUrl } from '@/services/mediaService';
+import { profilePath } from '@/utils/profilePath';
 
 interface StartupTeamProps {
   members: TeamMember[];
@@ -30,7 +31,7 @@ const StartupTeam: React.FC<StartupTeamProps> = ({ members }) => {
           return (
             <div key={member.walletAddress} className="group relative">
               <Link
-                href={`/u/${member.walletAddress}`}
+                href={profilePath(member)}
                 title={`${displayName} • ${member.role}`}
                 aria-label={`${displayName} - ${member.role}`}
                 className="relative block size-14 shrink-0 overflow-hidden rounded-full border border-white/10 bg-[#0A0A0A] transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50">

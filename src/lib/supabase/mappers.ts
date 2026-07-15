@@ -18,6 +18,7 @@ export const mapProfileRow = (row: ProfileRow | PublicProfileRow): User => ({
   joinedAt: row.joined_at,
   telegramHandle: row.telegram_handle || undefined,
   twitterHandle: row.twitter_handle || undefined,
+  username: row.username || undefined,
   walletAddress: row.wallet_address,
 });
 
@@ -29,6 +30,7 @@ const mapTeam = (team: Json): TeamMember[] => {
     const avatar = member.avatar;
     const displayName = member.displayName;
     const jobTitle = member.jobTitle;
+    const username = member.username;
     const walletAddress = member.walletAddress;
     const role = member.role;
     if (typeof walletAddress !== 'string' || typeof role !== 'string') return [];
@@ -37,6 +39,7 @@ const mapTeam = (team: Json): TeamMember[] => {
     if (typeof avatar === 'string') mappedMember.avatar = avatar;
     if (typeof displayName === 'string') mappedMember.displayName = displayName;
     if (typeof jobTitle === 'string') mappedMember.jobTitle = jobTitle;
+    if (typeof username === 'string') mappedMember.username = username;
     return [mappedMember];
   });
 };

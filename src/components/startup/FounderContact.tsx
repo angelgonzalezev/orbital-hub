@@ -5,6 +5,7 @@ import { User } from '@/interface/user';
 import Image from 'next/image';
 import Link from 'next/link';
 import { resolveMediaUrl } from '@/services/mediaService';
+import { profilePath } from '@/utils/profilePath';
 
 interface FounderContactProps {
   founder: User | null;
@@ -24,7 +25,7 @@ const FounderContact: React.FC<FounderContactProps> = ({ founder }) => {
       </div>
 
       <Link
-        href={`/u/${founder.walletAddress}`}
+        href={profilePath(founder)}
         className="group flex flex-col items-center gap-5 border-b border-white/10 pb-7 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/50 sm:flex-row sm:items-start">
         <div className="relative size-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-black transition-colors group-hover:border-primary-500/50">
           {avatarUrl ? (
