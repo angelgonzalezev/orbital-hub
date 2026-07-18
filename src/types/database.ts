@@ -105,7 +105,7 @@ export interface Database {
       };
       publish_startup: { Args: { startup_id: string }; Returns: Json };
       request_startup_verification: { Args: { startup_id: string }; Returns: Json };
-      resolve_privy_profile: { Args: { in_did: string; in_wallets: Json }; Returns: Json };
+      resolve_privy_profile: { Args: { in_did: string; in_email?: string | null; in_wallets: Json }; Returns: Json };
     };
     Tables: {
       profiles: {
@@ -126,6 +126,17 @@ export interface Database {
         Relationships: [];
         Row: ProfileRow;
         Update: Partial<Omit<ProfileRow, 'id'>>;
+      };
+      user_emails: {
+        Insert: {
+          email: string;
+          privy_did: string;
+          profile_id: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+        Row: { email: string; privy_did: string; profile_id: string; updated_at: string };
+        Update: Partial<{ email: string; privy_did: string; updated_at: string }>;
       };
       user_wallets: {
         Insert: {

@@ -2,6 +2,7 @@
 
 import DashboardShell from '@/components/shared/DashboardShell';
 import AuthGate from '@/components/shared/AuthGate';
+import AccountEmailPanel from '@/components/profile/AccountEmailPanel';
 import ProfileForm from '@/components/profile/ProfileForm';
 import WalletPanel from '@/components/profile/WalletPanel';
 import { useAuth } from '@/context/AuthContext';
@@ -46,6 +47,7 @@ export default function ProfilePage() {
           )
         }>
         <div className="max-w-4xl space-y-6">
+          <AccountEmailPanel />
           <WalletPanel />
           <ProfileForm initialData={user} onSave={handleSave} />
         </div>

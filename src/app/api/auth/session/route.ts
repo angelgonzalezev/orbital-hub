@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { isJwtMintingConfigured, mintSupabaseAccessToken } from '@/lib/auth/mintSupabaseJwt';
 import {
+  extractEmailAddress,
   extractSolanaWallets,
   getPrivyUser,
   isPrivyServerConfigured,
@@ -41,14 +42,18 @@ export async function POST(request: Request) {
   }
 
   let wallets: PrivySolanaWallet[];
+  let email: string | null;
   try {
     const identityToken = (await cookies()).get('privy-id-token')?.value ?? null;
-    wallets = extractSolanaWallets(await getPrivyUser(did, identityToken));
+    let privyUser = await getPrivyUser(did, identityToken);
+    wallets = extractSolanaWallets(privyUser);
     if (wallets.length === 0 && identityToken) {
       // The identity-token cookie can lag behind embedded wallet creation;
       // the REST lookup is the fresh source before concluding "no wallet".
-      wallets = extractSolanaWallets(await getPrivyUser(did, null));
+      privyUser = await getPrivyUser(did, null);
+      wallets = extractSolanaWallets(privyUser);
     }
+    email = extractEmailAddress(privyUser);
   } catch (userError) {
     console.error('[auth/session] Privy user lookup failed:', userError);
     return NextResponse.json({ error: 'Unable to load the Privy account.' }, { status: 502 });
@@ -69,6 +74,7 @@ export async function POST(request: Request) {
 
   const { data: profile, error } = await admin.rpc('resolve_privy_profile', {
     in_did: did,
+    in_email: email,
     in_wallets: wallets.map((wallet) => ({ address: wallet.address, wallet_type: wallet.walletType })),
   });
 

@@ -49,6 +49,21 @@ export const extractSolanaWallets = (user: PrivyUser): PrivySolanaWallet[] => {
   return wallets;
 };
 
+// The user's notification/login email: an explicitly linked email first, the
+// Google account's address as fallback.
+export const extractEmailAddress = (user: PrivyUser): string | null => {
+  let googleEmail: string | null = null;
+  for (const account of user.linked_accounts ?? []) {
+    if (account.type === 'email' && 'address' in account && typeof account.address === 'string') {
+      return account.address;
+    }
+    if (account.type === 'google_oauth' && 'email' in account && typeof account.email === 'string') {
+      googleEmail = account.email;
+    }
+  }
+  return googleEmail;
+};
+
 // Fetches the full Privy user. The identity token (privy-id-token cookie) is a
 // free local parse; the REST lookup by DID is the fallback when the cookie is
 // absent or belongs to a different user than the verified access token.
