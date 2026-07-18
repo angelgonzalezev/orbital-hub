@@ -6,6 +6,7 @@ import { StartupStageBadge, MarketSignalBadge, FeaturedBadge } from '../shared/B
 import { isCurrentlyFeatured } from '@/utils/featured';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ChevronRight } from 'lucide-react';
 import RevealAnimation from '../animation/RevealAnimation';
 import { resolveMediaUrl } from '@/services/mediaService';
 
@@ -14,101 +15,97 @@ interface StartupCardProps {
   index?: number;
 }
 
+// Compact marketplace card: the whole card is the link (no CTA button), with
+// a sliding chevron as the affordance.
 const StartupCard: React.FC<StartupCardProps> = ({ startup, index = 0 }) => {
   const logoUrl = resolveMediaUrl(startup.logo);
   const featured = isCurrentlyFeatured(startup);
 
   return (
     <RevealAnimation delay={0.1 * (index % 4)}>
-      <article
-        className={`group flex h-full flex-col overflow-hidden rounded-[30px] border p-5 transition-colors duration-300 sm:p-6 lg:p-8 ${
+      <Link
+        href={`/startups/${startup.id}`}
+        className={`group flex h-full flex-col rounded-3xl border p-5 transition-colors duration-300 ${
           featured
             ? 'border-amber-400/40 bg-gradient-to-b from-amber-400/[0.08] via-[#0A0A0A] to-[#0A0A0A] shadow-[0_0_35px_-12px_rgba(251,191,36,0.45)] hover:border-amber-400/70'
             : 'border-white/5 bg-[#0A0A0A] hover:border-primary-500/30'
         }`}>
-        <div className="mb-5 flex min-h-6 flex-wrap items-center gap-2">
-          {featured && <FeaturedBadge />}
-          {startup.isRaising && <MarketSignalBadge type="raising" />}
-          <MarketSignalBadge type="acquisition" status={startup.acquisitionStatus} />
-        </div>
-
-        <div className="flex-grow space-y-5">
-          {/* Header: Logo & Name */}
-          <div className="flex min-w-0 items-start gap-4">
-            <div className="relative size-14 flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-black transition-colors group-hover:border-primary-500/50 sm:size-16">
+        <div className="flex-grow space-y-3.5">
+          {/* Header: logo, name, badges */}
+          <div className="flex min-w-0 items-start gap-3.5">
+            <div className="relative size-12 flex-shrink-0 overflow-hidden rounded-xl border border-white/10 bg-black transition-colors group-hover:border-primary-500/50">
               {logoUrl ? (
-                <Image src={logoUrl} alt={startup.name} fill sizes="64px" className="object-cover" />
+                <Image src={logoUrl} alt={startup.name} fill sizes="48px" className="object-cover" />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-white/20 font-bold text-xl">
+                <div className="flex h-full w-full items-center justify-center text-lg font-bold text-white/20">
                   {startup.name.slice(0, 2).toUpperCase()}
                 </div>
               )}
             </div>
-            <div className="min-w-0 space-y-2">
-              <h3 className="break-words text-xl font-bold text-white transition-colors group-hover:text-primary-400 sm:text-2xl">
+            <div className="min-w-0 space-y-1.5">
+              <h3 className="break-words text-lg font-bold leading-6 text-white transition-colors group-hover:text-primary-400">
                 {startup.name}
               </h3>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-1.5">
+                {featured && <FeaturedBadge />}
                 <StartupStageBadge stage={startup.stage} />
+                {startup.isRaising && <MarketSignalBadge type="raising" />}
+                <MarketSignalBadge type="acquisition" status={startup.acquisitionStatus} />
               </div>
-              {startup.city && startup.country && (
-                <p className="text-xs text-white/40">
-                  📍 {startup.city}, {startup.country}
-                </p>
-              )}
             </div>
           </div>
 
-          {/* Body: One Liner */}
-          <p className="line-clamp-3 text-base leading-7 text-white/70 sm:text-lg">{startup.oneLiner}</p>
+          {/* One-liner */}
+          <p className="line-clamp-2 text-sm leading-6 text-white/70">{startup.oneLiner}</p>
 
-          {/* Taxonomy Tags */}
-          <div className="flex flex-wrap gap-2 pt-2">
+          {/* Taxonomy */}
+          <div className="flex flex-wrap gap-1.5">
             {startup.category.slice(0, 2).map((cat) => (
               <span
                 key={cat}
-                className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-xs font-medium uppercase text-white/45">
+                className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] font-medium uppercase text-white/45">
                 {cat}
               </span>
             ))}
             {startup.techStack.slice(0, 2).map((tech) => (
               <span
                 key={tech}
-                className="rounded-full border border-primary-500/10 bg-primary-500/5 px-2.5 py-1 text-xs font-medium uppercase text-primary-400/70">
+                className="rounded-full border border-primary-500/10 bg-primary-500/5 px-2 py-0.5 text-[10px] font-medium uppercase text-primary-400/70">
                 {tech}
               </span>
             ))}
             {(startup.category.length > 2 || startup.techStack.length > 2) && (
-              <span className="text-white/20 text-xs self-center ml-1">...</span>
+              <span className="self-center text-xs text-white/20">…</span>
             )}
           </div>
         </div>
 
-        {/* Footer: Metrics & CTA */}
-        <div className="mt-7 flex flex-col gap-4 border-t border-white/5 pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <div className="space-y-1">
+        {/* Footer: metric, location, affordance */}
+        <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/5 pt-3.5">
+          <p className="min-w-0 truncate text-xs text-white/40">
             {startup.showMrr && startup.mrr !== undefined ? (
-              <div suppressHydrationWarning>
-                <p className="text-[10px] text-white/30 uppercase tracking-widest font-bold">MRR</p>
-                <p className="text-white font-bold">${startup.mrr.toLocaleString()}</p>
-              </div>
+              <span suppressHydrationWarning>
+                <span className="font-bold text-white/80">${startup.mrr.toLocaleString()}</span> MRR
+              </span>
             ) : (
-              <div>
-                <p className="text-[10px] text-white/30 uppercase tracking-widest font-bold">Team</p>
-                <p className="text-white font-bold">
-                  {startup.teamSize} member{startup.teamSize !== 1 ? 's' : ''}
-                </p>
-              </div>
+              <span>
+                <span className="font-bold text-white/80">{startup.teamSize}</span>{' '}
+                {startup.teamSize === 1 ? 'member' : 'members'}
+              </span>
             )}
-          </div>
-
-          <Link
-            href={`/startups/${startup.id}`}
-            className="btn btn-white-dark btn-md w-full transition-all group-hover:btn-primary sm:w-auto">
-            View Startup
-          </Link>
+            {startup.city && startup.country && (
+              <span>
+                {' '}
+                · {startup.city}, {startup.country}
+              </span>
+            )}
+          </p>
+          <ChevronRight
+            aria-hidden="true"
+            className="size-4 shrink-0 text-white/20 transition-all group-hover:translate-x-1 group-hover:text-primary-400"
+          />
         </div>
-      </article>
+      </Link>
     </RevealAnimation>
   );
 };
