@@ -5,9 +5,9 @@ import { Startup } from '@/interface/startup';
 import { VerificationStatusBadge, ListingStatusBadge, StartupStageBadge, FeaturedBadge } from '../shared/Badges';
 import ConfirmModal from '../shared/ConfirmModal';
 import { isCurrentlyFeatured } from '@/utils/featured';
-import { useAuth } from '@/context/AuthContext';
 import { useFeaturedPurchase } from '@/hooks/useFeaturedPurchase';
 import FeaturedSuccessModal from './FeaturedSuccessModal';
+import PaymentProgressModal from './PaymentProgressModal';
 import { FEATURED_LISTING_DAYS, FEATURED_LISTING_PRICE_USDC } from '@/services/paymentService';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -26,8 +26,10 @@ interface MyStartupCardProps {
 const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDelete, onFeatured }) => {
   const logoUrl = resolveMediaUrl(startup.logo);
   const router = useRouter();
-  const { isWalletConnected } = useAuth();
-  const { phase, error, success, buy, dismissSuccess, busy, available } = useFeaturedPurchase(startup, onFeatured);
+  const { phase, error, success, buy, dismissError, dismissSuccess, busy, available, canPay } = useFeaturedPurchase(
+    startup,
+    onFeatured,
+  );
   const featured = isCurrentlyFeatured(startup);
   const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
   const [actionBusy, setActionBusy] = useState(false);
@@ -85,7 +87,6 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
             <ListingStatusBadge status={startup.listingStatus} />
             {featured && <FeaturedBadge />}
           </div>
-          {error && <p className="text-sm font-medium text-red-500">{error}</p>}
           {actionError && <p className="text-sm font-medium text-red-500">{actionError}</p>}
         </div>
 
@@ -122,7 +123,7 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
       {available && (
         <button
           onClick={buy}
-          disabled={busy || !isWalletConnected}
+          disabled={busy || !canPay}
           className="-mt-px flex w-full flex-shrink-0 flex-col items-center justify-center gap-1.5 rounded-bl-[30px] rounded-br-[30px] border border-amber-400/30 bg-amber-400/10 px-6 py-6 text-amber-400 transition-colors hover:border-amber-400/60 hover:bg-amber-400/20 disabled:opacity-50 sm:-ml-px sm:mt-0 sm:w-44 sm:rounded-bl-none sm:rounded-tr-[30px]">
           <span className="text-3xl leading-none">★</span>
           <span className="text-sm font-bold uppercase tracking-wider">
@@ -163,6 +164,8 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
           onCancel={() => setPendingAction(null)}
         />
       )}
+
+      <PaymentProgressModal phase={phase} error={error} startupName={startup.name} onDismissError={dismissError} />
 
       {success && (
         <FeaturedSuccessModal

@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { reconnectPaymentWallet } from '@/components/shared/PrivyWalletBridge';
+import React from 'react';
 import { Startup } from '@/interface/startup';
 import { isCurrentlyFeatured } from '@/utils/featured';
 import { useFeaturedPurchase } from '@/hooks/useFeaturedPurchase';
 import FeaturedSuccessModal from './FeaturedSuccessModal';
+import PaymentProgressModal from './PaymentProgressModal';
 import { FEATURED_LISTING_DAYS, FEATURED_LISTING_PRICE_USDC } from '@/services/paymentService';
 
 interface FeatureStartupButtonProps {
@@ -15,24 +14,15 @@ interface FeatureStartupButtonProps {
 }
 
 // The full-width featured-listing offer shown on the verification page; the
-// purchase flow itself lives in useFeaturedPurchase.
+// purchase flow itself lives in useFeaturedPurchase (paid through Privy, so
+// no wallet-connection state is involved).
 const FeatureStartupButton: React.FC<FeatureStartupButtonProps> = ({ startup, onFeatured }) => {
-  const { isWalletConnected } = useAuth();
-  const { phase, error, success, buy, dismissSuccess, busy, available } = useFeaturedPurchase(startup, onFeatured);
-  const [isReconnecting, setIsReconnecting] = useState(false);
+  const { phase, error, success, buy, dismissError, dismissSuccess, busy, available, canPay } = useFeaturedPurchase(
+    startup,
+    onFeatured,
+  );
 
   const featured = isCurrentlyFeatured(startup);
-
-  const reconnect = async () => {
-    setIsReconnecting(true);
-    try {
-      await reconnectPaymentWallet();
-    } catch {
-      // Silent: the button stays available for another attempt.
-    } finally {
-      setIsReconnecting(false);
-    }
-  };
 
   if (!available) return null;
 
@@ -61,19 +51,10 @@ const FeatureStartupButton: React.FC<FeatureStartupButtonProps> = ({ startup, on
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <button
           onClick={buy}
-          disabled={busy || !isWalletConnected}
+          disabled={busy || !canPay}
           className="btn btn-xl w-full border-amber-400/30 bg-amber-400/10 text-amber-400 hover:bg-amber-400/20 disabled:opacity-50 sm:w-auto">
           {buttonLabel}
         </button>
-        {!isWalletConnected && (
-          <button
-            type="button"
-            onClick={() => void reconnect()}
-            disabled={isReconnecting}
-            className="btn w-full border-white/15 text-white/70 hover:border-white/30 disabled:opacity-50 sm:w-auto">
-            {isReconnecting ? 'Connecting wallet…' : 'Reconnect wallet to pay'}
-          </button>
-        )}
       </div>
 
       {phase === 'done' && (
@@ -82,11 +63,7 @@ const FeatureStartupButton: React.FC<FeatureStartupButtonProps> = ({ startup, on
         </div>
       )}
 
-      {error && (
-        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-center font-medium text-red-500">
-          {error}
-        </div>
-      )}
+      <PaymentProgressModal phase={phase} error={error} startupName={startup.name} onDismissError={dismissError} />
 
       {success && (
         <FeaturedSuccessModal

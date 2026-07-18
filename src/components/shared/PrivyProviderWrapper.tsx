@@ -4,13 +4,11 @@ import { PrivyProvider, type PrivyClientConfig } from '@privy-io/react-auth';
 import { toSolanaWalletConnectors } from '@privy-io/react-auth/solana';
 import { createSolanaRpc, createSolanaRpcSubscriptions } from '@solana/kit';
 import { useMemo, type ReactNode } from 'react';
-import { isPrivyConfigured, toWssEndpoint } from '@/lib/privy/config';
+import { getBrowserRpcEndpoint, isPrivyConfigured, toWssEndpoint } from '@/lib/privy/config';
 
-const DEFAULT_RPC_URL = 'https://api.mainnet-beta.solana.com';
-
-// Same custom RPC as SolanaProvider: the public endpoint 403s browser calls,
-// so every Privy-internal Solana request must go through it too.
-const ENDPOINT = process.env.NEXT_PUBLIC_SOLANA_RPC_URL || DEFAULT_RPC_URL;
+// A dedicated provider when configured, Privy's own proxied RPC otherwise -
+// the public endpoint 403s browser calls.
+const ENDPOINT = getBrowserRpcEndpoint();
 
 const buildPrivyClientConfig = (): PrivyClientConfig => ({
   appearance: {
