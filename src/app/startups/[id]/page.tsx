@@ -115,13 +115,17 @@ export default function StartupDetailPage({ params }: { params: Promise<{ id: st
                     <div className="min-w-0 space-y-6">
                       <h4 className="text-xl font-bold text-white uppercase tracking-widest">Tech Stack</h4>
                       <div className="flex flex-wrap gap-3">
-                        {startup.techStack.map((tech) => (
-                          <span
-                            key={tech}
-                            className="rounded-xl border border-primary-500/20 bg-primary-500/5 px-3 py-2 font-medium text-primary-400">
-                            {tech}
-                          </span>
-                        ))}
+                        {startup.techStack.length > 0 ? (
+                          startup.techStack.map((tech) => (
+                            <span
+                              key={tech}
+                              className="rounded-xl border border-primary-500/20 bg-primary-500/5 px-3 py-2 font-medium text-primary-400">
+                              {tech}
+                            </span>
+                          ))
+                        ) : (
+                          <p className="text-white/40 italic">No technologies specified.</p>
+                        )}
                       </div>
                     </div>
                     <div className="min-w-0 space-y-6">
