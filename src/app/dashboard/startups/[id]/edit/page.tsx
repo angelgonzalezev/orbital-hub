@@ -7,13 +7,15 @@ import { Startup } from '@/interface/startup';
 import DashboardShell from '@/components/shared/DashboardShell';
 import AuthGate from '@/components/shared/AuthGate';
 import StartupForm from '@/components/startup/StartupForm';
+import VerificationChecklistModal from '@/components/startup/VerificationChecklistModal';
 import { LoadingState, ErrorState } from '@/components/shared/States';
 import { useRouter } from 'next/navigation';
 
 export default function EditStartupPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
-  const { walletAddress } = useAuth();
+  const { user, walletAddress } = useAuth();
   const [startup, setStartup] = useState<Startup | null>(null);
+  const [savedStartup, setSavedStartup] = useState<Startup | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -45,8 +47,16 @@ export default function EditStartupPage({ params }: { params: Promise<{ id: stri
     };
   }, [walletAddress, id]);
 
-  const handleSave = () => {
-    router.push('/dashboard/startups');
+  const handleSave = (updated: Startup) => {
+    // The checklist prompt only makes sense while requesting verification is
+    // actionable; re-requesting on a pending/verified startup would reset it.
+    const actionable = updated.verificationStatus === 'draft' || updated.verificationStatus === 'rejected';
+    if (!actionable) {
+      router.push('/dashboard/startups');
+      return;
+    }
+    setStartup(updated);
+    setSavedStartup(updated);
   };
 
   return (
@@ -60,6 +70,15 @@ export default function EditStartupPage({ params }: { params: Promise<{ id: stri
           <div className="max-w-4xl">
             <StartupForm initialData={startup} isEditing onSave={handleSave} />
           </div>
+        )}
+        {savedStartup && user && (
+          <VerificationChecklistModal
+            startup={savedStartup}
+            owner={user}
+            context="updated"
+            onEdit={() => setSavedStartup(null)}
+            onClose={() => router.push('/dashboard/startups')}
+          />
         )}
       </DashboardShell>
     </AuthGate>

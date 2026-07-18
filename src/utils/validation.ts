@@ -178,26 +178,34 @@ export const canSaveStartupDraft = (startup: Partial<Startup>): boolean => {
   return !!startup.name && !!startup.oneLiner && !!startup.stage;
 };
 
-export const canRequestVerification = (startup: Startup, owner: User): boolean => {
-  if (!isProfileMinimumComplete(owner)) return false;
-
-  const errors = validateStartup(startup);
-  if (errors.length > 0) return false;
-
-  // Additional verification requirements
-  return (
-    !!startup.description &&
-    startup.description.length >= 200 &&
-    !!startup.website &&
-    !!startup.twitter &&
-    !!startup.category &&
-    startup.category.length >= 1 &&
-    !!startup.techStack &&
-    startup.techStack.length >= 1 &&
-    !!startup.teamSize &&
-    startup.teamSize >= 1
-  );
+export type VerificationCheck = {
+  key: string;
+  label: string;
+  passed: boolean;
 };
+
+// The individual requirements behind "can this startup request verification",
+// in user-facing form - drives the post-creation checklist modal.
+export const getVerificationChecklist = (startup: Startup, owner: User): VerificationCheck[] => [
+  {
+    key: 'profile',
+    label: 'Complete your profile (display name and job title)',
+    passed: isProfileMinimumComplete(owner),
+  },
+  {
+    key: 'description',
+    label: 'Description of at least 200 characters',
+    passed: !!startup.description && startup.description.length >= 200,
+  },
+  { key: 'website', label: 'Website URL', passed: !!startup.website },
+  { key: 'twitter', label: 'X (Twitter) profile', passed: !!startup.twitter },
+  { key: 'category', label: 'At least one category', passed: !!startup.category && startup.category.length >= 1 },
+  { key: 'teamSize', label: 'Team size of at least 1', passed: !!startup.teamSize && startup.teamSize >= 1 },
+  { key: 'fields', label: 'All fields within limits', passed: validateStartup(startup).length === 0 },
+];
+
+export const canRequestVerification = (startup: Startup, owner: User): boolean =>
+  getVerificationChecklist(startup, owner).every((check) => check.passed);
 
 export const canPublishStartup = (startup: Startup): boolean => {
   return startup.verificationStatus === 'verified' && !!startup.name && !!startup.oneLiner;

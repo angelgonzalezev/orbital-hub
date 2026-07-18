@@ -7,19 +7,25 @@ import DashboardShell from '@/components/shared/DashboardShell';
 import AuthGate from '@/components/shared/AuthGate';
 import { EmptyState } from '@/components/shared/States';
 import StartupForm from '@/components/startup/StartupForm';
+import VerificationChecklistModal from '@/components/startup/VerificationChecklistModal';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import type { Startup } from '@/interface/startup';
 
 export default function NewStartupPage() {
   const { user } = useAuth();
   const { refreshOnboarding } = useOnboarding();
   const router = useRouter();
+  const [createdStartup, setCreatedStartup] = useState<Startup | null>(null);
 
   const isComplete = user ? isProfileMinimumComplete(user) : false;
 
-  const handleSave = () => {
-    // First startup created: the onboarding nudge can retire itself.
+  const handleSave = (startup: Startup) => {
+    // First startup created: the onboarding nudge can retire itself. The
+    // verification checklist modal decides where to go next; closing it
+    // continues to My Startups.
     void refreshOnboarding();
-    router.push('/dashboard/startups');
+    setCreatedStartup(startup);
   };
 
   return (
@@ -53,6 +59,13 @@ export default function NewStartupPage() {
           <div className="max-w-4xl">
             <StartupForm onSave={handleSave} />
           </div>
+        )}
+        {createdStartup && user && (
+          <VerificationChecklistModal
+            startup={createdStartup}
+            owner={user}
+            onClose={() => router.push('/dashboard/startups')}
+          />
         )}
       </DashboardShell>
     </AuthGate>
