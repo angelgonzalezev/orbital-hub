@@ -3,3 +3,5 @@
 lib
 # Ignore specific files:
 yarn.lock
+# Vendored data:
+public/geo/
