@@ -24,13 +24,13 @@ const OnboardingContext = createContext<OnboardingContextType>({
 });
 
 export const OnboardingProvider = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, user } = useAuth();
+  const { user, walletAddress } = useAuth();
   const [hasStartups, setHasStartups] = useState<boolean | null>(null);
 
   const profileComplete = user ? isProfileMinimumComplete(user) : false;
 
   const refreshOnboarding = useCallback(async () => {
-    if (!isAuthenticated) {
+    if (!walletAddress) {
       setHasStartups(null);
       return;
     }
@@ -40,11 +40,37 @@ export const OnboardingProvider = ({ children }: { children: React.ReactNode }) 
       // Unknown beats a wrong nudge.
       setHasStartups(null);
     }
-  }, [isAuthenticated]);
+  }, [walletAddress]);
 
+  // On page load the session bridge may still be arming (server-hydrated
+  // profiles have no token yet), so the count can be unknown at first - retry
+  // a few times before giving up for this page view.
   useEffect(() => {
-    void refreshOnboarding();
-  }, [refreshOnboarding]);
+    if (!walletAddress) {
+      setHasStartups(null);
+      return undefined;
+    }
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const attempt = async (remaining: number) => {
+      try {
+        const count = await startupService.countStartupsByOwner();
+        if (!cancelled) setHasStartups(count > 0);
+      } catch {
+        if (cancelled) return;
+        setHasStartups(null);
+        if (remaining > 0) timer = setTimeout(() => void attempt(remaining - 1), 2000);
+      }
+    };
+
+    void attempt(3);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [walletAddress]);
 
   return (
     <OnboardingContext.Provider value={{ hasStartups, profileComplete, refreshOnboarding }}>

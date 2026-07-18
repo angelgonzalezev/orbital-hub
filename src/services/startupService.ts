@@ -128,10 +128,12 @@ export const startupService = {
   },
 
   // Lightweight ownership check for onboarding: how many startups the current
-  // user has, without fetching the rows.
+  // user has, without fetching the rows. Throws when there is no session yet -
+  // "unknown" must never be mistaken for "zero startups" (it would surface
+  // the first-startup nudge to established users).
   countStartupsByOwner: async (): Promise<number> => {
     const profileId = await getAuthenticatedProfileId();
-    if (!profileId) return 0;
+    if (!profileId) throw new Error('Authentication required.');
 
     const { count, error } = await getSupabaseBrowserClient()
       .from('startups')
