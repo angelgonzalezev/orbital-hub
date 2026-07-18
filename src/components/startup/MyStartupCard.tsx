@@ -124,7 +124,7 @@ const MyStartupCard: React.FC<MyStartupCardProps> = ({ startup, onArchive, onDel
         <button
           onClick={buy}
           disabled={busy || !canPay}
-          className="-mt-px flex w-full flex-shrink-0 flex-col items-center justify-center gap-1.5 rounded-bl-[30px] rounded-br-[30px] border border-amber-400/30 bg-amber-400/10 px-6 py-6 text-amber-400 transition-colors hover:border-amber-400/60 hover:bg-amber-400/20 disabled:opacity-50 sm:-ml-px sm:mt-0 sm:w-44 sm:rounded-bl-none sm:rounded-tr-[30px]">
+          className="-mt-px flex w-full flex-shrink-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-bl-[30px] rounded-br-[30px] border border-amber-400/30 bg-amber-400/10 px-6 py-6 text-amber-400 transition-colors hover:border-amber-400/60 hover:bg-amber-400/20 disabled:cursor-wait disabled:opacity-50 sm:-ml-px sm:mt-0 sm:w-44 sm:rounded-bl-none sm:rounded-tr-[30px]">
           <span className="text-3xl leading-none">★</span>
           <span className="text-sm font-bold uppercase tracking-wider">
             {phase === 'paying'
