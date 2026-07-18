@@ -3,7 +3,7 @@ export const STARTUP_STAGES = ['Idea', 'MVP', 'Early-stage', 'Scaling', 'Establi
 export const CATEGORY_GROUPS = [
   {
     label: 'Sectors',
-    items: ['DeFi', 'Payments', 'NFT', 'Consumer', 'Gaming', 'DAO', 'DePIN'],
+    items: ['DeFi', 'Payments', 'NFT', 'Consumer', 'Gaming', 'DAO', 'DePIN', 'Community'],
   },
   {
     label: 'Infra & Tech',
