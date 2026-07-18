@@ -46,10 +46,15 @@ export default function ProfilePage() {
             </p>
           )
         }>
-        <div className="max-w-4xl space-y-6">
-          <AccountEmailPanel />
-          <WalletPanel />
-          <ProfileForm initialData={user} onSave={handleSave} />
+        <div className="grid max-w-6xl grid-cols-1 items-start gap-6 lg:grid-cols-3">
+          {/* Account panels: above the form on mobile, right rail on desktop. */}
+          <aside className="space-y-4 lg:col-start-3 lg:row-start-1">
+            <AccountEmailPanel />
+            <WalletPanel />
+          </aside>
+          <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1">
+            <ProfileForm initialData={user} onSave={handleSave} />
+          </div>
         </div>
       </DashboardShell>
     </AuthGate>

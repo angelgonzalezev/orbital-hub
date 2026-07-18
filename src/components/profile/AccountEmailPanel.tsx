@@ -30,26 +30,24 @@ const AccountEmailPanel = () => {
   const email = privyUser.email?.address ?? privyUser.google?.email ?? null;
 
   return (
-    <div className="space-y-4 rounded-[30px] border border-white/5 bg-[#0A0A0A] p-5 sm:p-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="min-w-0 space-y-1">
-          <h3 className="text-xl font-bold text-white">Email</h3>
-          <p className="text-sm text-white/50">Used to sign in and for platform notifications.</p>
-        </div>
-
-        {email ? (
-          <p className="flex min-w-0 items-center gap-2 rounded-full border border-white/10 bg-black px-3.5 py-2 text-sm text-white/80">
-            <Mail aria-hidden="true" className="size-3.5 shrink-0 text-primary-400" />
-            <span className="min-w-0 truncate">{email}</span>
-          </p>
-        ) : (
-          <button type="button" onClick={linkEmail} className="btn btn-white-dark btn-sm hover:btn-primary sm:w-auto">
-            Link an email
-          </button>
-        )}
+    <div className="space-y-3 rounded-3xl border border-white/5 bg-[#0A0A0A] p-5">
+      <div className="space-y-1">
+        <h3 className="text-lg font-bold text-white">Email</h3>
+        <p className="text-xs text-white/50">For sign-in and platform notifications.</p>
       </div>
 
-      {error && <p className="rounded-xl bg-red-500/10 p-3 text-sm text-red-300">{error}</p>}
+      {email ? (
+        <p className="flex min-w-0 items-center gap-2 rounded-xl border border-white/10 bg-black px-3 py-2 text-sm text-white/80">
+          <Mail aria-hidden="true" className="size-3.5 shrink-0 text-primary-400" />
+          <span className="min-w-0 truncate">{email}</span>
+        </p>
+      ) : (
+        <button type="button" onClick={linkEmail} className="btn btn-white-dark btn-sm w-full hover:btn-primary">
+          Link an email
+        </button>
+      )}
+
+      {error && <p className="rounded-xl bg-red-500/10 p-3 text-xs text-red-300">{error}</p>}
     </div>
   );
 };
