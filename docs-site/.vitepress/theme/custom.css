@@ -1,0 +1,78 @@
+:root {
+  /* Solana brand */
+  --vp-c-brand-1: #14f195;
+  --vp-c-brand-2: #0ed684;
+  --vp-c-brand-3: #0bc57a;
+  --vp-c-brand-soft: rgba(20, 241, 149, 0.14);
+  --orbital-purple: #9945ff;
+}
+
+/* The site is force-dark; defining the palette on :root as well prevents any
+   light flash before the inline theme script stamps the dark class. */
+:root,
+.dark {
+  --vp-c-bg: #070711;
+  --vp-c-bg-alt: #0b0b16;
+  --vp-c-bg-soft: #10101e;
+  --vp-c-bg-elv: #10101e;
+  --vp-c-text-1: #f7f3ff;
+  --vp-c-text-2: rgba(247, 243, 255, 0.72);
+  --vp-c-divider: rgba(255, 255, 255, 0.08);
+  --vp-nav-bg-color: #0b0b16;
+  --vp-local-nav-bg-color: #0b0b16;
+  --vp-sidebar-bg-color: #0b0b16;
+  /* brand buttons need dark text on the green */
+  --vp-button-brand-bg: var(--vp-c-brand-3);
+  --vp-button-brand-text: #070711;
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-hover-text: #070711;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(153, 69, 255, 0.22), transparent 32rem),
+    radial-gradient(circle at 95% 10%, rgba(20, 241, 149, 0.14), transparent 28rem), var(--vp-c-bg);
+}
+
+/* The default theme paints the navbar in fragments (content-body, plus the
+   sidebar showing through the title area) and leaves the rest transparent,
+   which exposes the body gradient as mismatched bands. Paint the whole bar
+   with one solid color, continuous with the sidebar. */
+.VPNavBar:not(.home) {
+  background-color: var(--vp-nav-bg-color) !important;
+}
+
+.VPNavBar:not(.home) .content-body {
+  background-color: transparent !important;
+}
+
+/* Content-page building blocks (used by index.md and the vision/roadmap pages) */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.info-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1rem;
+}
+
+.info-card strong {
+  color: #14f195;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(20, 241, 149, 0.35);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  color: #14f195;
+  background: rgba(20, 241, 149, 0.08);
+  font-size: 0.85rem;
+  font-weight: 600;
+}

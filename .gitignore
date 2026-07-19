@@ -18,9 +18,10 @@
 /out/
 /public/docs/
 
-# docusaurus
-/docs-site/.docusaurus/
-/docs-site/build/
+# vitepress
+/docs-site/.vitepress/cache/
+/docs-site/.vitepress/.temp/
+/docs-site/.vitepress/dist/
 /docs-site/node_modules/
 
 # production
