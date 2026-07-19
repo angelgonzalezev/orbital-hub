@@ -20,9 +20,9 @@ const footerSections = [
     title: 'Resources',
     links: [
       { label: 'Documentation', href: '/docs' },
-      { label: 'Roadmap', href: '/docs/roadmap/current-roadmap' },
-      { label: 'Task progress', href: '/docs/tasks/progress' },
-      { label: 'Technology stack', href: '/docs/technology/stack' },
+      { label: 'Vision', href: '/docs/vision' },
+      { label: 'Roadmap', href: '/docs/roadmap' },
+      { label: 'Technology', href: '/docs/about/technology' },
     ],
   },
   {
@@ -111,7 +111,7 @@ const FooterOne = ({ className }: { className?: string }) => {
           </RevealAnimation>
           <RevealAnimation delay={0.75} offset={10} start="top 105%">
             <Link
-              href="/docs/product/vision"
+              href="/docs/vision"
               className="inline-flex min-h-10 items-center rounded-md text-tagline-1 font-normal text-white/55 transition-colors duration-200 hover:text-white focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black">
               Read the product vision
             </Link>

@@ -2,218 +2,78 @@
 
 ## Agent Context Guide
 
-Open this file when deciding what should happen next at the milestone level. This roadmap reflects the current audited implementation state, not the original greenfield plan. For task-level status, use `docs/delivery/TASK_BACKLOG.md`.
+Open this file when deciding what should happen next at the phase level. This roadmap reflects the current audited implementation state, not the original greenfield plan, and mirrors the public roadmap at `docs-site/docs/roadmap.md` with internal detail added. For task-level status, use `docs/delivery/TASK_BACKLOG.md`.
 
 Related files:
 
 - Task tracking: `docs/delivery/TASK_BACKLOG.md`
 - Product scope: `docs/product/PRODUCT_BRIEF.md`
+- Public roadmap: `docs-site/docs/roadmap.md`
 - Release checklist: `QA_CHECKLIST.md`
 - Implementation details: `docs/implementation/IMPLEMENTATION_BLUEPRINT.md`
 
-## Current State - 2026-07-13
+## Current State - 2026-07-19
 
-The MVP is no longer in early setup. Most core product surfaces exist:
+The product is live in production, with the first verified featured-listing purchase completed:
 
-- Product routes exist for marketplace, detail, dashboard, profile, startup CRUD, and verification.
-- The public route surface is limited to the landing, product routes, and `/docs`; inherited template pages are gone.
-- Unreachable template components, content, assets, styles, and direct dependencies have been removed.
-- Solana Wallet Standard SIWS auth and Supabase SSR sessions exist.
-- `AuthGate` protects product routes.
-- Local-only profile/startup fixtures exist.
-- Models include verification, listing, acquisition, and MRR visibility fields.
-- Supabase-backed services, RLS, and protected state-transition RPCs exist.
-- Profile, dashboard, startup form, marketplace, detail, founder contact, and verification pages exist.
-- `QA_CHECKLIST.md` exists.
+- Privy authentication (email, Google, or Solana wallet sign-in, with embedded wallets created automatically) has replaced the previous SIWS + Supabase Auth flow; external wallets and a linked email attach to the same account.
+- The marketplace (`/startups`) and startup detail pages are public; `/dashboard/*` remains login-only.
+- Featured listings are live: 20 USDC for 7 days, verified on-chain before activation, with a built-in onramp.
+- The Orbital globe at `/orbital` shows geo-located published startups, with featured startups marked in gold.
+- Public profiles exist at vanity `/<username>` URLs and wallet-based `/u/<wallet>` URLs.
+- Guided onboarding routes new users step by step: profile, first startup, marketplace.
+- Every listing passes a 7-point checklist and manual human review before it publishes.
+- Supabase-backed services, RLS, and protected state-transition RPCs exist; `service_role` has no direct table access (explicit grants plus security definer functions).
+- `npm run build` passes and `QA_CHECKLIST.md` exists.
 
-However, the product is not release-ready:
-
-- `npm run build` now passes.
-- Some core tasks remain partial: startup validation hardening, generic service visibility helpers, and direct save-and-request verification flow.
-- Analytics and broader service/UI tests remain incomplete.
+Remaining gaps: gas sponsorship is built but not yet activated, and startup validation hardening, the direct save-and-request verification flow, analytics, and broader service/UI tests remain incomplete.
 
 ## Roadmap Priorities
 
-### Milestone 1 - Stabilize the Current MVP
+### Recently Shipped
 
-Goal: make the existing implementation internally consistent, lint-clean, and aligned with the v1 product promise.
+Live in the product and covered by the public roadmap; no further milestone work is tracked for these:
+
+- Privy auth migration.
+- Featured listings with on-chain payment verification (20 USDC / 7 days).
+- The Orbital globe.
+- Public profiles.
+- Guided onboarding.
+- Email linking (emails captured at sign-up and attachable to existing accounts).
+
+### Now - Hardening the Foundation
+
+Goal: make what is shipped reliable, reviewed, and measurable before building marketplace features.
 
 Priority: highest.
 
-Tasks to finish:
+- Gas-sponsored transactions - In progress. Built behind `NEXT_PUBLIC_ENABLE_GAS_SPONSORSHIP`, awaiting Privy dashboard activation.
+- Email notifications - Planned. Emails are already captured at sign-up; the sending side is not built.
+- Automated domain and X verification - Planned. Automated checks complement human review, which stays in place.
+- Admin review interface - Planned. Internal tooling to make the manual review queue faster and more consistent.
+- Product analytics - Planned. Lightweight `trackEvent` events (`wallet_connected`, `profile_saved`, `startup_draft_created`, `startup_updated`, `verification_requested`, `startup_published`, `marketplace_viewed`, `startup_filter_applied`, `startup_filter_reset`, `startup_detail_viewed`, `founder_contact_clicked`); can start mock/local and swap in a real provider later. (TASK-035)
 
-- Harden startup validation to match the implementation rules more closely.
-- Keep service-level visibility constrained to accessible lookups.
-- Keep `/startups/[id]` hidden from non-owners when a startup is unavailable.
+Engineering hardening still open:
 
-Exit criteria:
+- Harden startup validation to fully match `docs/implementation/VALIDATION_RULES.md`. (TASK-008)
+- Add the `Save and request verification` flow to startup creation/editing, with `StartupForm` clearly distinguishing save draft, save changes, and request verification. (TASK-020, TASK-021)
+- Broaden unit test coverage: profile validation, startup validation, `listPublishedStartups`, owner/non-owner mutations, `requestVerification`, `publishStartup`, `showMrr` visibility. (TASK-036)
+- Manual QA of protected routes plus responsive/visual QA across landing, marketplace, detail, dashboard, profile form, startup form, and verification pages; keep `QA_CHECKLIST.md` matching actual results, not intended results. (TASK-037, TASK-038)
 
-- `npm run build` passes.
-- Landing copy has no v1 scope violations.
-- Protected startup detail cannot show drafts, pending, rejected, or archived startups to non-owners.
-- Marketplace filters match the spec: search, category, stage, tech stack, fundraising, acquisition.
+### Next - Marketplace Foundations
 
-Relevant backlog items:
+- Investor and buyer account types - Planned. Distinct from founder accounts.
+- Structured intro requests and in-app messaging - Planned. Replaces today's outbound-only contact via X or Telegram.
+- Fundraising profiles - Planned. Founders describe their round in a structured format; Orbital does not verify fundraising claims or handle any funds.
+- Deal rooms - Exploring.
 
-- TASK-001
-- TASK-002
-- TASK-008
-- TASK-010
-- TASK-028
-- TASK-029
-- TASK-030
-- TASK-031
-- TASK-033
-- TASK-039
+### Later - Transactions and Talent
 
-### Milestone 2 - Complete Founder Workflow Polish
+- Acquisition listings and structured offers - Exploring.
+- Escrowed USDC settlement - Exploring. Orbital holds no funds today.
+- Jobs board - Exploring.
 
-Goal: make the founder flow feel complete from profile to published startup.
+## Scope Constraints
 
-Tasks to finish:
-
-- Add `Save and request verification` flow to startup creation/editing where requirements are met.
-- Make `StartupForm` distinguish clearly between:
-  - save draft.
-  - save changes.
-  - request verification.
-- Improve startup validation to fully match `docs/implementation/VALIDATION_RULES.md`.
-- Ensure verification reset behavior is obvious when website or X changes.
-- Improve error messages for owner-only edit/verification access.
-- Confirm archived startups are visible to owner but never marketplace-visible.
-
-Exit criteria:
-
-- A founder can complete profile, create draft, request verification, mock approve, publish, and view public detail without manual workarounds.
-- Validation errors are field-level and consistent.
-- Owner/non-owner behavior is clear in UI.
-
-Relevant backlog items:
-
-- TASK-008
-- TASK-020
-- TASK-021
-- TASK-023
-- TASK-024
-- TASK-025
-- TASK-026
-
-### Milestone 3 - Release Quality and Regression Coverage
-
-Goal: reduce regression risk before considering the MVP releasable.
-
-Tasks to finish:
-
-- Add unit tests for:
-  - profile validation.
-  - startup validation.
-  - `listPublishedStartups`.
-  - owner/non-owner mutations.
-  - `requestVerification`.
-  - `publishStartup`.
-  - `showMrr` visibility.
-- Run manual QA for protected routes.
-- Run responsive/visual QA on:
-  - landing.
-  - marketplace.
-  - detail.
-  - dashboard.
-  - profile form.
-  - startup form.
-  - verification page.
-- Update `QA_CHECKLIST.md` to match actual results, not intended results.
-
-Exit criteria:
-
-- Unit tests cover critical business logic.
-- QA checklist reflects verified behavior.
-- No startup data is visible before wallet connection.
-- No high-risk responsive issues remain.
-
-Relevant backlog items:
-
-- TASK-036
-- TASK-037
-- TASK-038
-- TASK-040
-
-### Milestone 4 - Measurement and Learning Loop
-
-Goal: instrument the MVP enough to learn whether the marketplace is valuable.
-
-Tasks to finish:
-
-- Implement a lightweight `trackEvent` helper.
-- Track:
-  - `wallet_connected`
-  - `profile_saved`
-  - `startup_draft_created`
-  - `startup_updated`
-  - `verification_requested`
-  - `startup_published`
-  - `marketplace_viewed`
-  - `startup_filter_applied`
-  - `startup_filter_reset`
-  - `startup_detail_viewed`
-  - `founder_contact_clicked`
-- Keep it mock/local for v1; do not add an external analytics dependency unless explicitly decided.
-
-Exit criteria:
-
-- Key product events are emitted.
-- Analytics can later be swapped for a real provider.
-
-Relevant backlog items:
-
-- TASK-035
-
-## v1.0 Release Candidate Scope
-
-The first release candidate should include:
-
-- Landing aligned with v1 messaging.
-- Solana SIWS wallet auth.
-- `AuthGate`.
-- Editable profile.
-- Private dashboard.
-- Owned startup list.
-- Startup draft creation.
-- Startup editing.
-- Database-controlled verification transitions with an explicitly gated development simulator.
-- Publishing verified startups.
-- Protected marketplace.
-- Protected startup detail.
-- `Founder Contact`.
-- Combined filters including tech stack.
-- Empty/loading/error states.
-- Sufficient local development fixtures.
-- Build passing.
-- Critical unit tests passing.
-- Updated QA checklist.
-
-The first release candidate must not include:
-
-- XMTP.
-- Anonymous chat.
-- Internal contact forms.
-- Saved contact requests.
-- USDC payments.
-- Deal room.
-- Private offers.
-- Real admin dashboard.
-- Real domain verification.
-- X API integration.
-
-## Post-MVP Roadmap
-
-Only start these after v1.0 is stable and validated:
-
-1. Real domain verification.
-2. Real X verification.
-3. Admin/reviewer workflow.
-4. Hosted wallet compatibility and RPC resilience work.
-5. XMTP wallet-to-wallet messaging.
-6. Anonymous contact request flow.
-7. Notifications.
-8. Private deal room.
-9. Paid/premium features.
+- Featured listings are the only live paid feature. Do not build marketplace-transaction features beyond featured listings (offers, escrow, settlement, deal rooms) until the "Next - Marketplace Foundations" phase deliberately begins.
+- All copy follows the tense model in `docs-site/docs/about/messaging.md`: present tense only for shipped items; everything else gets explicit future framing.
